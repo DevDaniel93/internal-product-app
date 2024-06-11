@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.transparent,
     },
     containerStyle: {
-        height: 65,
+        height: SIZES.twentyFive * 2.3,
         width: '100%',
         borderWidth: 1,
-        borderRadius: SIZES.fifteen,
+        borderRadius: SIZES.ten,
         marginTop: SIZES.fifteen * 1.3,
     },
     textStyle: {

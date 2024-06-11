@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     },
     textInputArea: {
         flex: 1,
+        height: SIZES.twentyFive * 2.3,
         padding: SIZES.five,
         flexDirection: "row",
         alignItems: "center",

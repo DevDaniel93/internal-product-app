@@ -63,6 +63,7 @@ export const IMAGES = {
     avatar: require("../assets/images/avatar.png"),
     user: require("../assets/images/user.png"),
     ProductImage: require("../assets/images/ProductImage.png"),
+    CardBg: require("../assets/images/cardBg.png"),
     DummyProducts: {
         product1: require("../assets/dummyProduct/product1.png"),
         product2: require("../assets/dummyProduct/product2.png"),

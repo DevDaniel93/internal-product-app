@@ -104,12 +104,11 @@ export default function BottamTab() {
                             listeners={({ navigation }) => ({
                                 tabPress: e => {
                                     e.preventDefault();
-                                    if (item.route === 'Account') {
+                                    if (item.label === 'Account') {
                                         navigation.openDrawer();
                                     } else {
                                         navigation.navigate(item.route);
                                     }
-
                                 }
                             })}
                         />

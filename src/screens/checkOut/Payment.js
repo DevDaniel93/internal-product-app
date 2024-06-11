@@ -1,17 +1,42 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import EditText from '../../components/EditText'
-import { SIZES, width } from '../../constants'
+import { COLORS, SIZES, width } from '../../constants'
+import CardSlider from '../../components/CardSlider'
+import cardValidator from 'card-validator';
+import { CreditCardInput } from '../../components/StripeCardComponent'
+
 
 const Payment = () => {
     const [cardHolderName, setCardHolderName] = useState('')
-    const [cardNumber, setCardNumber] = useState('')
-    const [expiration, setExpiration] = useState('')
-    const [cvv, setCvv] = useState('')
+    const [cardNumber, setCardNumber] = useState('');
+    const [expiry, setExpiry] = useState('');
+    const [cvv, setCvv] = useState('');
+    const [error, setError] = useState('');
 
+    const handleCardNumberChange = (text) => {
+        const formattedText = text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
+        setCardNumber(formattedText);
+        const validation = cardValidator.number(formattedText.replace(/\s/g, ''));
+        if (!validation.isValid) {
+            setError('Invalid card number');
+        } else {
+            setError('');
+        }
+    };
+
+    const handleExpiryChange = (text) => {
+        const formattedText = text.replace(/^(\d{2})(\d{2})$/, '$1/$2');
+        setExpiry(formattedText);
+    };
+
+    const handleCvvChange = (text) => {
+        setCvv(text);
+    };
     return (
-        <View>
-           
+        <View style={styles.container}>
+
+            <CardSlider data={[1, 2, 3]} />
             <EditText
                 label={"Card Holder Name"}
                 value={cardHolderName}
@@ -24,32 +49,36 @@ const Payment = () => {
 
             <EditText
                 label={"Card Number"}
-                value={cardNumber}
                 required
-                onChangeText={(e) => {
-                    setCardNumber(e)
-                }}
-                placeholder={"Enter card number"}
+                placeholder="Card Number"
+                keyboardType="numeric"
+                value={cardNumber}
+                onChangeText={handleCardNumberChange}
+                maxLength={19}
             />
+            {error === "Invalid card number" && <Text style={{ color: COLORS.red, fontSize: SIZES.fifteen }}>
+                {error}
+            </Text>}
             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                 <EditText
-                    label={"Expiration"}
-                    value={expiration}
                     required
-                    onChangeText={(e) => {
-                        setExpiration(e)
-                    }}
-                    placeholder={"MM/YY"}
+
+                    label={"Expiration"}
+                    placeholder="MM/YY"
+                    keyboardType="numeric"
+                    value={expiry}
+                    onChangeText={handleExpiryChange}
+                    maxLength={5}
                     styleTxtArea={{ width: SIZES.fiftyWidth * 3.3 }}
                 />
                 <EditText
-                    label={"CVV"}
-                    value={cvv}
                     required
-                    onChangeText={(e) => {
-                        setCvv(e)
-                    }}
-                    placeholder={"123"}
+                    label={"CVV"}
+                    placeholder="CVV"
+                    keyboardType="numeric"
+                    value={cvv}
+                    onChangeText={handleCvvChange}
+                    maxLength={3}
                     styleTxtArea={{ width: SIZES.fiftyWidth * 3.3 }}
                 />
 
@@ -61,5 +90,7 @@ const Payment = () => {
 export default Payment
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1
+    }
 })
