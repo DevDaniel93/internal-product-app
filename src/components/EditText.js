@@ -13,8 +13,10 @@ export default function EditText(props) {
         <View style={[styles.textInputView, props.styleTxtArea]}>
             {props?.label
                 &&
-                <Text style={[styles.textLabel, { color: focusColor }]}>
+                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.black }]}>
                     {props.label}
+                    {props?.required &&
+                        <Text style={styles.required}> *</Text>}
                 </Text>
             }
 
@@ -38,7 +40,7 @@ export default function EditText(props) {
                         secureTextEntry={props.password ? true : false}
                         selectionColor={COLORS.primary}
                         placeholderTextColor={COLORS.gray}
-
+                        placeholder={props?.placeholder}
                         onFocus={() => { setFocusColor(COLORS.primary) }}
                         onBlur={() => { setFocusColor(COLORS.charcoalGrey) }}
                         style={[FONTS.mediumFont14, styles.textInput, props?.style]}
@@ -94,5 +96,8 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         marginBottom: SIZES.ten,
         color: COLORS.black
+    },
+    required: {
+        color: COLORS.red,
     }
 });

@@ -3,43 +3,38 @@ import React, { useState } from 'react'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { STYLES } from '../../constants'
 import EditText from '../../components/EditText'
+import ProgressBar from '../../components/ProgressBar'
+import Shipping from './Shipping'
+import Payment from './Payment'
+import Review from './Review'
+import CustomButton from '../../components/CustomButton'
 
 
 export default function CheckOut() {
     const [progress, setProgress] = useState(0)
-    const [name, setName] = useState('')
-    const [state, setState] = useState('')
-    const [city, setCity] = useState('')
-    const [address, setAddress] = useState('')
-    const [postalCode, setPostalCode] = useState('')
+
+    const moveToNext = () => {
+        setProgress(progress + 1)
+    }
 
     return (
         <ScrollView style={STYLES.container}>
             <HeaderWithArrow
                 label="CheckOut" />
 
-            <EditText
-                label={"Full Name"}
-                value={name}
-                onChangeText={(e) => {
-                    setName(e)
-                }}
-            />
+            <ProgressBar mode={progress} />
 
-            <EditText
-                label={"Street Address"}
-                value={address}
-                onChangeText={(e) => {
-                    setAddress(e)
-                }}
-            />
-            <EditText
-                label={"Postal Code"}
-                value={postalCode}
-                onChangeText={(e) => {
-                    setPostalCode(e)
-                }}
-            />
+            {progress === 0 ?
+                <Shipping />
+                : progress === 1 ?
+                    <Payment />
+                    :
+                    <Review />
+            }
+
+            <CustomButton
+                label={progress === 0 ? "Payment" : progress === 1 ? "Review" : "Place Order"}
+                onPress={moveToNext} />
 
         </ScrollView>
     )

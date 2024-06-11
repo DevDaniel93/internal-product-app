@@ -24,7 +24,7 @@ const TabArr = [
     { route: SCREENS.Home, label: 'Home', type: IconType.Feather, icon: 'home', component: Home, },
     { route: SCREENS.MyCart, label: "Cart", type: IconType.SimpleLineIcons, icon: 'handbag', component: MyCart, },
     { route: SCREENS.wishList, label: 'Wishlist', type: IconType.AntDesign, icon: 'hearto', component: WishList, },
-    { route: SCREENS.order, label: 'My Orders', type: IconType.SimpleLineIcons, icon: 'list', component: MyOrder, },
+    { route: SCREENS.order, label: 'Orders', type: IconType.SimpleLineIcons, icon: 'list', component: MyOrder, },
     { route: 'Account', label: 'Account', type: IconType.FontAwesome, icon: 'user-o', component: Demo, },
 ];
 

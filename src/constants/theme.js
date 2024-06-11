@@ -27,6 +27,8 @@ export const COLORS = {
     transparent: "transparent",
     pink: "#d323a0",
     red: "#FF0000",
+    cyan: '#21D4B4',
+    lightGray: '#C0C0C0',
 };
 
 const appTheme = { COLORS };
