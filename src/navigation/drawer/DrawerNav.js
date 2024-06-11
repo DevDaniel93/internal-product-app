@@ -103,7 +103,7 @@ export default function DrawerNavigator() {
             }}
             drawerContent={(props) => <CustomDrawer{...props} />}>
 
-            <Drawer.Screen name={SCREENS.Home} component={BottamTab} options={{ headerShown: false, headerTitle: '' }} />
+            <Drawer.Screen name={SCREENS.BottamTab} component={BottamTab} options={{ headerShown: false, headerTitle: '' }} />
             {
                 Menu.map((item) => {
 

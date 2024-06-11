@@ -101,6 +101,7 @@ export const SCREENS = {
     NewPassword: "NewPassword",
     Drawer: "Drawer",
     Home: "Home",
+    BottamTab: "BottamTab",
     OrderDetails: "OrderDetails",
     About: "About",
     wishList: "wishList",

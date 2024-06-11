@@ -20,6 +20,7 @@ import DrawerSceneWrapper from "../components/DrawerSceneWrapper";
 import TermAndCondition from "../screens/content/TermsAndConditon";
 import PrivacyPolicy from "../screens/content/PrivacyPolicy";
 import AboutUs from "../screens/content/AboutUs";
+import Profile from "../screens/profile/Profile";
 
 const Stack = createNativeStackNavigator();
 const screenOptions = {
@@ -73,6 +74,7 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.singleProduct} component={SingleProduct} />
                 <Stack.Screen name={SCREENS.checkOut} component={CheckOut} />
                 <Stack.Screen name={SCREENS.About} component={AboutUs} />
+                <Stack.Screen name={SCREENS.profile} component={Profile} />
             </Stack.Navigator>
 
         </NavigationContainer>
