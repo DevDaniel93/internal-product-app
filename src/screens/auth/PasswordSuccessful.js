@@ -1,7 +1,8 @@
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { COLORS, IMAGES, SIZES, STYLES, height, width } from '../../constants'
+
 import CustomButton from '../../components/CustomButton'
+import { COLORS, IMAGES, SIZES, STYLES, height, width } from '../../constants'
 
 const PasswordSuccessful = () => {
     return (
