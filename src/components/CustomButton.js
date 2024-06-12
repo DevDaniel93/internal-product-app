@@ -14,7 +14,8 @@ export default function CustomButton(props) {
 
 const styles = StyleSheet.create({
     btn: {
-        width: "100%",
+        // width: "100%",
+        // flex: 1,
         backgroundColor: COLORS.primary,
         padding: SIZES.fifteen,
         justifyContent: "center",

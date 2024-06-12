@@ -5,20 +5,30 @@ import HeaderWithArrow from '../../components/HeaderWithArrow'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import { Icon, IconType } from '../../components'
+import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
+import CustomModal from '../../components/CustomModal'
 
 export default function Profile(props) {
     const { navigation } = props
-    const [isEdit, setIsEdit] = useState(true)
+    const [isEdit, setIsEdit] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
+    const [changePasswordModal, setChangePasswordModal] = useState(false)
+    const [image, setImage] = useState('')
     const [firstName, setFirstName] = useState(__DEV__ ? "Taimoor" : '')
     const [lastName, setLastName] = useState(__DEV__ ? "khan" : '')
     const [email, setEmail] = useState(__DEV__ ? "taimoor@yopmail.com" : '')
 
+
     const ProfilePic = () => {
         return (
             <View style={styles.imgConatiner}>
-                <Image source={IMAGES.user} style={styles.img} resizeMode="contain" />
+                <Image source={image !== "" ? { uri: image?.path } : IMAGES.user} style={styles.img} resizeMode="contain" />
                 {isEdit &&
-                    <TouchableOpacity style={styles.iconContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setIsVisible(!isVisible)
+                        }}
+                        style={styles.iconContainer}>
                         <Icon
                             name={"camera"}
                             type={IconType.Entypo}
@@ -60,11 +70,52 @@ export default function Profile(props) {
             />
             {isEdit === true &&
                 <CustomButton
+                    onPress={() => {
+                        setChangePasswordModal(!changePasswordModal)
+                    }}
                     txtstyle={styles.txtstyle}
                     btnStyle={styles.btnStyle}
                     label={"Change password"}
                 />
             }
+            <UploadPhotoModal
+                visibility={isVisible}
+                onImageSelected={setImage}
+                setVisibility={setIsVisible}
+            />
+            <CustomModal
+                isvisible={changePasswordModal}
+            >
+                <Text style={styles.heading}>
+                    Change Password
+                </Text>
+                <EditText
+
+                    required
+                    label={"Enter old password"}
+
+                />
+                <EditText
+
+                    required
+                    label={"Enter New Password"}
+
+                />
+                <EditText
+
+                    required
+                    label={"Confirm password"}
+
+                />
+                <CustomButton
+                    btnStyle={{ marginVertical: SIZES.fifteen }}
+                    onPress={() => {
+                        setChangePasswordModal(!changePasswordModal)
+
+                    }}
+                    label={"Update"} />
+
+            </CustomModal>
 
         </View>
     )
@@ -103,5 +154,16 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 0,
         right: 10
+    },
+
+
+
+    heading: {
+        color: COLORS.black,
+        alignSelf: "center",
+        marginVertical: SIZES.fifteen,
+        fontSize: SIZES.twenty,
+        fontWeight: "600"
     }
+
 })

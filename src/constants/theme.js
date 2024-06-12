@@ -1,5 +1,4 @@
 import { Dimensions, StyleSheet, Platform } from "react-native";
-import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 
 export const { width, height } = Dimensions.get("window");
 
@@ -117,7 +116,7 @@ export const SCREENS = {
     singleProduct: "singleProduct",
     MyCart: "MyCart",
     checkOut: "CheckOut",
-    PasswordSuccessful : "PasswordSuccessful",
+    PasswordSuccessful: "PasswordSuccessful",
 
 };
 
@@ -221,7 +220,8 @@ export const STYLES = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.white,
         paddingHorizontal: SIZES.twenty,
-        paddingTop: SIZES.twenty
+        paddingTop: SIZES.twenty,
+
     },
     shadow: {
         shadowColor: "#000",

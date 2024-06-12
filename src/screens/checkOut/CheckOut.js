@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
-import { STYLES } from '../../constants'
+import { COLORS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import ProgressBar from '../../components/ProgressBar'
 import Shipping from './Shipping'
@@ -15,6 +15,9 @@ export default function CheckOut() {
 
     const moveToNext = () => {
         setProgress(progress + 1)
+    }
+    const moveToPrevios = () => {
+        setProgress(progress - 1)
     }
 
     return (
@@ -32,12 +35,46 @@ export default function CheckOut() {
                     <Review />
             }
 
-            <CustomButton
-                label={progress === 0 ? "Payment" : progress === 1 ? "Review" : "Place Order"}
-                onPress={moveToNext} />
+            <View style={styles.btnRow}>
+                {progress > 0 &&
+                    <CustomButton
+                        txtstyle={styles.txtstyle}
+                        btnStyle={styles.btnStyle1}
+                        label={"Back"}
+                        onPress={moveToPrevios} />
+                }
+                {progress > 0 &&
+                    <View style={{ width: SIZES.fifteen }} />
+                }
+                <CustomButton
+                    btnStyle={styles.btnStyle}
+                    label={progress === 0 ? "Payment" : progress === 1 ? "Review" : "Place Order"}
+                    onPress={moveToNext} />
+
+
+            </View>
+
 
         </ScrollView>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    btnRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between"
+    },
+    btnStyle: {
+        flex: 1
+    },
+    btnStyle1: {
+        flex: 1,
+        backgroundColor: COLORS.white,
+        borderWidth: 1,
+        borderColor: COLORS.primary
+    },
+    txtstyle: {
+        color: COLORS.primary
+    }
+})

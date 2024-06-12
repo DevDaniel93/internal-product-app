@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import ShadedBox from '../../components/ShadedBox'
 import { COLORS, FONTFAMILY, SIZES, STYLES, width } from '../../constants'
@@ -16,11 +16,17 @@ export default function MyOrder() {
     return (
         <View style={STYLES.container}>
             <HeaderWithArrow label={"My Orders"} />
-            <OrderCard data={data} />
-            <OrderCard data={data} />
-            <OrderCard data={data} />
-            <OrderCard data={data} />
-
+            <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+                <OrderCard data={data} />
+            </ScrollView>
         </View>
     )
 }

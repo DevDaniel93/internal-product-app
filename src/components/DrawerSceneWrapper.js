@@ -18,7 +18,7 @@ const DrawerSceneWrapper = ({ children }) => {
         transform: [
             { perspective: 1000 },
             {
-                scale: interpolate(progress.value, [0, 1], [1, 0.8], 'clamp'),
+                scale: interpolate(progress.value, [0, 1], [1, 0.5],),
             },
             {
                 rotateY: `${interpolate(progress.value, [0, 1], [0, -10], 'clamp')}deg`,

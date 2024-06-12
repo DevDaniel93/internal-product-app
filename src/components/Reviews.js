@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 import Stars from 'react-native-stars';
 import { COLORS, FONTFAMILY, IMAGES, SIZES } from '../constants';
@@ -7,6 +7,7 @@ import Icon, { IconType } from './Icons';
 import EditText from './EditText';
 import CustomButton from './CustomButton';
 export default function Reviews() {
+    const [star, setStar] = useState(0)
 
     const CustomerReviews = () => {
         return (
@@ -47,11 +48,12 @@ export default function Reviews() {
             </Text>
             <View style={{ alignItems: "flex-start", marginVertical: SIZES.five }}>
                 <Stars
-                    display={3.67}
+                    display={star}
                     spacing={8}
                     count={5}
                     starSize={SIZES.twentyFive}
-                    disabled={true}
+                    disabled={false}
+
                     fullStar={<Icon name={'star'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
                     emptyStar={<Icon name={'star-outline'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
                     halfStar={<Icon name={'star-half'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}

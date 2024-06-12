@@ -10,6 +10,8 @@ import Home from '../../screens/home/Home';
 import WishList from '../../screens/wishList/WishList';
 import MyOrder from '../../screens/order/MyOrder';
 import MyCart from '../../screens/cart/MyCart';
+import DrawerSceneWrapper from '../../components/DrawerSceneWrapper';
+import { useSelector } from 'react-redux';
 
 
 const Demo = () => {
@@ -35,6 +37,8 @@ const TabButton = (props) => {
     const focused = accessibilityState.selected;
     const viewRef = useRef(null);
     const textViewRef = useRef(null);
+    const cart = useSelector(state => state.Cart.cart)
+
 
     useEffect(() => {
         if (focused) { // 0.3: { scale: .7 }, 0.5: { scale: .3 }, 0.8: { scale: .7 },
@@ -52,10 +56,12 @@ const TabButton = (props) => {
             activeOpacity={1}
             style={[styles.container, { flex: focused ? 1 : 0.65, }]}>
             <View>
+                {cart.length > 0 && item.label === "Cart" && !focused && <View style={styles.dot} />}
                 <Animatable.View
                     ref={viewRef}
                     style={[StyleSheet.absoluteFillObject, { backgroundColor: COLORS.primary, borderRadius: SIZES.twentyFive, }]} />
                 <View style={[styles.btn]}>
+
                     <Icon type={item.type} name={item.icon} color={focused ? COLORS.white : COLORS.black} size={SIZES.twenty} />
                     <Animatable.View
                         ref={textViewRef}>
@@ -71,51 +77,56 @@ const TabButton = (props) => {
 
 export default function BottamTab() {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Tab.Navigator
-                screenOptions={{
-                    headerShown: false,
-                    tabBarStyle: {
-                        borderTopWidth: 3,
-                        borderLeftWidth: 1,
-                        borderRightWidth: 1,
-                        borderColor: COLORS.primary,
-                        // position: 'absolute',
+        <DrawerSceneWrapper>
 
-                        // margin: SIZES.twenty,
-                        marginBottom: SIZES.twenty,
-                        marginHorizontal: SIZES.twenty,
-                        marginTop: SIZES.five,
-                        borderRadius: SIZES.fifty,
-                        height: SIZES.fifty + SIZES.ten,
-                        paddingHorizontal: SIZES.five
 
-                    }
-                }}
-            >
+            <SafeAreaView style={{ flex: 1 }}>
+                <Tab.Navigator
 
-                {TabArr.map((item, index) => {
-                    return (
-                        <Tab.Screen key={index} name={item.route} component={item.component}
-                            options={{
-                                tabBarShowLabel: false,
-                                tabBarButton: (props) => <TabButton {...props} item={item} />
-                            }}
-                            listeners={({ navigation }) => ({
-                                tabPress: e => {
-                                    e.preventDefault();
-                                    if (item.label === 'Account') {
-                                        navigation.openDrawer();
-                                    } else {
-                                        navigation.navigate(item.route);
+                    screenOptions={{
+                        headerShown: false,
+                        tabBarStyle: {
+                            borderTopWidth: 3,
+                            borderLeftWidth: 1,
+                            borderRightWidth: 1,
+                            borderColor: COLORS.primary,
+                            // position: 'absolute',
+                            // margin: SIZES.twenty,
+                            marginBottom: SIZES.twenty,
+                            marginHorizontal: SIZES.twenty,
+                            marginTop: SIZES.five,
+                            borderRadius: SIZES.fifty,
+                            height: SIZES.fifty + SIZES.ten,
+                            paddingHorizontal: SIZES.five,
+
+
+                        }
+                    }}
+                >
+
+                    {TabArr.map((item, index) => {
+                        return (
+                            <Tab.Screen key={index} name={item.route} component={item.component}
+                                options={{
+                                    tabBarShowLabel: false,
+                                    tabBarButton: (props) => <TabButton {...props} item={item} />
+                                }}
+                                listeners={({ navigation }) => ({
+                                    tabPress: e => {
+                                        e.preventDefault();
+                                        if (item.label === 'Account') {
+                                            navigation.openDrawer();
+                                        } else {
+                                            navigation.navigate(item.route);
+                                        }
                                     }
-                                }
-                            })}
-                        />
-                    )
-                })}
-            </Tab.Navigator>
-        </SafeAreaView>
+                                })}
+                            />
+                        )
+                    })}
+                </Tab.Navigator>
+            </SafeAreaView>
+        </DrawerSceneWrapper>
     )
 }
 
@@ -131,5 +142,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 8,
         borderRadius: 16,
+    },
+    dot: {
+        width: SIZES.ten,
+        height: SIZES.ten,
+        backgroundColor: COLORS.red,
+        borderRadius: 50,
+        position: "absolute",
+        zIndex: 1000,
+        right: 0,
+        top: 5
     }
 })

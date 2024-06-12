@@ -2,9 +2,10 @@ import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 import CustomButton from '../../components/CustomButton'
-import { COLORS, IMAGES, SIZES, STYLES, height, width } from '../../constants'
+import { COLORS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../../constants'
 
-const PasswordSuccessful = () => {
+const PasswordSuccessful = (props) => {
+    const { navigation } = props
     return (
         <View style={STYLES.container}>
             <ImageBackground
@@ -17,7 +18,11 @@ const PasswordSuccessful = () => {
             </ImageBackground>
             <Text style={styles.heading}>New password set successfully</Text>
             <Text style={styles.text}>Congratulations! Your password has been set successfully. Please proceed to the login screen to verify your account.</Text>
-            <CustomButton label={"Login"} />
+            <CustomButton
+                onPress={() => {
+                    navigation.navigate(SCREENS.Login)
+                }}
+                label={"Login"} />
         </View>
     )
 }
@@ -46,6 +51,10 @@ const styles = StyleSheet.create({
         fontWeight: "500"
     },
     text: {
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: SIZES.fifteen + 2,
+        margin: SIZES.twenty,
+        color: COLORS.black,
+        lineHeight: 22
     }
 })

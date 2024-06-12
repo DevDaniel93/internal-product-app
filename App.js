@@ -7,6 +7,7 @@ import {
   View,
   Platform,
   StatusBar,
+  SafeAreaView,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
@@ -47,7 +48,7 @@ const App = () => {
       backgroundColor={COLORS.primary}
       logoHeight={SIZES.fifty * 4}
       logoWidth={SIZES.fifty * 4}>
-      <View style={styles.safeAreaView}>
+      <SafeAreaView style={styles.safeAreaView}>
         <StatusBar
           backgroundColor={COLORS.transparent}
           translucent={Platform.OS === 'android'}
@@ -85,7 +86,7 @@ const App = () => {
             </View>
           </View>
         )}
-      </View>
+      </SafeAreaView>
     </AnimatedSplash>
   );
 };

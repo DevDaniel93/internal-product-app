@@ -6,6 +6,7 @@ import CustomHeader from '../../components/CustomHeader'
 import BannerSlider from '../../components/BannerSlider'
 import Categories from '../../components/Categories'
 import DrawerSceneWrapper from '../../components/DrawerSceneWrapper'
+import SearchFilter from '../../components/SearchFilter'
 
 export default function Home() {
     const images = [
@@ -260,6 +261,7 @@ export default function Home() {
             >
                 <CustomHeader />
                 <BannerSlider images={images} />
+                <SearchFilter />
                 <Categories data={categoriesData} />
                 <FlatList
 

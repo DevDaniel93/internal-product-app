@@ -1,19 +1,22 @@
 import { Alert, FlatList, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { COLORS, FONTFAMILY, SIZES, STYLES, height } from '../../constants'
+import { COLORS, FONTFAMILY, SCREENS, SIZES, STYLES, height } from '../../constants'
 import { Icon, IconType } from '../../components'
 import Reviews from '../../components/Reviews'
 import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCart, emptyCart } from '../../redux/slices/Cart'
+import CustomModal from '../../components/CustomModal'
 
 export default function SingleProduct(props) {
     const { navigation, route } = props
     const { productDetails } = route?.params
     const [quantity, setQuantity] = useState(1)
+    const [isvisible, setIsvisible] = useState(false)
     const dispatch = useDispatch()
     const [selectedAttributes, setSelectedAttributes] = useState([]);
     const cart = useSelector(state => state.Cart.cart)
+
 
     const Header = () => {
         return (
@@ -67,12 +70,11 @@ export default function SingleProduct(props) {
                     image: productDetails?.image,
                     attributes: selectedAttributes
                 }
-
+                navigation.navigate(SCREENS.MyCart)
                 dispatch(addCart(data))
-                console.log("cart", cart)
             }
             else {
-                Alert.alert("please select attributes")
+                setIsvisible(!isvisible)
             }
 
         } catch (error) {
@@ -87,7 +89,7 @@ export default function SingleProduct(props) {
             showsVerticalScrollIndicator={false}
             style={styles.container}>
             <ImageBackground
-                resizeMode="contain"
+                resizeMode='contain'
                 style={styles?.imgContainer}
                 source={{ uri: productDetails?.image }}>
                 <Header />
@@ -173,8 +175,23 @@ export default function SingleProduct(props) {
                     label={"Add to cart | $ " + Number(quantity * productDetails?.price).toFixed(2)}
                 />
                 <Reviews />
-
             </View>
+            <CustomModal
+                isvisible={isvisible}
+            >
+                <TouchableOpacity
+                    onPress={() => setIsvisible(!isvisible)}
+                    style={{ padding: SIZES.five, backgroundColor: COLORS.primary, borderRadius: SIZES.fifty, alignSelf: "flex-end" }}>
+                    <Icon
+                        name={"cross"}
+                        type={IconType.Entypo}
+                        color={COLORS.white}
+                    />
+                </TouchableOpacity>
+                <Text style={styles.modalText}>
+                    Please select Product size, color etc
+                </Text>
+            </CustomModal>
         </ScrollView>
     )
 }
@@ -182,7 +199,7 @@ export default function SingleProduct(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: SIZES.twenty
+        paddingVertical: SIZES.twentyFive
     },
     IconContainer: {
         backgroundColor: COLORS.white,
@@ -199,16 +216,17 @@ const styles = StyleSheet.create({
     },
     imgContainer: {
         height: height * .5,
-
         borderBottomWidth: 1,
         borderRightWidth: 1,
         borderLeftWidth: 1,
+        backgroundColor: COLORS.white,
         borderColor: COLORS.black,
         borderBottomLeftRadius: SIZES.twenty,
         borderBottomRightRadius: SIZES.twenty,
     },
     innerContainer: {
-        paddingHorizontal: SIZES.fifteen
+        paddingHorizontal: SIZES.fifteen,
+        backgroundColor: COLORS.white
     },
     productTitle: {
         color: COLORS.black,
@@ -235,7 +253,9 @@ const styles = StyleSheet.create({
     }, ProductDetails: {
         color: COLORS.black,
         fontSize: SIZES.fifteen,
-        fontFamily: FONTFAMILY.Poppins
+        paddingBottom: SIZES.fifteen,
+        fontFamily: FONTFAMILY.Poppins,
+        borderBottomWidth: 1
     },
     attributesTitle: {
         color: COLORS.black,
@@ -251,5 +271,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: SIZES.fifty,
         borderWidth: 1
+    },
+    modalText: {
+        color: COLORS.black,
+        alignSelf: "center",
+        marginVertical: SIZES.twentyFive,
+        fontSize: SIZES.fifteen + 2,
+        fontWeight: "600"
     }
 })
