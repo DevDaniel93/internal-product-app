@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
@@ -24,14 +24,20 @@ export default function Login(props) {
                 </Text>
                 <EditText
                     label={"Email"}
+                    required
                 />
                 <EditText
                     label={"Password"}
                     password
+                    required
                 />
-                <Text style={styles.forget}>
-                    Forgot password?
-                </Text>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })}
+                >
+                    <Text style={styles.forget}>
+                        Forgot password?
+                    </Text>
+                </TouchableOpacity>
                 <CustomButton
                     onPress={() => {
                         navigation.navigate(SCREENS.Drawer)

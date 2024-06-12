@@ -15,7 +15,7 @@ export default function Signup(props) {
                 <Text style={styles.subHeading}>
                     Already have an account?
                     <Text
-                        onPress={() => { navigation.navigate(SCREENS.SignUp) }}
+                        onPress={() => { navigation.navigate(SCREENS.Login) }}
                         style={{ color: COLORS.primary, fontWeight: "600" }}>
                         {" "}
                         Login

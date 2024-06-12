@@ -17,6 +17,7 @@ export default function ConfirmationMail(props) {
                 </Text>
                 <EditText
                     label={"Email"}
+                    required
                 />
 
                 <CustomButton

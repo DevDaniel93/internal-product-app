@@ -21,6 +21,7 @@ import TermAndCondition from "../screens/content/TermsAndConditon";
 import PrivacyPolicy from "../screens/content/PrivacyPolicy";
 import AboutUs from "../screens/content/AboutUs";
 import Profile from "../screens/profile/Profile";
+import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 
 const Stack = createNativeStackNavigator();
 const screenOptions = {
@@ -65,6 +66,7 @@ export default function MainNavigation() {
                         headerTitle: "Create Password",
                     })}
                 />
+                <Stack.Screen name={SCREENS.PasswordSuccessful} component={PasswordSuccessful}/>
                 <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
                 {/* <Stack.Screen name={SCREENS.Home} component={Home} /> */}
                 <Stack.Screen name={SCREENS.OrderDetails} component={OrderDetails} />

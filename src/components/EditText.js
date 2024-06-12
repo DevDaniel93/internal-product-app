@@ -34,10 +34,9 @@ export default function EditText(props) {
                     ) : null}
                     <TextInput
                         {...props}
-
                         ref={props.ref}
                         multiline={props?.multiline}
-                        secureTextEntry={props.password ? true : false}
+                        secureTextEntry={props.password ? enableSecureEntry : false}
                         selectionColor={COLORS.primary}
                         placeholderTextColor={COLORS.gray}
                         placeholder={props?.placeholder}

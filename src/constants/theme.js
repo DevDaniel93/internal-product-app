@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet, Platform } from "react-native";
+import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 
 export const { width, height } = Dimensions.get("window");
 
@@ -64,6 +65,8 @@ export const IMAGES = {
     user: require("../assets/images/user.png"),
     ProductImage: require("../assets/images/ProductImage.png"),
     CardBg: require("../assets/images/cardBg.png"),
+    lockBg: require("../assets/images/lockBg.png"),
+    lock: require("../assets/images/lock.png"),
     DummyProducts: {
         product1: require("../assets/dummyProduct/product1.png"),
         product2: require("../assets/dummyProduct/product2.png"),
@@ -113,7 +116,8 @@ export const SCREENS = {
     privacyPolicy: "privacyPolicy",
     singleProduct: "singleProduct",
     MyCart: "MyCart",
-    checkOut: "CheckOut"
+    checkOut: "CheckOut",
+    PasswordSuccessful : "PasswordSuccessful",
 
 };
 
