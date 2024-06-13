@@ -254,11 +254,11 @@ export default function Home() {
     return (
 
 
-        <View style={[STYLES.container,{}]}>
+        <View style={[STYLES.container, {}]}>
 
             <CustomHeader />
             <ScrollView
-    // style={STYLES.container}
+                // style={STYLES.container}
                 showsVerticalScrollIndicator={false}
             >
                 <BannerSlider images={images} />
@@ -281,9 +281,9 @@ export default function Home() {
                     }}
                 />
 
-<View style={{height:SIZES.fifty*2}}/>
+                <View style={{ height: SIZES.fifty * 2 }} />
             </ScrollView>
-         </View>
+        </View>
 
 
     )
