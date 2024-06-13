@@ -41,7 +41,7 @@ export default function EmailVerification(props) {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twentyFive,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.ten,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: "Poppins"

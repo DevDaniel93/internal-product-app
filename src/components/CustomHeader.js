@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         marginRight: SIZES.ten
     },
     txt: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontFamily: FONTFAMILY.Poppins,
         fontSize: SIZES.fifteen
     }

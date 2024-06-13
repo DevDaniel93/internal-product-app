@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         marginTop: SIZES.fifteen
     },
     heading: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         fontWeight: "500",
         fontFamily: FONTFAMILY.Poppins
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     },
     txt: {
         marginTop: SIZES.five,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         fontFamily: FONTFAMILY.Poppins
     }

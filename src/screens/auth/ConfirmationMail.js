@@ -35,7 +35,7 @@ export default function ConfirmationMail(props) {
 const styles = StyleSheet.create({
     heading: {
         marginTop: SIZES.twenty,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.five,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: "Poppins"

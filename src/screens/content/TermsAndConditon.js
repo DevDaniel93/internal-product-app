@@ -54,11 +54,11 @@ const styles = StyleSheet.create({
     labelText: {
         fontWeight: "bold",
         fontSize: SIZES.twenty - 2,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         marginBottom: SIZES.five
 
     }, content: {
         fontSize: SIZES.fifteen,
-        color: COLORS.black
+        color: COLORS.defaultTextColor
     }
 })

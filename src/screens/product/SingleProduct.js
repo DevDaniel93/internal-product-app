@@ -159,7 +159,7 @@ export default function SingleProduct(props) {
                                         <TouchableOpacity
                                             onPress={() => toggleAttributeSelection(key, value)}
                                             style={[styles.Obj, { backgroundColor: isAttributeSelected(key, value) ? COLORS.primary : COLORS.white }]}>
-                                            <Text key={index} style={{ color: isAttributeSelected(key, value) ? COLORS.white : COLORS.black }}>{value}</Text>
+                                            <Text key={index} style={{ color: isAttributeSelected(key, value) ? COLORS.white : COLORS.defaultTextColor }}>{value}</Text>
                                         </TouchableOpacity>
 
                                     ))}
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     productTitle: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty
     },
     row: {
@@ -238,27 +238,29 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     ratText: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen
     },
     btn: {
         padding: SIZES.five,
         borderRadius: SIZES.fifty,
         borderWidth: .5
-    }, quantityText: {
-        color: COLORS.black,
+    }, 
+    quantityText: {
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         marginHorizontal: SIZES.ten,
         fontWeight: "bold"
-    }, ProductDetails: {
-        color: COLORS.black,
+    }, 
+    ProductDetails: {
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         paddingBottom: SIZES.fifteen,
         fontFamily: FONTFAMILY.Poppins,
         borderBottomWidth: 1
     },
     attributesTitle: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen + 3,
         fontWeight: "600"
     },
@@ -273,7 +275,7 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     modalText: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         alignSelf: "center",
         marginVertical: SIZES.twentyFive,
         fontSize: SIZES.fifteen + 2,

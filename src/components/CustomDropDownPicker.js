@@ -15,7 +15,7 @@ const CustomDropDownPicker = (props) => {
         <View style={[styles.textInputView, props.styleTxtArea, { marginTop: SIZES.ten }]}>
             {props?.label
                 &&
-                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.black }]}>
+                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.defaultTextColor }]}>
                     {props.label}
                     {props?.required &&
                         <Text style={styles.required}> *</Text>}
@@ -64,6 +64,6 @@ const styles = (props) => StyleSheet.create({
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         marginBottom: SIZES.ten,
-        color: COLORS.black
+        color: COLORS.defaultTextColor
     },
 })

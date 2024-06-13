@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         marginTop: SIZES.ten
     },
     txt: {
-        color: COLORS.white,
+        color: COLORS.defaultBtnColor,
         fontWeight: "600",
         fontSize: SIZES.fifteen
     }

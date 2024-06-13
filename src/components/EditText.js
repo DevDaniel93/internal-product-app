@@ -13,7 +13,7 @@ export default function EditText(props) {
         <View style={[styles.textInputView, props.styleTxtArea]}>
             {props?.label
                 &&
-                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.black }]}>
+                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.defaultTextColor }]}>
                     {props.label}
                     {props?.required &&
                         <Text style={styles.required}> *</Text>}
@@ -88,14 +88,14 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     textLabel: {
         fontFamily: "Poppins",
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         marginBottom: SIZES.ten,
-        color: COLORS.black
+        color: COLORS.defaultTextColor
     },
     required: {
         color: COLORS.red,

@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
 
 
     heading: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         alignSelf: "center",
         marginVertical: SIZES.fifteen,
         fontSize: SIZES.twenty,

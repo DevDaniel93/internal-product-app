@@ -9,17 +9,17 @@ const ProgressBar = (props) => {
         <View style={styles.container}>
             <View style={styles.icon}>
                 <Icon type={IconType.Feather} name={'package'} color={mode === 0 ? COLORS.black : COLORS.cyan} />
-                <Text style={{ color: mode === 0 ? COLORS.black : COLORS.cyan }}>Shipping</Text>
+                <Text style={{ color: mode === 0 ? COLORS.defaultTextColor : COLORS.cyan }}>Shipping</Text>
             </View>
             <View style={styles.line} />
             <View style={styles.icon}>
                 <Icon type={IconType.MaterialCommunityIcons} name={'credit-card-check-outline'} color={mode === 0 ? null : mode === 1 ? COLORS.black : COLORS.cyan} />
-                <Text style={{ color: mode === 0 ? null : mode === 1 ? COLORS.black : COLORS.cyan}}>Payment</Text>
+                <Text style={{ color: mode === 0 ? null : mode === 1 ? COLORS.defaultTextColor : COLORS.cyan}}>Payment</Text>
             </View>
             <View style={styles.line} />
             <View style={styles.icon}>
                 <Icon type={IconType.Ionicons} name={'bag-check-outline'} color={mode === 0 || mode === 1 ? null : COLORS.black} />
-                <Text style={{ color:mode === 0 || mode === 1 ? null : COLORS.black }}>Review</Text>
+                <Text style={{ color:mode === 0 || mode === 1 ? null : COLORS.defaultTextColor }}>Review</Text>
             </View>
         </View>
     )

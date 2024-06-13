@@ -54,11 +54,15 @@ export default function MyCart(props) {
                     placeholderTextColor={COLORS.gray}
                     placeholder='Enter Voucher Code'
                 />
-                <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
+                <CustomButton
+                btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
+                label={"Apply"}
+                />
+                {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
                     <Text style={{ color: COLORS.white, }}>
                         Apply
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         )
     }
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
     },
     productText: {
         fontSize: SIZES.twenty - 3,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "600"
     },
@@ -243,7 +247,7 @@ const styles = StyleSheet.create({
     },
     quantityText: {
 
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         marginHorizontal: SIZES.ten,
         fontWeight: "600"
@@ -264,7 +268,7 @@ const styles = StyleSheet.create({
         marginVertical: SIZES.ten
     },
     orderInfoText: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         fontWeight: "600"
     },
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
         color: COLORS.black
     },
     PricingTxt: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: FONTFAMILY.Poppins
@@ -302,7 +306,7 @@ const styles = StyleSheet.create({
         width: "48%"
     },
     modelText: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen + 2,
         textAlign: "center",
         lineHeight: 30,

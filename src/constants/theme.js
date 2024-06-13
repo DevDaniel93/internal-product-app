@@ -29,6 +29,8 @@ export const COLORS = {
     red: "#FF0000",
     cyan: '#21D4B4',
     lightGray: '#C0C0C0',
+    defaultTextColor: "#000000",
+    defaultBtnColor: "#ffffff",
 };
 
 const appTheme = { COLORS };
@@ -150,52 +152,52 @@ export const FONTS = {
     boldFont16: {
         fontFamily: FONTFAMILY.Bold,
         fontSize: SIZES.h16,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     boldFont18: {
         fontFamily: FONTFAMILY.Bold,
         fontSize: SIZES.h18,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     boldFont20: {
         fontFamily: FONTFAMILY.Bold,
         fontSize: SIZES.h20,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     boldFont22: {
         fontFamily: FONTFAMILY.Bold,
         fontSize: SIZES.h22,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     boldFont24: {
         fontFamily: FONTFAMILY.Bold,
         fontSize: SIZES.h24,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     semiBoldFont16: {
         fontFamily: FONTFAMILY.SemiBold,
         fontSize: SIZES.h16,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     semiBoldFont18: {
         fontFamily: FONTFAMILY.SemiBold,
         fontSize: SIZES.h18,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     semiBoldFont20: {
         fontFamily: FONTFAMILY.SemiBold,
         fontSize: SIZES.h20,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     semiBoldFont22: {
         fontFamily: FONTFAMILY.SemiBold,
         fontSize: SIZES.h22,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     semiBoldFont24: {
         fontFamily: FONTFAMILY.SemiBold,
         fontSize: SIZES.h24,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
     },
     mediumFont10: { fontFamily: FONTFAMILY.Medium, fontSize: SIZES.body10 },
     mediumFont12: { fontFamily: FONTFAMILY.Medium, fontSize: SIZES.body12 },

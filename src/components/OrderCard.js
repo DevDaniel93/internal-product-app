@@ -3,6 +3,7 @@ import React from 'react'
 import ShadedBox from './ShadedBox'
 import { COLORS, FONTFAMILY, SCREENS, SIZES, width } from '../constants'
 import { useNavigation } from '@react-navigation/native'
+import CustomButton from './CustomButton'
 
 
 export default function OrderCard(props) {
@@ -36,7 +37,14 @@ export default function OrderCard(props) {
                     {" "}
                     ({props?.data?.quantity} Items)
                 </Text>
-                <TouchableOpacity style={styles.btn}
+                <CustomButton 
+                btnStyle={styles.btn}
+                onPress={() => {
+                        navigation.navigate(SCREENS.OrderDetails)
+                    }} 
+                    label={'View'}
+                    />
+                {/* <TouchableOpacity style={styles.btn}
                     onPress={() => {
                         navigation.navigate(SCREENS.OrderDetails)
                     }}
@@ -44,7 +52,7 @@ export default function OrderCard(props) {
                     <Text style={{ color: COLORS.white }}>
                         View Order
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </ShadedBox>
     )
@@ -55,12 +63,13 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems : 'center',
         marginRight: SIZES.fifteen,
 
     },
     txt: {
         fontSize: SIZES.fifteen - 1,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontFamily: FONTFAMILY.Poppins,
     },
     dotLine: {
@@ -70,12 +79,10 @@ const styles = StyleSheet.create({
         borderColor: COLORS.gray
     },
     btn: {
-        backgroundColor: COLORS.primary,
         width: width * .3,
         paddingVertical: SIZES.five,
-        borderRadius: SIZES.fifty,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     }
 
 })

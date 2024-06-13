@@ -77,7 +77,7 @@ export default function Reviews() {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty - 2,
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "600"
@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
     },
     UserName: {
         fontWeight: "bold",
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         marginLeft: SIZES.ten
     },
     txt: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         marginVertical: SIZES.ten
     }
 })

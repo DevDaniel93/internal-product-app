@@ -57,7 +57,7 @@ export default CustomDrawer = (props) => {
                                     type={item?.type}
 
                                     style={styles.Icon} />
-                                <Text style={{ color: COLORS.black, fontSize: SIZES.fifteen + 2, fontWeight: '600', fontFamily: 'Poppins-Regular', }}>{item?.label}</Text>
+                                <Text style={{ color: COLORS.defaultTextColor, fontSize: SIZES.fifteen + 2, fontWeight: '600', fontFamily: 'Poppins-Regular', }}>{item?.label}</Text>
                             </TouchableOpacity>
                         )
                     })
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         width: "48%"
     },
     modelText: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen + 2,
         textAlign: "center",
         lineHeight: 30,

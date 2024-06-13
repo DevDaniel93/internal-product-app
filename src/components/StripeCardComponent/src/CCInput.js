@@ -104,13 +104,13 @@ export default class CCInput extends Component {
           style={[
             inputStyle,
             validColor && status === 'valid'
-              ? {color: COLORS.black}
+              ? {color: COLORS.defaultTextColor}
               : invalidColor && label === 'CARD NUMBER' && status === 'invalid'
               ? {color: invalidColor}
               : {
                   fontSize: SIZES.h16,
                   fontFamily: FONTFAMILY.Medium,
-                  color: COLORS.black,
+                  color: COLORS.defaultTextColor,
                 },
             {paddingHorizontal: SIZES.twenty},
           ]}

@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
     },
     txt: {
         fontFamily: FONTFAMILY.Poppins,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: 14,
     },
     price: {
         fontFamily: FONTFAMILY.Poppins,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontWeight: "500",
         fontSize: 14
     },

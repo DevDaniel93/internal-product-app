@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         fontFamily: "Poppins",
         fontSize: SIZES.fifteen,
         fontWeight: "500",
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         marginTop: SIZES.five,
         top: SIZES.ten
     },

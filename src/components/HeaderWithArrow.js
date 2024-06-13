@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius: SIZES.fifty
     },
     text: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         marginLeft: SIZES.fifteen,
         fontWeight: "bold",

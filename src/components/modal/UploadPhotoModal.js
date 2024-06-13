@@ -59,7 +59,7 @@ export default function UploadPhotoModal({
                         style={[
                             FONTS.mediumFont16,
                             {
-                                color: COLORS.black,
+                                color: COLORS.defaultTextColor,
                             },
                         ]}>
                         Upload Photo

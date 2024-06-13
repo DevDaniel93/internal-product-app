@@ -61,7 +61,7 @@ export default function Login(props) {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twentyFive + 3,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.ten,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty - 2,
         fontWeight: "500",
         fontFamily: "Poppins"
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         marginBottom: SIZES.fifteen
     },
     bottamText: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontWeight: "400",
         fontFamily: "Poppins",
         textAlign: "center",

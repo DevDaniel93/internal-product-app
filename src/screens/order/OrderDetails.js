@@ -113,10 +113,10 @@ export default function OrderDetails() {
                     </Text>
                 </View>
                 <View style={[styles.totalRow, { marginBottom: SIZES.twenty }]}>
-                    <Text style={[styles.infoTxt, { color: COLORS.black, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
+                    <Text style={[styles.infoTxt, { color: COLORS.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
                         Total
                     </Text>
-                    <Text style={[styles.infoTxt, { color: COLORS.black, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
+                    <Text style={[styles.infoTxt, { color: COLORS.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
                         $6236
                     </Text>
                 </View>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     txt: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         marginTop: 3
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.gray
     },
     heading: {
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontWeight: "600",
         fontSize: SIZES.twenty,
         fontFamily: FONTFAMILY.Poppins
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     productText: {
         fontSize: SIZES.twenty - 3,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "500"
     },

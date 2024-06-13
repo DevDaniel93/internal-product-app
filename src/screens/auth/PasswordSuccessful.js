@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
     heading: {
         textAlign: 'center',
         fontSize: SIZES.body12 * 2,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         fontWeight: "500"
     },
     text: {
         textAlign: 'center',
         fontSize: SIZES.fifteen + 2,
         margin: SIZES.twenty,
-        color: COLORS.black,
+        color: COLORS.defaultTextColor,
         lineHeight: 22
     }
 })
