@@ -54,6 +54,7 @@ export default function CheckOut() {
 
             </View>
 
+            <View style={{height:SIZES.fifty*2}}/>
 
         </ScrollView>
     )

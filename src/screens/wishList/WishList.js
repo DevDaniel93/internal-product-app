@@ -151,7 +151,6 @@ export default function WishList() {
         <View style={[STYLES.container]}>
             <HeaderWithArrow label={"Wishlist"} />
             <FlatList
-
                 columnWrapperStyle={{
                     justifyContent: "space-between",
                     paddingHorizontal: 10
@@ -165,7 +164,14 @@ export default function WishList() {
                         <ProductCard item={item} />
                     )
                 }}
+                ListFooterComponent={()=>{
+                    return(
+                        <View style={{height:SIZES.fifty*1.5}}/>
+
+                    )
+                }}
             />
+            
         </View>
     )
 }

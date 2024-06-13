@@ -90,7 +90,7 @@ export default function BottamTab() {
                             borderLeftWidth: 1,
                             borderRightWidth: 1,
                             borderColor: COLORS.primary,
-                            // position: 'absolute',
+                            position: 'absolute',
                             // margin: SIZES.twenty,
                             marginBottom: SIZES.twenty,
                             marginHorizontal: SIZES.twenty,
@@ -98,7 +98,6 @@ export default function BottamTab() {
                             borderRadius: SIZES.fifty,
                             height: SIZES.fifty + SIZES.ten,
                             paddingHorizontal: SIZES.five,
-
 
                         }
                     }}

@@ -126,7 +126,7 @@ export default function MyCart(props) {
     }
     return (
 
-        <View style={[STYLES.container, styles.container]}>
+        <View style={[STYLES.container, ]}>
             <HeaderWithArrow
                 label="My Cart" />
             <ScrollView showsVerticalScrollIndicator={false} style={{ flexGrow: 1 }}>
@@ -212,9 +212,9 @@ export default function MyCart(props) {
 
                 </CustomModal>
 
-
+                <View style={{height:SIZES.fifty*1.5}}/>
             </ScrollView>
-
+     
         </View>
     )
 }

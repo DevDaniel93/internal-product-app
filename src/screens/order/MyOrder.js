@@ -26,6 +26,7 @@ export default function MyOrder() {
                 <OrderCard data={data} />
                 <OrderCard data={data} />
                 <OrderCard data={data} />
+                <View style={{height:SIZES.fifty*1.5}}/>
             </ScrollView>
         </View>
     )

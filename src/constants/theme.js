@@ -4,6 +4,10 @@ export const { width, height } = Dimensions.get("window");
 
 /* * Colors * */
 export const COLORS = {
+    defaultTextColor: "#000000",
+    defaultBtnColor: "#ffffff",
+    lightBackground: "#ffffff",
+    darkBackground:"#000000",
     primary: "#FF856A",
     purple: "#4e1789",
     lightPurple: "#871af6",
@@ -12,8 +16,6 @@ export const COLORS = {
     textGrey: "#8a7e9a",
     textColor: "#B46BFF",
     brownGray: "#5d536a",
-    background: "#362545",
-    darkBackground: "#27153e",
     black: "#000000",
     white: "#ffffff",
     blue: "#0037c1",
@@ -29,8 +31,6 @@ export const COLORS = {
     red: "#FF0000",
     cyan: '#21D4B4',
     lightGray: '#C0C0C0',
-    defaultTextColor: "#000000",
-    defaultBtnColor: "#ffffff",
 };
 
 const appTheme = { COLORS };
@@ -220,9 +220,10 @@ export const FONTS = {
 export const STYLES = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.lightBackground,
         paddingHorizontal: SIZES.twenty,
-        paddingTop: SIZES.twenty,
+        paddingTop: SIZES.twenty * 1.5,
+        // marginTop: 20
 
     },
     shadow: {

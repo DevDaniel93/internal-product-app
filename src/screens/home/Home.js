@@ -1,6 +1,6 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { IMAGES, STYLES } from '../../constants'
+import { IMAGES, SIZES, STYLES, height } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 import CustomHeader from '../../components/CustomHeader'
 import BannerSlider from '../../components/BannerSlider'
@@ -254,12 +254,13 @@ export default function Home() {
     return (
 
 
-        <View style={[STYLES.container]}>
+        <View style={[STYLES.container,{}]}>
 
+            <CustomHeader />
             <ScrollView
+    // style={STYLES.container}
                 showsVerticalScrollIndicator={false}
             >
-                <CustomHeader />
                 <BannerSlider images={images} />
                 <SearchFilter />
                 <Categories data={categoriesData} />
@@ -280,8 +281,9 @@ export default function Home() {
                     }}
                 />
 
+<View style={{height:SIZES.fifty*2}}/>
             </ScrollView>
-        </View>
+         </View>
 
 
     )
