@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton'
 import { Icon, IconType } from '../../components'
 import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
 import CustomModal from '../../components/CustomModal'
+import { label } from '../../constants/lables'
 
 export default function Profile(props) {
     const { navigation } = props
@@ -46,27 +47,27 @@ export default function Profile(props) {
     }
     return (
         <View style={STYLES.container}>
-            <HeaderWithArrow label={isEdit ? "Edit Profile" : "Profile"} />
+            <HeaderWithArrow label={isEdit ? label.EditProfile: label.Profile} />
             <ProfilePic />
             <EditText
                 value={firstName}
                 editable={isEdit ? true : false}
-                label={"First name"}
+                label={label.FirstName}
             />
             <EditText
                 editable={isEdit ? true : false}
                 value={lastName}
-                label={"Last name"}
+                label={label.LastName}
             />
             <EditText
                 editable={isEdit ? true : false}
                 value={email}
-                label={"email"}
+                label={label.Email}
             />
             <CustomButton
                 onPress={handleChanges}
                 btnStyle={{ marginTop: SIZES.twentyFive }}
-                label={isEdit ? "Save Change" : "Edit Profile"}
+                label={isEdit ? label.SaveChanges : label.EditProfile}
             />
             {isEdit === true &&
                 <CustomButton
@@ -75,7 +76,7 @@ export default function Profile(props) {
                     }}
                     txtstyle={styles.txtstyle}
                     btnStyle={styles.btnStyle}
-                    label={"Change password"}
+                    label={label.ChangePassword}
                 />
             }
             <UploadPhotoModal
@@ -87,24 +88,24 @@ export default function Profile(props) {
                 isvisible={changePasswordModal}
             >
                 <Text style={styles.heading}>
-                    Change Password
+                    {label.ChangePassword}
                 </Text>
                 <EditText
 
                     required
-                    label={"Enter old password"}
+                    label={label.EnterOldPassword}
 
                 />
                 <EditText
 
                     required
-                    label={"Enter New Password"}
+                    label={label.EnterNewPassword}
 
                 />
                 <EditText
 
                     required
-                    label={"Confirm password"}
+                    label={label.ConfirmPassword}
 
                 />
                 <CustomButton
@@ -113,7 +114,7 @@ export default function Profile(props) {
                         setChangePasswordModal(!changePasswordModal)
 
                     }}
-                    label={"Update"} />
+                    label={label.Update} />
 
             </CustomModal>
 

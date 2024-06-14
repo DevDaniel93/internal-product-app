@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { COLORS, SIZES, STYLES } from '../../constants'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
+import { label } from '../../constants/lables'
 
 export default function PrivacyPolicy() {
     const content = [
@@ -35,7 +36,7 @@ export default function PrivacyPolicy() {
     }
     return (
         <View style={STYLES.container}>
-            <HeaderWithArrow label={"Privacy Policy"} />
+            <HeaderWithArrow label={label.PrivacyPolicy} />
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={content}

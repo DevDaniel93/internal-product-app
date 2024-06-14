@@ -3,6 +3,7 @@ import React from 'react'
 import { IMAGES, SIZES, STYLES } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
+import { label } from '../../constants/lables'
 
 export default function WishList() {
     const products = [
@@ -149,7 +150,7 @@ export default function WishList() {
     ];
     return (
         <View style={[STYLES.container]}>
-            <HeaderWithArrow label={"Wishlist"} />
+            <HeaderWithArrow label={label.Wishlist} />
             <FlatList
                 columnWrapperStyle={{
                     justifyContent: "space-between",

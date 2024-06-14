@@ -8,6 +8,7 @@ import Shipping from './Shipping'
 import Payment from './Payment'
 import Review from './Review'
 import CustomButton from '../../components/CustomButton'
+import { label } from '../../constants/lables'
 
 
 export default function CheckOut() {
@@ -23,7 +24,7 @@ export default function CheckOut() {
     return (
         <ScrollView style={STYLES.container}>
             <HeaderWithArrow
-                label="CheckOut" />
+                label={label.Checkout}/>
 
             <ProgressBar mode={progress} />
 
@@ -40,7 +41,7 @@ export default function CheckOut() {
                     <CustomButton
                         txtstyle={styles.txtstyle}
                         btnStyle={styles.btnStyle1}
-                        label={"Back"}
+                        label={label.Back}
                         onPress={moveToPrevios} />
                 }
                 {progress > 0 &&
@@ -48,7 +49,7 @@ export default function CheckOut() {
                 }
                 <CustomButton
                     btnStyle={styles.btnStyle}
-                    label={progress === 0 ? "Payment" : progress === 1 ? "Review" : "Place Order"}
+                    label={progress === 0 ? label.Payment : progress === 1 ? label.Review: label.PlaceOrder}
                     onPress={moveToNext} />
 
 

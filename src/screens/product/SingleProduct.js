@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCart, emptyCart } from '../../redux/slices/Cart'
 import CustomModal from '../../components/CustomModal'
+import { label } from '../../constants/lables'
 
 export default function SingleProduct(props) {
     const { navigation, route } = props
@@ -189,7 +190,7 @@ export default function SingleProduct(props) {
                     />
                 </TouchableOpacity>
                 <Text style={styles.modalText}>
-                    Please select Product size, color etc
+                    {label.SelectProductSize}
                 </Text>
             </CustomModal>
         </ScrollView>

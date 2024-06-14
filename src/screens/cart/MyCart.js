@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import CustomButton from '../../components/CustomButton'
 import CustomModal from '../../components/CustomModal'
 import LottieView from 'lottie-react-native';
+import { label } from '../../constants/lables'
 
 export default function MyCart(props) {
     const { navigation } = props
@@ -52,11 +53,11 @@ export default function MyCart(props) {
             <View style={styles.voucherContainer}>
                 <TextInput
                     placeholderTextColor={COLORS.gray}
-                    placeholder='Enter Voucher Code'
+                    placeholder={label.EnterVoucherCode}
                 />
                 <CustomButton
-                btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
-                label={"Apply"}
+                    btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
+                    label={label.Apply}
                 />
                 {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
                     <Text style={{ color: COLORS.white, }}>
@@ -126,9 +127,9 @@ export default function MyCart(props) {
     }
     return (
 
-        <View style={[STYLES.container, ]}>
+        <View style={[STYLES.container,]}>
             <HeaderWithArrow
-                label="My Cart" />
+                label={label.MyCart} />
             <ScrollView showsVerticalScrollIndicator={false} style={{ flexGrow: 1 }}>
 
 
@@ -142,15 +143,15 @@ export default function MyCart(props) {
 
                 <View style={styles.estArea}>
                     <Text style={styles.estTime}>
-                        Estimated time: 7 working days
+                        {label.EstimatedTime7days}
                     </Text>
                 </View>
                 <Text style={styles.orderInfoText}>
-                    Order Info
+                    {label.OrderInfo}
                 </Text>
                 <View style={styles.PricingRow}>
                     <Text style={styles.PricingTxt}>
-                        subTotal
+                        {label.SubTotal}
                     </Text>
                     <Text style={styles.PricingTxt}>
                         $ {Number(totalAmount).toFixed(2)}
@@ -158,7 +159,7 @@ export default function MyCart(props) {
                 </View>
                 <View style={styles.PricingRow}>
                     <Text style={styles.PricingTxt}>
-                        Shipping cost
+                        {label.ShippingCost}
                     </Text>
                     <Text style={styles.PricingTxt}>
                         $ {shippingCost}
@@ -166,7 +167,7 @@ export default function MyCart(props) {
                 </View>
                 <View style={styles.PricingRow}>
                     <Text style={styles.orderInfoText}>
-                        Total
+                        {label.Total}
                     </Text>
                     <Text style={styles.orderInfoText}>
                         {Number(shippingCost + totalAmount).toFixed(2)}
@@ -178,13 +179,13 @@ export default function MyCart(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.checkOut)
                     }}
-                    label={"Checkout"}
+                    label={label.Checkout}
                 />
 
                 {/* =======================================delete Modal========================== */}
                 <CustomModal isvisible={isvisible}>
                     <Text style={styles.modelText}>
-                        Are you sure you want to remove product from the cart?
+                        {label.AreYourSureYouWantToRemoveTheProductFromCart}
                     </Text>
                     <LottieView
                         style={styles.lottie}
@@ -201,9 +202,9 @@ export default function MyCart(props) {
                                 handleRemoveFromCart(selectCartid)
                                 setIsvisible(!isvisible)
                             }}
-                            label={"Yes"} />
+                            label={label.Yes} />
                         <CustomButton btnStyle={styles.btnStyle1}
-                            label={"No"}
+                            label={label.No}
                             onPress={() => {
                                 setIsvisible(!isvisible)
                             }}
@@ -212,9 +213,9 @@ export default function MyCart(props) {
 
                 </CustomModal>
 
-                <View style={{height:SIZES.fifty*1.5}}/>
+                <View style={{ height: SIZES.fifty * 1.5 }} />
             </ScrollView>
-     
+
         </View>
     )
 }

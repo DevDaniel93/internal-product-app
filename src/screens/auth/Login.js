@@ -3,6 +3,7 @@ import React from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
+import { label } from '../../constants/lables'
 
 export default function Login(props) {
     const { navigation } = props
@@ -10,24 +11,24 @@ export default function Login(props) {
         <View style={STYLES.container}>
             <View style={{ flex: 1 }}>
                 <Text style={styles.heading}>
-                    Login
+                    {label.Login}
                 </Text>
                 <Text style={styles.subHeading}>
-                    Don’t have an account?
+                    {label.NoAccount}
 
                     <Text
                         onPress={() => { navigation.navigate(SCREENS.SignUp) }}
                         style={{ color: COLORS.primary, fontWeight: "600" }}>
                         {" "}
-                        Signup
+                        {label.Signup}
                     </Text>
                 </Text>
                 <EditText
-                    label={"Email"}
+                    label={label.Email}
                     required
                 />
                 <EditText
-                    label={"Password"}
+                    label={label.Password}
                     password
                     required
                 />
@@ -35,23 +36,23 @@ export default function Login(props) {
                     onPress={() => navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })}
                 >
                     <Text style={styles.forget}>
-                        Forgot password?
+                        {label.ForgotPassword}
                     </Text>
                 </TouchableOpacity>
                 <CustomButton
                     onPress={() => {
                         navigation.navigate(SCREENS.Drawer)
                     }}
-                    label={"Login"}
+                    label={label.Login}
                 />
             </View>
             <Text style={styles.bottamText}>
-                By login , you agree to our
-                <Text style={{ color: COLORS.primary }}>{" "}Privacy Policy{" "}
+                {label.YouAgreeToOur}
+                <Text style={{ color: COLORS.primary }}>{" "}{label.PrivacyPolicy}{" "}
                 </Text>
-                and
+                {label.And}
                 <Text style={{ color: COLORS.primary }}>
-                    {" "} Terms & Conditions.{" "}
+                    {" "}{label.TermsAndConditions}{" "}
                 </Text>
 
             </Text>

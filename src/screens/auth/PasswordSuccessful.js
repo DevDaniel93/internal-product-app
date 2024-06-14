@@ -3,6 +3,7 @@ import React from 'react'
 
 import CustomButton from '../../components/CustomButton'
 import { COLORS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../../constants'
+import { label } from '../../constants/lables'
 
 const PasswordSuccessful = (props) => {
     const { navigation } = props
@@ -16,13 +17,13 @@ const PasswordSuccessful = (props) => {
                     style={styles.img}
                     resizeMode='contain' />
             </ImageBackground>
-            <Text style={styles.heading}>New password set successfully</Text>
-            <Text style={styles.text}>Congratulations! Your password has been set successfully. Please proceed to the login screen to verify your account.</Text>
+            <Text style={styles.heading}>{label.NewPasswordSetSuccessfully}</Text>
+            <Text style={styles.text}>{label.CongratulationsPasswordSetSuccessfully}</Text>
             <CustomButton
                 onPress={() => {
                     navigation.navigate(SCREENS.Login)
                 }}
-                label={"Login"} />
+                label={label.Login} />
         </View>
     )
 }

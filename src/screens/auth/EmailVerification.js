@@ -4,6 +4,7 @@ import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import OtpInput from '../../components/OtpInput'
+import { label } from '../../constants/lables'
 
 export default function EmailVerification(props) {
     const { navigation } = props
@@ -14,10 +15,10 @@ export default function EmailVerification(props) {
         <View style={STYLES.container}>
             <View style={{ flex: 1 }}>
                 <Text style={styles.heading}>
-                    Email Verification
+                    {label.EmailVerification}
                 </Text>
                 <Text style={styles.subHeading}>
-                    Enter the 6-digit verification code send to your email address.
+                    {label.EnterCode}
                 </Text>
                 <OtpInput codeLength={6}
                     onCodeFilled={handleCodeFilled}
@@ -31,7 +32,7 @@ export default function EmailVerification(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.NewPassword)
                     }}
-                    label={"Proceed"}
+                    label={label.Proceed}
                 />
             </View>
 

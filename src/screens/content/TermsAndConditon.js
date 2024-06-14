@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { COLORS, SIZES, STYLES } from '../../constants'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
+import { label } from '../../constants/lables'
 
 export default function TermAndCondition() {
     const content = [
@@ -35,7 +36,7 @@ export default function TermAndCondition() {
     }
     return (
         <View style={STYLES.container}>
-            <HeaderWithArrow label={"Terms And Condition"} />
+            <HeaderWithArrow label={label.TermsAndConditions} />
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={content}

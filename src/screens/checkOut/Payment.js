@@ -5,6 +5,7 @@ import { COLORS, SIZES, width } from '../../constants'
 import CardSlider from '../../components/CardSlider'
 import cardValidator from 'card-validator';
 import { CreditCardInput } from '../../components/StripeCardComponent'
+import { label } from '../../constants/lables'
 
 
 const Payment = () => {
@@ -19,7 +20,7 @@ const Payment = () => {
         setCardNumber(formattedText);
         const validation = cardValidator.number(formattedText.replace(/\s/g, ''));
         if (!validation.isValid) {
-            setError('Invalid card number');
+            setError(label.InvalidCardNumber);
         } else {
             setError('');
         }
@@ -38,33 +39,33 @@ const Payment = () => {
 
             <CardSlider data={[1, 2, 3]} />
             <EditText
-                label={"Card Holder Name"}
+                label={label.CardHolderName}
                 value={cardHolderName}
                 required
                 onChangeText={(e) => {
                     setCardHolderName(e)
                 }}
-                placeholder={"Enter card holder name"}
+                placeholder={label.EnterCardHolderName}
             />
 
             <EditText
-                label={"Card Number"}
+                label={label.CardNumber}
                 required
-                placeholder="Card Number"
+                placeholder={label.CardNumber}
                 keyboardType="numeric"
                 value={cardNumber}
                 onChangeText={handleCardNumberChange}
                 maxLength={19}
             />
-            {error === "Invalid card number" && <Text style={{ color: COLORS.red, fontSize: SIZES.fifteen }}>
+            {error === label.InvalidCardNumber && <Text style={{ color: COLORS.red, fontSize: SIZES.fifteen }}>
                 {error}
             </Text>}
             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                 <EditText
                     required
 
-                    label={"Expiration"}
-                    placeholder="MM/YY"
+                    label={label.Expiration}
+                    placeholder={label.MMYY}
                     keyboardType="numeric"
                     value={expiry}
                     onChangeText={handleExpiryChange}
@@ -73,8 +74,8 @@ const Payment = () => {
                 />
                 <EditText
                     required
-                    label={"CVV"}
-                    placeholder="CVV"
+                    label={label.CVV}
+                    placeholder={label.CVV}
                     keyboardType="numeric"
                     value={cvv}
                     onChangeText={handleCvvChange}

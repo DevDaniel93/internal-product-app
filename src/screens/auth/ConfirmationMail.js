@@ -3,6 +3,7 @@ import React from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
+import { label } from '../../constants/lables'
 
 export default function ConfirmationMail(props) {
     const { navigation } = props
@@ -10,13 +11,13 @@ export default function ConfirmationMail(props) {
         <View style={STYLES.container}>
             <View style={{ flex: 1 }}>
                 <Text style={styles.heading}>
-                    Confirmation Mail
+                    {label.ConfirmationMail}
                 </Text>
                 <Text style={styles.subHeading}>
-                    Enter your email address for verification.
+                    {label.EnterEmail}
                 </Text>
                 <EditText
-                    label={"Email"}
+                    label={label.Email}
                     required
                 />
 
@@ -24,7 +25,7 @@ export default function ConfirmationMail(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.EmailVerification)
                     }}
-                    label={"Send"}
+                    label={label.Send}
                 />
             </View>
 

@@ -3,6 +3,7 @@ import React from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
+import { label } from '../../constants/lables'
 
 export default function Signup(props) {
     const { navigation } = props
@@ -10,47 +11,41 @@ export default function Signup(props) {
         <View style={STYLES.container}>
             <ScrollView style={{ flex: 1 }}>
                 <Text style={styles.heading}>
-                    Sign Up
+                    {label.Sign_Up}
                 </Text>
                 <Text style={styles.subHeading}>
-                    Already have an account?
+                    {label.AlreadyHaveAccount}
                     <Text
                         onPress={() => { navigation.navigate(SCREENS.Login) }}
                         style={{ color: COLORS.primary, fontWeight: "600" }}>
                         {" "}
-                        Login
+                        {label.Login}
                     </Text>
                 </Text>
                 <EditText
-                    label={"Username"}
-                    placeholder={"Enter Your Username"}
+                    label={label.Username}
+                    placeholder={label.EnterYourUsername}
                 />
                 <EditText
-                    label={"First Name "}
-                    placeholder={"Enter Your First Name"}
-
+                    label={label.FirstName}
+                    placeholder={label.EnterYourFirstName}
                 />
                 <EditText
-                    label={"Last Name "}
-                    placeholder={"Enter Your Last Name"}
-
-
+                    label={label.LastName}
+                    placeholder={label.EnterYourLastName}
                 />
                 <EditText
-                    label={"Enter Your Email "}
-                    placeholder={"Enter Your Email"}
-
+                    label={label.EnterYourEmail}
+                    placeholder={label.EnterYourEmail}
                 />
                 <EditText
-                    label={"Enter Your Password "}
-                    placeholder={"Enter Your Password"}
-
+                    label={label.EnterYourPassword}
+                    placeholder={label.EnterYourPassword}
                     password
                 />
                 <EditText
-                    label={"Confirm Password"}
-                    placeholder={"Confirm Your Password"}
-
+                    label={label.ConfirmPassword}
+                    placeholder={label.ConfirmYourPassword}
                     password
                 />
 
@@ -58,7 +53,7 @@ export default function Signup(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })
                     }}
-                    label={"Sign Up"}
+                    label={label.Sign_Up}
                 />
             </ScrollView>
 

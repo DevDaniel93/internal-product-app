@@ -3,15 +3,16 @@ import React from 'react'
 import { COLORS, FONTFAMILY, IMAGES, SIZES, STYLES, height, width } from '../../constants'
 import ShadedBox from '../../components/ShadedBox'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
+import { label } from '../../constants/lables'
 
 export default function OrderDetails() {
     const data = [
-        { key: "Full Name", value: "John Doe" },
-        { key: "Mobile Number", value: "+123-456-789" },
-        { key: "State", value: "Dummy" },
-        { key: "City", value: "Dummy" },
-        { key: "Street Address", value: "XYZ Address" },
-        { key: "Postal Code", value: "12345" },
+        { key: label.FullName, value: "John Doe" },
+        { key: label.MobileNumber, value: "+123-456-789" },
+        { key: label.State, value: "Dummy" },
+        { key: label.City, value: "Dummy" },
+        { key: label.StreetAddress, value: "XYZ Address" },
+        { key: label.PostalCode, value: "12345" },
     ]
 
     const renderItem = ({ item }) => (

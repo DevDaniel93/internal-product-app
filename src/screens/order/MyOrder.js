@@ -5,6 +5,7 @@ import { COLORS, FONTFAMILY, SIZES, STYLES, width } from '../../constants'
 import CustomButton from '../../components/CustomButton'
 import OrderCard from '../../components/OrderCard'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
+import { label } from '../../constants/lables'
 
 export default function MyOrder() {
     const data = {
@@ -15,7 +16,7 @@ export default function MyOrder() {
     }
     return (
         <View style={STYLES.container}>
-            <HeaderWithArrow label={"My Orders"} />
+            <HeaderWithArrow label={label.MyOrders} />
             <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
                 <OrderCard data={data} />
                 <OrderCard data={data} />

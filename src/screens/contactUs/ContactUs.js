@@ -4,32 +4,33 @@ import { SIZES, STYLES, height, width } from '../../constants'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
+import { label } from '../../constants/lables'
 
 export default function ContactUs() {
     return (
         <View style={STYLES.container}>
-            <HeaderWithArrow label={"Contact us"} />
+            <HeaderWithArrow label={label.ContactUs} />
             <EditText
                 styleTxtArea={styles.textArea}
-                placeholder={"Enter Your Name"}
+                placeholder={label.EnterYourName}
             />
             <EditText
                 styleTxtArea={styles.textArea}
-                placeholder={"Enter Your email"}
+                placeholder={label.EnterYourEmail}
             />
             <EditText
                 styleTxtArea={styles.textArea}
-                placeholder={"Enter Your Subject"}
+                placeholder={label.EnterYourSubject}
             />
             <EditText
                 styleTxtArea={styles.textArea}
                 inputArea={styles.multiInput}
                 multiline={true}
                 style={styles.multiInputTxt}
-                placeholder={"Enter Your Message"}
+                placeholder={label.EnterYourMessage}
             />
             <CustomButton
-                label={"Submit"}
+                label={label.Submit}
             />
         </View>
     )

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
+import { label } from '../../constants/lables'
 
 export default function NewPassword(props) {
     const { navigation } = props
@@ -12,23 +13,23 @@ export default function NewPassword(props) {
         <View style={STYLES.container}>
             <View style={{ flex: 1 }}>
                 <Text style={styles.heading}>
-                    New Password
+                    {label.NewPassword}
                 </Text>
                 <Text style={styles.subHeading}>
-                    Enter your new password and remember it.
+                    {label.EnterNewPasswordAndRemember}
                 </Text>
 
                 <EditText
-                    label={"Enter Your Password "}
-                    placeholder={"Enter Your Password"}
+                    label={label.EnterYourPassword}
+                    placeholder={label.EnterYourPassword}
                     value={password}
                     onChangeText={(txt) => setPassword(txt)}
                     password
                     required
                 />
                 <EditText
-                    label={"Confirm Password"}
-                    placeholder={"Confirm Your Password"}
+                    label={label.ConfirmPassword}
+                    placeholder={label.ConfirmYourPassword}
                     value={confirmPassword}
                     onChangeText={(txt) => setConfirmPassword(txt)}
                     password
@@ -37,12 +38,12 @@ export default function NewPassword(props) {
                 {
                    confirmPassword !== '' && password !== confirmPassword &&
                     <Text style={styles.notMatchTxt}>
-                        passwords do not match
+                        {label.PasswordDoNotMatch}
                     </Text>
                 }
                 <CustomButton
                     btnStyle={styles.btn}
-                    label={"Update Password"}
+                    label={label.UpdatePassword}
                     onPress={() => {navigation.navigate(SCREENS.PasswordSuccessful)} }
                 />
             </View>

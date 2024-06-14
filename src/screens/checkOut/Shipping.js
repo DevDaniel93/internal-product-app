@@ -5,6 +5,7 @@ import PhoneTextInput from '../../components/PhoneTextInput';
 import { COLORS, SIZES } from '../../constants';
 import CustomDropDownPicker from '../../components/CustomDropDownPicker';
 import axios from 'axios';
+import { label } from '../../constants/lables';
 
 const Shipping = () => {
     const [name, setName] = useState('');
@@ -50,52 +51,52 @@ const Shipping = () => {
     return (
         <View>
             <EditText
-                label={"Full Name"}
+                label={label.FullName}
                 value={name}
                 required
                 onChangeText={(e) => {
                     setName(e)
                 }}
-                placeholder={"Enter full name"}
+                placeholder={label.EnterFullName}
             />
-            <Text style={styles.textLabel}> Phone Number <Text style={styles.required}> *</Text></Text>
+            <Text style={styles.textLabel}> {label.PhoneNumber} <Text style={styles.required}> *</Text></Text>
 
             <PhoneTextInput phone={phone} setPhone={setPhone} setCountryCode={setCountryCode} />
 
             <CustomDropDownPicker
-                label={"State"}
+                label={label.State}
                 list={states.map(state => ({ label: state.name, value: state.state_code }))}
                 width={"100%"}
-                placeholder={"Select State"}
+                placeholder={label.selectedState}
                 zIndex={1000}
                 onChangeValue={handleStateChange}
             />
             <CustomDropDownPicker
-                label={"City"}
+                label={label.City}
                 list={cities.map(city => ({ label: city.name, value: city.name }))}
                 width={"100%"}
-                placeholder={"Select City"}
+                placeholder={label.SelectCity}
                 zIndex={1}
                 onChangeValue={(value) => setCity(value)}
             />
 
             <EditText
-                label={"Street Address"}
+                label={label.StreetAddress}
                 value={address}
                 required
                 onChangeText={(e) => {
                     setAddress(e)
                 }}
-                placeholder={"Enter street address"}
+                placeholder={label.EnterStreetAddress}
             />
             <EditText
-                label={"Postal Code"}
+                label={label.PostalCode}
                 value={postalCode}
                 required
                 onChangeText={(e) => {
                     setPostalCode(e)
                 }}
-                placeholder={"Enter postal code"}
+                placeholder={label.EnterPostalCode}
             />
         </View>
     )
