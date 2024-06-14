@@ -8,8 +8,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addCart, emptyCart } from '../../redux/slices/Cart'
 import CustomModal from '../../components/CustomModal'
 import { label } from '../../constants/lables'
+import { getTheme } from '../../constants/theme'
 
 export default function SingleProduct(props) {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const { navigation, route } = props
     const { productDetails } = route?.params
     const [quantity, setQuantity] = useState(1)
@@ -88,7 +91,7 @@ export default function SingleProduct(props) {
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
-            style={styles.container}>
+            style={[styles.container, { backgroundColor: currentTheme.Background }]}>
             <ImageBackground
                 resizeMode='contain'
                 style={styles?.imgContainer}
@@ -98,7 +101,7 @@ export default function SingleProduct(props) {
             <View style={styles.innerContainer}>
                 <View style={[styles.row, { marginTop: SIZES.twenty }]}>
                     <View>
-                        <Text style={styles.productTitle}>
+                        <Text style={[styles.productTitle, { color: currentTheme.defaultTextColor, }]}>
                             {productDetails?.title}
                         </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginVertical: SIZES.five }}>
@@ -107,7 +110,7 @@ export default function SingleProduct(props) {
                                 type={IconType.MaterialCommunityIcons}
                                 color={COLORS.golden}
                             />
-                            <Text style={styles.ratText}>
+                            <Text style={[styles.ratText, { color: currentTheme.defaultTextColor, }]}>
                                 {" "}{productDetails?.rating} {" "}
                                 <Text style={{ color: COLORS.primary }}>
                                     (7.932 reviews)
@@ -116,7 +119,7 @@ export default function SingleProduct(props) {
                         </View>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <TouchableOpacity style={styles.btn}
+                        <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
                             onPress={() => {
                                 if (quantity !== 0) {
                                     setQuantity(pre => pre - 1)
@@ -126,13 +129,13 @@ export default function SingleProduct(props) {
                             <Icon
                                 name={"minus"}
                                 type={IconType.Entypo}
-                                color={COLORS.black}
+                                color={currentTheme.defaultTextColor}
                             />
                         </TouchableOpacity>
-                        <Text style={styles.quantityText}>
+                        <Text style={[styles.quantityText, { color: currentTheme.defaultTextColor }]}>
                             {quantity}
                         </Text>
-                        <TouchableOpacity style={styles.btn}
+                        <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
                             onPress={() => {
 
                                 setQuantity(pre => pre + 1)
@@ -141,26 +144,26 @@ export default function SingleProduct(props) {
                             <Icon
                                 name={"plus"}
                                 type={IconType.Entypo}
-                                color={COLORS.black}
+                                color={currentTheme.defaultTextColor}
                             />
                         </TouchableOpacity>
                     </View>
 
                 </View>
-                <Text style={styles.ProductDetails}>
+                <Text style={[styles.ProductDetails, { color: currentTheme.defaultTextColor, }]}>
                     Introducing our stylish and versatile WJM Logo twill hat with leather patch – the perfect blend of fashion and functionality for any occasion. Crafted with meticulous attention to detail, this hat is designed to provide...
                 </Text>
                 {productDetails?.attributes !== undefined &&
                     <ScrollView style={{ marginVertical: SIZES.ten }}>
                         {Object.keys(productDetails?.attributes).map((key, index) => (
                             <View key={index}>
-                                <Text style={styles.attributesTitle}>Choose {key}</Text>
+                                <Text style={[styles.attributesTitle, { color: currentTheme.defaultTextColor, }]}>Choose {key}</Text>
                                 <ScrollView horizontal>
                                     {productDetails?.attributes[key].map((value, index) => (
                                         <TouchableOpacity
                                             onPress={() => toggleAttributeSelection(key, value)}
-                                            style={[styles.Obj, { backgroundColor: isAttributeSelected(key, value) ? COLORS.primary : COLORS.white }]}>
-                                            <Text key={index} style={{ color: isAttributeSelected(key, value) ? COLORS.white : COLORS.defaultTextColor }}>{value}</Text>
+                                            style={[styles.Obj, { backgroundColor: isAttributeSelected(key, value) ? currentTheme.primary : currentTheme.Background, borderColor: currentTheme.defaultTextColor }]}>
+                                            <Text key={index} style={{ color: isAttributeSelected(key, value) ? COLORS.white : currentTheme.defaultTextColor }}>{value}</Text>
                                         </TouchableOpacity>
 
                                     ))}
@@ -227,10 +230,9 @@ const styles = StyleSheet.create({
     },
     innerContainer: {
         paddingHorizontal: SIZES.fifteen,
-        backgroundColor: COLORS.white
     },
     productTitle: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty
     },
     row: {
@@ -239,29 +241,28 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     ratText: {
-        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen
     },
     btn: {
         padding: SIZES.five,
         borderRadius: SIZES.fifty,
         borderWidth: .5
-    }, 
+    },
     quantityText: {
         color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         marginHorizontal: SIZES.ten,
         fontWeight: "bold"
-    }, 
+    },
     ProductDetails: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen,
         paddingBottom: SIZES.fifteen,
         fontFamily: FONTFAMILY.Poppins,
         borderBottomWidth: 1
     },
     attributesTitle: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen + 3,
         fontWeight: "600"
     },

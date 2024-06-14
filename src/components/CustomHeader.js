@@ -1,19 +1,23 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { COLORS, FONTFAMILY, IMAGES, SIZES } from '../constants'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../constants/theme'
 
 export default function CustomHeader() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
         <View style={styles.container}>
             <Image
-                style={styles.img}
+                style={[styles.img, { borderColor: currentTheme.primary, }]}
                 source={IMAGES.user}
             />
             <View>
-                <Text style={styles.txt}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     Hello, Welcome Back 👋
                 </Text>
-                <Text style={[styles.txt, { fontWeight: "600" }]}>
+                <Text style={[styles.txt, { fontWeight: "600", color: currentTheme.defaultTextColor, }]}>
                     John Doe
                 </Text>
             </View>
@@ -33,11 +37,11 @@ const styles = StyleSheet.create({
         height: SIZES.fifty - 5,
         borderRadius: SIZES.fifty,
         borderWidth: 1,
-        borderColor: COLORS.primary,
+
         marginRight: SIZES.ten
     },
     txt: {
-        color: COLORS.defaultTextColor,
+
         fontFamily: FONTFAMILY.Poppins,
         fontSize: SIZES.fifteen
     }

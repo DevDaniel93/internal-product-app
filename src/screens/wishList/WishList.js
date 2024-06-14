@@ -4,8 +4,12 @@ import { IMAGES, SIZES, STYLES } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function WishList() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const products = [
         {
             productId: 1,
@@ -149,7 +153,7 @@ export default function WishList() {
 
     ];
     return (
-        <View style={[STYLES.container]}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow label={label.Wishlist} />
             <FlatList
                 columnWrapperStyle={{
@@ -165,14 +169,14 @@ export default function WishList() {
                         <ProductCard item={item} />
                     )
                 }}
-                ListFooterComponent={()=>{
-                    return(
-                        <View style={{height:SIZES.fifty*1.5}}/>
+                ListFooterComponent={() => {
+                    return (
+                        <View style={{ height: SIZES.fifty * 1.5 }} />
 
                     )
                 }}
             />
-            
+
         </View>
     )
 }

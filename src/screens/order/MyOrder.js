@@ -6,8 +6,12 @@ import CustomButton from '../../components/CustomButton'
 import OrderCard from '../../components/OrderCard'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function MyOrder() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const data = {
         orderNumber: "15454",
         status: "pending",
@@ -15,7 +19,7 @@ export default function MyOrder() {
         quantity: "6"
     }
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow label={label.MyOrders} />
             <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
                 <OrderCard data={data} />
@@ -27,7 +31,7 @@ export default function MyOrder() {
                 <OrderCard data={data} />
                 <OrderCard data={data} />
                 <OrderCard data={data} />
-                <View style={{height:SIZES.fifty*1.5}}/>
+                <View style={{ height: SIZES.fifty * 1.5 }} />
             </ScrollView>
         </View>
     )

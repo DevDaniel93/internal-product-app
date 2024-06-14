@@ -3,8 +3,12 @@ import React from 'react'
 import { COLORS, SIZES, STYLES } from '../../constants'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function PrivacyPolicy() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const content = [
         {
             id: 1,
@@ -25,17 +29,17 @@ export default function PrivacyPolicy() {
     const ListContent = ({ item }) => {
         return (
             <View style={styles.contentArea}>
-                <Text style={styles.labelText}>
+                <Text style={[styles.labelText, { color: currentTheme.defaultTextColor, }]}>
                     {item?.label}
                 </Text>
-                <Text style={styles.content}>
+                <Text style={[styles.content, { color: currentTheme.defaultTextColor, }]}>
                     {item?.content}
                 </Text>
             </View>)
 
     }
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow label={label.PrivacyPolicy} />
             <FlatList
                 showsVerticalScrollIndicator={false}
@@ -55,11 +59,10 @@ const styles = StyleSheet.create({
     labelText: {
         fontWeight: "bold",
         fontSize: SIZES.twenty - 2,
-        color: COLORS.defaultTextColor,
+
         marginBottom: SIZES.five
 
     }, content: {
         fontSize: SIZES.fifteen,
-        color: COLORS.defaultTextColor
     }
 })

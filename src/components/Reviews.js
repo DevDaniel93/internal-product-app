@@ -6,12 +6,16 @@ import { COLORS, FONTFAMILY, IMAGES, SIZES } from '../constants';
 import Icon, { IconType } from './Icons';
 import EditText from './EditText';
 import CustomButton from './CustomButton';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../constants/theme';
 export default function Reviews() {
     const [star, setStar] = useState(0)
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
 
     const CustomerReviews = () => {
         return (
-            <View style={{ paddingVertical: SIZES.ten, borderBottomWidth: 1 }}>
+            <View style={{ paddingVertical: SIZES.ten, borderBottomWidth: 1, borderColor: currentTheme.defaultTextColor }}>
                 <View style={[styles.row, { justifyContent: "space-between" }]}>
                     <View style={styles.row}>
                         <Image
@@ -19,7 +23,7 @@ export default function Reviews() {
                             style={styles.img}
                             resizeMode='contain'
                         />
-                        <Text style={styles.UserName}>
+                        <Text style={[styles.UserName, { color: currentTheme.defaultTextColor }]}>
                             Jane Done
                         </Text>
                     </View>
@@ -34,7 +38,7 @@ export default function Reviews() {
                         halfStar={<Icon name={'star-half'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
                     />
                 </View>
-                <Text style={styles.txt}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
                 </Text>
 
@@ -43,7 +47,7 @@ export default function Reviews() {
     }
     return (
         <View>
-            <Text style={styles.heading}>
+            <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                 Reviews
             </Text>
             <View style={{ alignItems: "flex-start", marginVertical: SIZES.five }}>
@@ -53,7 +57,6 @@ export default function Reviews() {
                     count={5}
                     starSize={SIZES.twentyFive}
                     disabled={false}
-
                     fullStar={<Icon name={'star'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
                     emptyStar={<Icon name={'star-outline'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
                     halfStar={<Icon name={'star-half'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
@@ -77,7 +80,7 @@ export default function Reviews() {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty - 2,
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "600"
@@ -94,11 +97,10 @@ const styles = StyleSheet.create({
     },
     UserName: {
         fontWeight: "bold",
-        color: COLORS.defaultTextColor,
+
         marginLeft: SIZES.ten
     },
     txt: {
-        color: COLORS.defaultTextColor,
         marginVertical: SIZES.ten
     }
 })

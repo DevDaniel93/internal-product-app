@@ -1,15 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, ScrollView } from 'react-native';
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-
-
-import { Pressable } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-
-
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch } from 'react-native';
+import { DrawerContentScrollView, } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeAccessToken, removeProfile } from '../redux/slice/auth';
-import { RemoveAuthorNotes, removeAuthorDetail } from '../redux/slice/author';
+
 import { COLORS, FONTFAMILY, SCREENS, SIZES } from '../../constants';
 import { Menu } from '../../constants/DrawerMenu';
 import { Icon, IconType } from '../../components';
@@ -17,12 +11,28 @@ import CustomHeader from '../../components/CustomHeader';
 import CustomModal from '../../components/CustomModal';
 import LottieView from 'lottie-react-native';
 import CustomButton from '../../components/CustomButton';
+import { getTheme } from '../../constants/theme';
+import { toggleTheme } from '../../redux/slices/theme';
 
 
 export default CustomDrawer = (props) => {
     const navigation = useNavigation();
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const dispatch = useDispatch()
     const [isvisible, setIsvisible] = useState(false)
+    const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => {
+        console.log("isEnabled", isEnabled)
+        if (theme === 'light') {
+            dispatch(toggleTheme("dark"))
+        }
+        else {
+            dispatch(toggleTheme("light"))
+        }
+        setIsEnabled(previousState => !previousState);
+    }
+
 
     async function handleLogout() {
         try {
@@ -33,68 +43,85 @@ export default CustomDrawer = (props) => {
         }
     };
     return (
-        <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
-            <CustomHeader />
-            <View
-                style={styles.line}
-            />
-            <ScrollView>
-                {
-                    Menu.map((item) => {
-                        return (
-                            <TouchableOpacity style={styles.drawerItem}
-                                onPress={() => {
-                                    if (item?.route === "logout") {
-                                        setIsvisible(!isvisible)
-                                    }
-                                    else {
+        <DrawerContentScrollView {...props} contentContainerStyle={[styles.container, { backgroundColor: currentTheme.Background }]}>
+            <View style={{ marginHorizontal: SIZES.fifteen, }}>
 
-                                        navigation.navigate(item?.route)
-                                    }
-                                }}
-                            >
-                                <Icon name={item?.icon}
-                                    type={item?.type}
 
-                                    style={styles.Icon} />
-                                <Text style={{ color: COLORS.defaultTextColor, fontSize: SIZES.fifteen + 2, fontWeight: '600', fontFamily: 'Poppins-Regular', }}>{item?.label}</Text>
-                            </TouchableOpacity>
-                        )
-                    })
-                }
-
-            </ScrollView>
-            <CustomModal isvisible={isvisible}>
-                <Text style={styles.modelText}>
-                    Are you sure you want to {" "}
-                    <Text style={{ color: COLORS.primary }}>
-                        log out?
-                    </Text>
-                </Text>
-                <LottieView
-                    style={styles.lottie}
-                    autoPlay={true}
-                    loop={true}
-                    source={{ uri: "https://lottie.host/a8f4bc1d-03fa-470e-a682-8b4b459891c0/eJWI4xDtOG.json" }}
+                <CustomHeader />
+                <View
+                    style={[styles.line, { borderColor: currentTheme.defaultTextColor, }]}
                 />
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+
+                <ScrollView>
+                    {
+                        Menu.map((item) => {
+                            return (
+                                <TouchableOpacity style={styles.drawerItem}
+                                    onPress={() => {
+                                        if (item?.route === "logout") {
+                                            setIsvisible(!isvisible)
+                                        }
+                                        else {
+
+                                            navigation.navigate(item?.route)
+                                        }
+                                    }}
+                                >
+                                    <Icon name={item?.icon}
+                                        type={item?.type}
+
+                                        style={styles.Icon} />
+                                    <Text style={{ color: currentTheme.defaultTextColor, fontSize: SIZES.fifteen + 2, fontWeight: '600', fontFamily: 'Poppins-Regular', }}>{item?.label}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+
+                </ScrollView>
+                <CustomModal isvisible={isvisible}>
+                    <Text style={[styles.modelText, { color: currentTheme.defaultTextColor }]}>
+                        Are you sure you want to {" "}
+                        <Text style={{ color: COLORS.primary }}>
+                            log out?
+                        </Text>
+                    </Text>
+                    <LottieView
+                        style={styles.lottie}
+                        autoPlay={true}
+                        loop={true}
+                        source={{ uri: "https://lottie.host/a8f4bc1d-03fa-470e-a682-8b4b459891c0/eJWI4xDtOG.json" }}
+                    />
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 
 
-                    <CustomButton btnStyle={styles.btnStyle}
-                        txtstyle={{ color: COLORS.primary }}
-                        onPress={() => {
-                            handleLogout()
-
-                        }}
-                        label={"Yes"} />
-                    <CustomButton btnStyle={styles.btnStyle1}
-                        label={"No"}
-                        onPress={() => {
-                            setIsvisible(!isvisible)
-                        }}
+                        <CustomButton btnStyle={[styles.btnStyle, { backgroundColor: currentTheme.Background, }]}
+                            txtstyle={{ color: COLORS.primary }}
+                            onPress={() => {
+                                handleLogout()
+                            }}
+                            label={"Yes"} />
+                        <CustomButton btnStyle={styles.btnStyle1}
+                            label={"No"}
+                            onPress={() => {
+                                setIsvisible(!isvisible)
+                            }}
+                        />
+                    </View>
+                </CustomModal>
+                <View style={{ flexDirection: "row", marginTop: SIZES.twentyFive, alignItems: "center" }}>
+                    <Text style={[styles.toggleText, { color: currentTheme.defaultTextColor }]} >
+                        {theme} mode
+                    </Text>
+                    <Switch
+                        trackColor={{ false: '#767577', true: currentTheme.gray }}
+                        thumbColor={isEnabled ? currentTheme.primary : '#f4f3f4'}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={toggleSwitch}
+                        value={isEnabled}
                     />
                 </View>
-            </CustomModal>
+
+            </View>
 
         </DrawerContentScrollView>
     );
@@ -104,18 +131,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        marginHorizontal: SIZES.fifteen,
-        backgroundColor: COLORS.white
+
     },
 
     line: {
         borderWidth: 1,
         borderColor: COLORS.black,
     },
-
-
-
-
     drawerItem: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -131,7 +153,7 @@ const styles = StyleSheet.create({
     },
     btnStyle: {
         width: "48%",
-        backgroundColor: COLORS.white,
+
         borderWidth: 1,
         borderColor: COLORS.primary,
         padding: SIZES.ten
@@ -153,6 +175,11 @@ const styles = StyleSheet.create({
         width: SIZES.fifty * 3,
         height: SIZES.fifty * 3,
         alignSelf: "center"
+    },
+    toggleText: {
+        fontSize: SIZES.twenty - 2,
+        marginRight: SIZES.ten,
+        fontWeight: "600",
+        fontFamily: FONTFAMILY.Poppins
     }
-
 });

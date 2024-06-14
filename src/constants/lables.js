@@ -91,10 +91,6 @@ export const label = {
     EditProfile: "Edit Profile",
     Profile: "Profile",
     SelectProductSize: "Please select Product size, color etc",
-
-
     Wishlist: "Wishlist",
     OpenDrawer: "Open drawer",
-
-
 }

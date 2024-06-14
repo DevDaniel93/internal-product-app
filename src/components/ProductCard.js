@@ -4,21 +4,25 @@ import React from 'react'
 import Icon, { IconType, Icons } from './Icons'
 import { COLORS, FONTFAMILY, FONTS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../constants'
 import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../constants/theme'
 
 const ProductCard = ({ item }) => {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const navigation = useNavigation()
     return (
         <TouchableOpacity onPress={() => {
             navigation.navigate(SCREENS.singleProduct, { productDetails: item })
         }}
-            style={[styles.container, STYLES.shadow]}>
+            style={[styles.container, STYLES.shadow, { backgroundColor: currentTheme.Background, }]}>
             <Image
                 style={styles.img}
                 source={{ uri: item?.image }}
                 resizeMode="contain"
             />
             <TouchableOpacity
-                style={styles.starContainer}
+                style={[styles.starContainer, { backgroundColor: currentTheme.white, }]}
             >
                 <Icon
                     name={"heart"}
@@ -27,17 +31,17 @@ const ProductCard = ({ item }) => {
                     size={SIZES.twenty}
                 />
             </TouchableOpacity>
-            <View style={styles.detail}>
-                <Text style={styles.txt}>
+            <View style={[styles.detail, { backgroundColor: currentTheme.Background, }]}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {item?.title}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 2 }}>
-                    <Text style={styles.price}>
+                    <Text style={[styles.price, { color: currentTheme.defaultTextColor, }]}>
                         ${item?.price}
                     </Text>
                     <View style={styles.rating}>
                         <Icon type={IconType.FontAwesome} name={'star'} size={18} color={COLORS.star} />
-                        <Text style={styles.txt}>{item?.rating}</Text>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>{item?.rating}</Text>
                     </View>
                 </View>
             </View>
@@ -52,10 +56,8 @@ const styles = StyleSheet.create({
         marginTop: SIZES.twenty,
         width: width * .4,
         height: height * .25,
-
         borderColor: COLORS.gray,
         borderWidth: .5,
-        backgroundColor: COLORS.white,
         marginBottom: SIZES.ten
     },
     img: {
@@ -64,14 +66,14 @@ const styles = StyleSheet.create({
     },
     starContainer: {
         position: "absolute",
-        backgroundColor: COLORS.white,
+
         padding: SIZES.five,
         borderRadius: SIZES.twentyFive,
         right: SIZES.ten,
         top: SIZES.ten
     },
     detail: {
-        backgroundColor: COLORS.white,
+
         padding: SIZES.ten,
         borderWidth: 1,
         position: "absolute",
@@ -83,12 +85,12 @@ const styles = StyleSheet.create({
     },
     txt: {
         fontFamily: FONTFAMILY.Poppins,
-        color: COLORS.defaultTextColor,
+
         fontSize: 14,
     },
     price: {
         fontFamily: FONTFAMILY.Poppins,
-        color: COLORS.defaultTextColor,
+
         fontWeight: "500",
         fontSize: 14
     },

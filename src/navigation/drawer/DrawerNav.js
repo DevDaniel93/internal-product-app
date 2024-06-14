@@ -68,6 +68,8 @@ import { SCREENS } from '../../constants';
 import BottamTab from '../bottamTab/BottamTab';
 import { Menu } from '../../constants/DrawerMenu';
 import { Easing } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../../constants/theme';
 const config = {
     animation: 'timing',
     config: {
@@ -91,10 +93,15 @@ const fadeInAnimation = ({ current }) => ({
 
 const Drawer = createDrawerNavigator();
 export default function DrawerNavigator() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
         <Drawer.Navigator
             screenOptions={{
-
+                sceneContainerStyle: {
+                    backgroundColor: currentTheme.Background,
+                    flex: 1
+                },
                 transitionSpec: {
                     open: config,
                     close: closeConfig,

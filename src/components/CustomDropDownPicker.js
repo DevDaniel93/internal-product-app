@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { COLORS, SIZES, height, width } from '../constants';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../constants/theme';
 
 
 const CustomDropDownPicker = (props) => {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const [focusColor, setFocusColor] = useState(COLORS.charcoalGrey);
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState(props?.value ? props?.value : null)
@@ -15,7 +19,7 @@ const CustomDropDownPicker = (props) => {
         <View style={[styles.textInputView, props.styleTxtArea, { marginTop: SIZES.ten }]}>
             {props?.label
                 &&
-                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.defaultTextColor }]}>
+                <Text style={[styles.textLabel, { color: focusColor }]}>
                     {props.label}
                     {props?.required &&
                         <Text style={styles.required}> *</Text>}
@@ -23,10 +27,10 @@ const CustomDropDownPicker = (props) => {
             }
             <DropDownPicker
                 onOpen={() => {
-                    setFocusColor(COLORS.primary)
+                    setFocusColor(currentTheme.primary)
                 }}
                 onClose={() => {
-                    setFocusColor(COLORS.gray)
+                    setFocusColor(currentTheme.defaultTextColor)
                 }}
                 containerStyle={styles(props).dropDown}
                 placeholder={props?.placeholder}

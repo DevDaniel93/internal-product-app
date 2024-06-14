@@ -7,8 +7,12 @@ import BannerSlider from '../../components/BannerSlider'
 import Categories from '../../components/Categories'
 import DrawerSceneWrapper from '../../components/DrawerSceneWrapper'
 import SearchFilter from '../../components/SearchFilter'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function Home() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const images = [
         IMAGES.DummyBanner.banner1,
         IMAGES.DummyBanner.banner2,
@@ -254,7 +258,7 @@ export default function Home() {
     return (
 
 
-        <View style={[STYLES.container, {}]}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
 
             <CustomHeader />
             <ScrollView

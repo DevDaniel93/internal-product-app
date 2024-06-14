@@ -9,9 +9,13 @@ import Payment from './Payment'
 import Review from './Review'
 import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 
 export default function CheckOut() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const [progress, setProgress] = useState(0)
 
     const moveToNext = () => {
@@ -22,9 +26,9 @@ export default function CheckOut() {
     }
 
     return (
-        <ScrollView style={STYLES.container}>
+        <ScrollView style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow
-                label={label.Checkout}/>
+                label={label.Checkout} />
 
             <ProgressBar mode={progress} />
 
@@ -40,7 +44,7 @@ export default function CheckOut() {
                 {progress > 0 &&
                     <CustomButton
                         txtstyle={styles.txtstyle}
-                        btnStyle={styles.btnStyle1}
+                        btnStyle={[styles.btnStyle1, { backgroundColor: currentTheme.Background }]}
                         label={label.Back}
                         onPress={moveToPrevios} />
                 }
@@ -49,13 +53,13 @@ export default function CheckOut() {
                 }
                 <CustomButton
                     btnStyle={styles.btnStyle}
-                    label={progress === 0 ? label.Payment : progress === 1 ? label.Review: label.PlaceOrder}
+                    label={progress === 0 ? label.Payment : progress === 1 ? label.Review : label.PlaceOrder}
                     onPress={moveToNext} />
 
 
             </View>
 
-            <View style={{height:SIZES.fifty*2}}/>
+            <View style={{ height: SIZES.fifty * 2 }} />
 
         </ScrollView>
     )
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
     },
     btnStyle1: {
         flex: 1,
-        backgroundColor: COLORS.white,
+
         borderWidth: 1,
         borderColor: COLORS.primary
     },

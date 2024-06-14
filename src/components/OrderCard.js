@@ -4,22 +4,26 @@ import ShadedBox from './ShadedBox'
 import { COLORS, FONTFAMILY, SCREENS, SIZES, width } from '../constants'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from './CustomButton'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../constants/theme'
 
 
 export default function OrderCard(props) {
     const navigation = useNavigation()
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
 
         <ShadedBox>
             <View style={styles.row}>
-                <Text style={styles.txt}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
                     Order Number{" "}
                     <Text style={{ fontWeight: "600" }}>
                         #{props?.data?.orderNumber}
                     </Text>
                 </Text>
                 <View style={{ width: width * .3, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={styles.txt}>
+                    <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
                         Status{"  "}
                         <Text style={{ fontWeight: "600" }}>
                             {props?.data?.status}
@@ -29,7 +33,7 @@ export default function OrderCard(props) {
             </View>
             <View style={styles.dotLine} />
             <View style={styles.row}>
-                <Text style={styles.txt}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
                     Total Price{"   "}
                     <Text style={{ fontWeight: "600" }}>
                         ${props?.data?.amount}
@@ -37,13 +41,13 @@ export default function OrderCard(props) {
                     {" "}
                     ({props?.data?.quantity} Items)
                 </Text>
-                <CustomButton 
-                btnStyle={styles.btn}
-                onPress={() => {
+                <CustomButton
+                    btnStyle={styles.btn}
+                    onPress={() => {
                         navigation.navigate(SCREENS.OrderDetails)
-                    }} 
+                    }}
                     label={'View'}
-                    />
+                />
                 {/* <TouchableOpacity style={styles.btn}
                     onPress={() => {
                         navigation.navigate(SCREENS.OrderDetails)
@@ -63,13 +67,12 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems : 'center',
+        alignItems: 'center',
         marginRight: SIZES.fifteen,
 
     },
     txt: {
         fontSize: SIZES.fifteen - 1,
-        color: COLORS.defaultTextColor,
         fontFamily: FONTFAMILY.Poppins,
     },
     dotLine: {

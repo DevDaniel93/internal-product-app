@@ -4,11 +4,15 @@ import React from 'react'
 import CustomButton from '../../components/CustomButton'
 import { COLORS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../../constants'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 const PasswordSuccessful = (props) => {
     const { navigation } = props
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <ImageBackground
                 source={IMAGES.lockBg}
                 style={styles.imgView}>
@@ -17,8 +21,8 @@ const PasswordSuccessful = (props) => {
                     style={styles.img}
                     resizeMode='contain' />
             </ImageBackground>
-            <Text style={styles.heading}>{label.NewPasswordSetSuccessfully}</Text>
-            <Text style={styles.text}>{label.CongratulationsPasswordSetSuccessfully}</Text>
+            <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>{label.NewPasswordSetSuccessfully}</Text>
+            <Text style={[styles.text, { color: currentTheme.defaultTextColor, }]}>{label.CongratulationsPasswordSetSuccessfully}</Text>
             <CustomButton
                 onPress={() => {
                     navigation.navigate(SCREENS.Login)
@@ -48,14 +52,14 @@ const styles = StyleSheet.create({
     heading: {
         textAlign: 'center',
         fontSize: SIZES.body12 * 2,
-        color: COLORS.defaultTextColor,
+
         fontWeight: "500"
     },
     text: {
         textAlign: 'center',
         fontSize: SIZES.fifteen + 2,
         margin: SIZES.twenty,
-        color: COLORS.defaultTextColor,
+
         lineHeight: 22
     }
 })

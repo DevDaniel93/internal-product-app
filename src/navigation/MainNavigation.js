@@ -27,6 +27,10 @@ const Stack = createNativeStackNavigator();
 const screenOptions = {
     headerShown: false,
     animation: "slide_from_right",
+    headerStyle: {
+        backgroundColor: '#121212',
+    },
+
 };
 const Demo = () => {
     return (
@@ -37,7 +41,8 @@ const Demo = () => {
 }
 export default function MainNavigation() {
     return (
-        <NavigationContainer>
+        <NavigationContainer
+        >
             <Stack.Navigator
                 screenOptions={screenOptions}
                 initialRouteName={SCREENS.Login}
@@ -66,7 +71,7 @@ export default function MainNavigation() {
                         headerTitle: "Create Password",
                     })}
                 />
-                <Stack.Screen name={SCREENS.PasswordSuccessful} component={PasswordSuccessful}/>
+                <Stack.Screen name={SCREENS.PasswordSuccessful} component={PasswordSuccessful} />
                 <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
                 {/* <Stack.Screen name={SCREENS.Home} component={Home} /> */}
                 <Stack.Screen name={SCREENS.OrderDetails} component={OrderDetails} />

@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { COLORS } from '../constants';
-import { FONTS, height, SIZES, width } from '../constants/theme';
+import { FONTS, getTheme, height, SIZES, width } from '../constants/theme';
 import { MyTouchableOpacity, Card, Icon, IconType } from '../components';
+import { useSelector } from 'react-redux';
 
 export default function EditText(props) {
     const [enableSecureEntry, setEnableSecureEntry] = useState(true);
     const [focusColor, setFocusColor] = useState(COLORS.charcoalGrey);
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
 
     return (
         <View style={[styles.textInputView, props.styleTxtArea]}>
             {props?.label
                 &&
-                <Text style={[styles.textLabel, { color: focusColor !== COLORS.charcoalGrey ? focusColor : COLORS.defaultTextColor }]}>
+                <Text style={[styles.textLabel, { color: focusColor !== currentTheme.charcoalGrey ? focusColor : currentTheme.defaultTextColor }]}>
                     {props.label}
                     {props?.required &&
                         <Text style={styles.required}> *</Text>}
@@ -42,7 +45,7 @@ export default function EditText(props) {
                         placeholder={props?.placeholder}
                         onFocus={() => { setFocusColor(COLORS.primary) }}
                         onBlur={() => { setFocusColor(COLORS.charcoalGrey) }}
-                        style={[FONTS.mediumFont14, styles.textInput, props?.style]}
+                        style={[FONTS.mediumFont14, styles.textInput, { color: currentTheme.defaultTextColor }, props?.style]}
                     />
                     {props.password ? (
                         <TouchableOpacity
@@ -54,7 +57,7 @@ export default function EditText(props) {
                                 type={IconType.FontAwesome}
                                 style={{
                                     fontSize: 20,
-                                    color: COLORS.placeholderColor,
+                                    color: currentTheme.placeholderColor,
                                     marginLeft: 5,
                                 }}
                             />
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-        color: COLORS.defaultTextColor,
+
     },
     textLabel: {
         fontFamily: "Poppins",

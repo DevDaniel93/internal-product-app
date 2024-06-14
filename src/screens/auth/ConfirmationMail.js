@@ -4,16 +4,20 @@ import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function ConfirmationMail(props) {
     const { navigation } = props
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
-                <Text style={styles.heading}>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     {label.ConfirmationMail}
                 </Text>
-                <Text style={styles.subHeading}>
+                <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
                     {label.EnterEmail}
                 </Text>
                 <EditText
@@ -36,7 +40,6 @@ export default function ConfirmationMail(props) {
 const styles = StyleSheet.create({
     heading: {
         marginTop: SIZES.twenty,
-        color: COLORS.defaultTextColor,
         fontSize: SIZES.twenty,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.five,
-        color: COLORS.defaultTextColor,
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: "Poppins"

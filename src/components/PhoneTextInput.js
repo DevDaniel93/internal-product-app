@@ -2,9 +2,14 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import { COLORS, SIZES } from '../constants';
+import { useSelector } from 'react-redux';
+import { getTheme } from '../constants/theme';
+import { label } from '../constants/lables';
 
 export default function PhoneTextInput(props) {
     const { phone, setPhone, setCountryCode } = props;
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const phoneInput = useRef(null);
     const [borderColor, setBorderColor] = useState(COLORS.charcoalGrey);
 
@@ -18,6 +23,7 @@ export default function PhoneTextInput(props) {
 
     return (
         <View>
+            <Text style={styles.textLabel}> {label.PhoneNumber} <Text style={styles.required}> *</Text></Text>
             <PhoneInput
                 layout="first"
                 defaultCode="US"
@@ -60,5 +66,13 @@ const styles = StyleSheet.create({
         fontSize: SIZES.body10,
         marginLeft: SIZES.twenty,
         marginTop: SIZES.five,
+    },
+    textLabel: {
+        fontFamily: "Poppins",
+        fontSize: SIZES.fifteen,
+        fontWeight: "500",
+        color: COLORS.defaultTextColor,
+        marginTop: SIZES.five,
+        top: SIZES.ten
     },
 });

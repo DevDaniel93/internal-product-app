@@ -4,18 +4,22 @@ import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function NewPassword(props) {
     const { navigation } = props
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
             <View style={{ flex: 1 }}>
-                <Text style={styles.heading}>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     {label.NewPassword}
                 </Text>
-                <Text style={styles.subHeading}>
+                <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
                     {label.EnterNewPasswordAndRemember}
                 </Text>
 
@@ -36,15 +40,15 @@ export default function NewPassword(props) {
                     required
                 />
                 {
-                   confirmPassword !== '' && password !== confirmPassword &&
-                    <Text style={styles.notMatchTxt}>
+                    confirmPassword !== '' && password !== confirmPassword &&
+                    <Text style={[styles.notMatchTxt, { color: currentTheme.primary, }]}>
                         {label.PasswordDoNotMatch}
                     </Text>
                 }
                 <CustomButton
                     btnStyle={styles.btn}
                     label={label.UpdatePassword}
-                    onPress={() => {navigation.navigate(SCREENS.PasswordSuccessful)} }
+                    onPress={() => { navigation.navigate(SCREENS.PasswordSuccessful) }}
                 />
             </View>
 
@@ -54,7 +58,7 @@ export default function NewPassword(props) {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twentyFive,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.five,
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -71,9 +75,9 @@ const styles = StyleSheet.create({
     btn: {
         marginTop: SIZES.twenty
     },
-    notMatchTxt:{
-        color: COLORS.primary,
-        padding:5
+    notMatchTxt: {
+
+        padding: 5
     }
 
 })

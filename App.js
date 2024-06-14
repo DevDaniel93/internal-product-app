@@ -9,7 +9,7 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 import MainNavigation from './src/navigation/MainNavigation';
 import { AnimatedSplash, Icon, IconType } from './src/components';

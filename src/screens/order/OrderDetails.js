@@ -4,8 +4,12 @@ import { COLORS, FONTFAMILY, IMAGES, SIZES, STYLES, height, width } from '../../
 import ShadedBox from '../../components/ShadedBox'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function OrderDetails() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const data = [
         { key: label.FullName, value: "John Doe" },
         { key: label.MobileNumber, value: "+123-456-789" },
@@ -17,8 +21,8 @@ export default function OrderDetails() {
 
     const renderItem = ({ item }) => (
         <View style={styles.rows}>
-            <Text style={styles.infoTxt}>{item.key}</Text>
-            <Text style={styles.infoTxt}>{item.value}</Text>
+            <Text style={[styles.infoTxt, { color: currentTheme.gray, }]}>{item.key}</Text>
+            <Text style={[styles.infoTxt, { color: currentTheme.gray, }]}>{item.value}</Text>
         </View>
     );
 
@@ -27,13 +31,13 @@ export default function OrderDetails() {
             <View style={styles.ProductListRow}>
                 <Image source={IMAGES.ProductImage} style={[styles.img, STYLES.shadow]} />
                 <View style={{ justifyContent: "space-around", margin: SIZES.twentyFive, }}>
-                    <Text style={styles.productText}>
+                    <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
                         I’m Him
                     </Text>
-                    <Text style={styles.productText}>
+                    <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
                         Quantity: 1
                     </Text>
-                    <Text style={[styles.productText, { fontWeight: "bold", color: COLORS.primary }]}>
+                    <Text style={[styles.productText, { fontWeight: "bold", color: currentTheme.primary }]}>
                         Unit Price: $20.00
                     </Text>
 
@@ -42,39 +46,39 @@ export default function OrderDetails() {
         )
     }
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow label={"Order Details"} />
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
                 <View style={styles.row}>
                     <ShadedBox style={styles.box}>
-                        <Text style={styles.txt}>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                             Order Number
                         </Text>
-                        <Text style={styles.txt}>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                             #45322
                         </Text>
                     </ShadedBox>
                     <ShadedBox style={styles.box}>
-                        <Text style={styles.txt}>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                             Order Date
                         </Text>
-                        <Text style={styles.txt}>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                             Jun 6, 2024
                         </Text>
                     </ShadedBox>
                 </View>
                 <ShadedBox style={styles.statusBox}>
-                    <Text style={styles.txt}>
+                    <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                         Order Status
                     </Text>
-                    <Text style={styles.txt}>
+                    <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                         Pending
                     </Text>
                 </ShadedBox>
                 <View style={styles.dotLine} />
-                <Text style={styles.heading}>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     Shipping Details
                 </Text>
                 <View>
@@ -98,26 +102,26 @@ export default function OrderDetails() {
                     />
                 </View>
                 <View style={styles.totalRow}>
-                    <Text style={styles.infoTxt}>
+                    <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         Sub Total
                     </Text>
-                    <Text style={styles.infoTxt}>
+                    <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         $25.27
                     </Text>
                 </View>
                 <View style={styles.totalRow}>
-                    <Text style={styles.infoTxt}>
+                    <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         Sub Total
                     </Text>
-                    <Text style={styles.infoTxt}>
+                    <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         $25.27
                     </Text>
                 </View>
                 <View style={[styles.totalRow, { marginBottom: SIZES.twenty }]}>
-                    <Text style={[styles.infoTxt, { color: COLORS.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
+                    <Text style={[styles.infoTxt, { color: currentTheme.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
                         Total
                     </Text>
-                    <Text style={[styles.infoTxt, { color: COLORS.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
+                    <Text style={[styles.infoTxt, { color: currentTheme.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
                         $6236
                     </Text>
                 </View>
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     txt: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         marginTop: 3
@@ -153,7 +157,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.gray
     },
     heading: {
-        color: COLORS.defaultTextColor,
+
         fontWeight: "600",
         fontSize: SIZES.twenty,
         fontFamily: FONTFAMILY.Poppins
@@ -164,7 +168,6 @@ const styles = StyleSheet.create({
         marginTop: SIZES.fifteen
     },
     infoTxt: {
-        color: COLORS.gray,
         fontSize: SIZES.fifteen,
     },
     ProductListRow: {
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
     },
     productText: {
         fontSize: SIZES.twenty - 3,
-        color: COLORS.defaultTextColor,
+
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "500"
     },

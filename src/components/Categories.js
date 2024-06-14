@@ -1,14 +1,17 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { COLORS, FONTFAMILY, SIZES } from '../constants'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../constants/theme'
 
 export default function Categories(props) {
-
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const _renderItem = ({ item }) => {
         return (
             <TouchableOpacity style={styles.CategoryContainer}>
                 <Image style={styles.img} source={item?.image} />
-                <Text style={styles.txt}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {item?.label}
                 </Text>
             </TouchableOpacity>
@@ -17,10 +20,10 @@ export default function Categories(props) {
     return (
         <View>
             <View style={styles.row}>
-                <Text style={styles.heading}>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     Categories
                 </Text>
-                <Text style={styles.seeAll}>
+                <Text style={[styles.seeAll, { color: currentTheme.primary, }]}>
                     see all
                 </Text>
             </View>
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
         marginTop: SIZES.fifteen
     },
     heading: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty,
         fontWeight: "500",
         fontFamily: FONTFAMILY.Poppins
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     },
     txt: {
         marginTop: SIZES.five,
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen,
         fontFamily: FONTFAMILY.Poppins
     }

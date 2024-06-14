@@ -3,9 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserTypeReducer from './slices/userType';
 import CartReducer from './slices/Cart';
-
-
-
+import ThemeReducer from './slices/theme';
 
 
 const persistConfig = {
@@ -15,7 +13,9 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+    Theme: ThemeReducer,
     Cart: CartReducer,
+
     UserType: UserTypeReducer,
 });
 

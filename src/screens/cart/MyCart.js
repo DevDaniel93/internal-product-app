@@ -10,9 +10,12 @@ import CustomButton from '../../components/CustomButton'
 import CustomModal from '../../components/CustomModal'
 import LottieView from 'lottie-react-native';
 import { label } from '../../constants/lables'
+import { getTheme } from '../../constants/theme'
 
 export default function MyCart(props) {
     const { navigation } = props
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const cart = useSelector(state => state.Cart.cart)
     const dispatch = useDispatch()
     const [isvisible, setIsvisible] = useState(false)
@@ -50,7 +53,7 @@ export default function MyCart(props) {
     };
     const VoucherApply = () => {
         return (
-            <View style={styles.voucherContainer}>
+            <View style={[styles.voucherContainer, { borderColor: currentTheme.defaultTextColor }]}>
                 <TextInput
                     placeholderTextColor={COLORS.gray}
                     placeholder={label.EnterVoucherCode}
@@ -73,14 +76,14 @@ export default function MyCart(props) {
                 <View style={{ flexDirection: "row" }}>
                     <Image source={{ uri: item?.image }} style={[styles.img, STYLES.shadow]} />
                     <View style={{ justifyContent: "space-around", margin: SIZES.twentyFive, }}>
-                        <Text style={styles.productText}>
+                        <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
                             {item?.productName}
                         </Text>
-                        <Text style={[styles.productText]}>
+                        <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
                             $ {item?.price}
                         </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: SIZES.ten }}>
-                            <TouchableOpacity style={styles.btn}
+                            <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
                                 onPress={() => {
                                     if (item.quantity !== 1) {
                                         handleUpdateCartItem(item.id, item.quantity - 1)
@@ -90,19 +93,19 @@ export default function MyCart(props) {
                                 <Icon
                                     name={"minus"}
                                     type={IconType.Entypo}
-                                    color={COLORS.black}
+                                    color={currentTheme.defaultTextColor}
                                 />
                             </TouchableOpacity>
-                            <Text style={styles.quantityText}>
+                            <Text style={[styles.quantityText, { color: currentTheme.defaultTextColor, }]}>
                                 {item.quantity}
                             </Text>
-                            <TouchableOpacity style={styles.btn}
+                            <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
                                 onPress={() => handleUpdateCartItem(item.id, item.quantity + 1)}
                             >
                                 <Icon
                                     name={"plus"}
                                     type={IconType.Entypo}
-                                    color={COLORS.black}
+                                    color={currentTheme.defaultTextColor}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -127,7 +130,7 @@ export default function MyCart(props) {
     }
     return (
 
-        <View style={[STYLES.container,]}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow
                 label={label.MyCart} />
             <ScrollView showsVerticalScrollIndicator={false} style={{ flexGrow: 1 }}>
@@ -142,34 +145,34 @@ export default function MyCart(props) {
                 </View>
 
                 <View style={styles.estArea}>
-                    <Text style={styles.estTime}>
+                    <Text style={{ color: currentTheme.white }}>
                         {label.EstimatedTime7days}
                     </Text>
                 </View>
-                <Text style={styles.orderInfoText}>
+                <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
                     {label.OrderInfo}
                 </Text>
                 <View style={styles.PricingRow}>
-                    <Text style={styles.PricingTxt}>
+                    <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
                         {label.SubTotal}
                     </Text>
-                    <Text style={styles.PricingTxt}>
+                    <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
                         $ {Number(totalAmount).toFixed(2)}
                     </Text>
                 </View>
                 <View style={styles.PricingRow}>
-                    <Text style={styles.PricingTxt}>
+                    <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
                         {label.ShippingCost}
                     </Text>
-                    <Text style={styles.PricingTxt}>
+                    <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
                         $ {shippingCost}
                     </Text>
                 </View>
                 <View style={styles.PricingRow}>
-                    <Text style={styles.orderInfoText}>
+                    <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
                         {label.Total}
                     </Text>
-                    <Text style={styles.orderInfoText}>
+                    <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
                         {Number(shippingCost + totalAmount).toFixed(2)}
                     </Text>
                 </View>
@@ -184,7 +187,7 @@ export default function MyCart(props) {
 
                 {/* =======================================delete Modal========================== */}
                 <CustomModal isvisible={isvisible}>
-                    <Text style={styles.modelText}>
+                    <Text style={[styles.modelText, { color: currentTheme.defaultTextColor, }]}>
                         {label.AreYourSureYouWantToRemoveTheProductFromCart}
                     </Text>
                     <LottieView
@@ -196,7 +199,7 @@ export default function MyCart(props) {
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 
 
-                        <CustomButton btnStyle={styles.btnStyle}
+                        <CustomButton btnStyle={[styles.btnStyle, { backgroundColor: currentTheme.Background }]}
                             txtstyle={{ color: COLORS.primary }}
                             onPress={() => {
                                 handleRemoveFromCart(selectCartid)
@@ -237,7 +240,7 @@ const styles = StyleSheet.create({
     },
     productText: {
         fontSize: SIZES.twenty - 3,
-        color: COLORS.defaultTextColor,
+
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "600"
     },
@@ -248,16 +251,13 @@ const styles = StyleSheet.create({
     },
     quantityText: {
 
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty,
         marginHorizontal: SIZES.ten,
         fontWeight: "600"
     },
     btnCheckOut: {
         marginBottom: SIZES.twenty,
-    },
-    estTime: {
-        color: COLORS.white
     },
 
     estArea: {
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
         marginVertical: SIZES.ten
     },
     orderInfoText: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty,
         fontWeight: "600"
     },
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
         color: COLORS.black
     },
     PricingTxt: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: FONTFAMILY.Poppins
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
         width: "48%"
     },
     modelText: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen + 2,
         textAlign: "center",
         lineHeight: 30,

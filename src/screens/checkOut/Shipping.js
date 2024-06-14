@@ -59,7 +59,7 @@ const Shipping = () => {
                 }}
                 placeholder={label.EnterFullName}
             />
-            <Text style={styles.textLabel}> {label.PhoneNumber} <Text style={styles.required}> *</Text></Text>
+
 
             <PhoneTextInput phone={phone} setPhone={setPhone} setCountryCode={setCountryCode} />
 

@@ -3,24 +3,28 @@ import React from 'react'
 import Icon, { IconType } from './Icons'
 import { COLORS, FONTFAMILY, SIZES, STYLES } from '../constants'
 import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../constants/theme'
 
 export default function HeaderWithArrow(props) {
     const navigation = useNavigation()
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
         <View style={styles.row}>
             <TouchableOpacity
                 onPress={() => {
                     navigation.goBack()
                 }}
-                style={[styles.IconContainer, STYLES.shadow]}>
+                style={[styles.IconContainer, STYLES.shadow, { backgroundColor: currentTheme.white, }]}>
                 <Icon
                     name={"chevron-back"}
                     size={SIZES.twentyFive}
                     type={IconType.Ionicons}
-                    color={COLORS.black}
+                    color={currentTheme.black}
                 />
             </TouchableOpacity>
-            <Text style={styles.text}>
+            <Text style={[styles.text, { color: currentTheme.defaultTextColor, }]}>
                 {props.label}
             </Text>
         </View>
@@ -35,12 +39,12 @@ const styles = StyleSheet.create({
         marginHorizontal: SIZES.five
     },
     IconContainer: {
-        backgroundColor: COLORS.white,
+
         padding: SIZES.five,
         borderRadius: SIZES.fifty
     },
     text: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty,
         marginLeft: SIZES.fifteen,
         fontWeight: "bold",

@@ -1,24 +1,31 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
+import { SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
+
 
 export default function Login(props) {
     const { navigation } = props
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
+
+    console.log("theme", theme)
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
-                <Text style={styles.heading}>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor }]}>
                     {label.Login}
                 </Text>
-                <Text style={styles.subHeading}>
+                <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
                     {label.NoAccount}
 
                     <Text
                         onPress={() => { navigation.navigate(SCREENS.SignUp) }}
-                        style={{ color: COLORS.primary, fontWeight: "600" }}>
+                        style={{ color: currentTheme.primary, fontWeight: "600" }}>
                         {" "}
                         {label.Signup}
                     </Text>
@@ -35,7 +42,7 @@ export default function Login(props) {
                 <TouchableOpacity
                     onPress={() => navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })}
                 >
-                    <Text style={styles.forget}>
+                    <Text style={[styles.forget, { color: currentTheme.primary, }]}>
                         {label.ForgotPassword}
                     </Text>
                 </TouchableOpacity>
@@ -46,12 +53,12 @@ export default function Login(props) {
                     label={label.Login}
                 />
             </View>
-            <Text style={styles.bottamText}>
+            <Text style={[styles.bottamText, { color: currentTheme.defaultTextColor, }]}>
                 {label.YouAgreeToOur}
-                <Text style={{ color: COLORS.primary }}>{" "}{label.PrivacyPolicy}{" "}
+                <Text style={{ color: currentTheme.primary }}>{" "}{label.PrivacyPolicy}{" "}
                 </Text>
                 {label.And}
-                <Text style={{ color: COLORS.primary }}>
+                <Text style={{ color: currentTheme.primary }}>
                     {" "}{label.TermsAndConditions}{" "}
                 </Text>
 
@@ -62,7 +69,7 @@ export default function Login(props) {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twentyFive + 3,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -70,13 +77,13 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.ten,
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twenty - 2,
         fontWeight: "500",
         fontFamily: "Poppins"
     },
     forget: {
-        color: COLORS.primary,
+
         fontFamily: "Poppins",
         fontSize: SIZES.fifteen + 1,
         fontWeight: "600",
@@ -85,7 +92,7 @@ const styles = StyleSheet.create({
         marginBottom: SIZES.fifteen
     },
     bottamText: {
-        color: COLORS.defaultTextColor,
+
         fontWeight: "400",
         fontFamily: "Poppins",
         textAlign: "center",

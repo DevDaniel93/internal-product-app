@@ -12,6 +12,7 @@ import MyOrder from '../../screens/order/MyOrder';
 import MyCart from '../../screens/cart/MyCart';
 import DrawerSceneWrapper from '../../components/DrawerSceneWrapper';
 import { useSelector } from 'react-redux';
+import { getTheme } from '../../constants/theme';
 
 
 const Demo = () => {
@@ -33,6 +34,8 @@ const TabArr = [
 const Tab = createBottomTabNavigator();
 
 const TabButton = (props) => {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const { item, onPress, accessibilityState } = props;
     const focused = accessibilityState.selected;
     const viewRef = useRef(null);
@@ -59,14 +62,14 @@ const TabButton = (props) => {
                 {cart.length > 0 && item.label === "Cart" && !focused && <View style={styles.dot} />}
                 <Animatable.View
                     ref={viewRef}
-                    style={[StyleSheet.absoluteFillObject, { backgroundColor: COLORS.primary, borderRadius: SIZES.twentyFive, }]} />
+                    style={[StyleSheet.absoluteFillObject, { backgroundColor: currentTheme.primary, borderRadius: SIZES.twentyFive, }]} />
                 <View style={[styles.btn]}>
 
-                    <Icon type={item.type} name={item.icon} color={focused ? COLORS.white : COLORS.black} size={SIZES.twenty} />
+                    <Icon type={item.type} name={item.icon} color={focused ? currentTheme.Background : currentTheme.defaultTextColor} size={SIZES.twenty} />
                     <Animatable.View
                         ref={textViewRef}>
                         {focused && <Text style={{
-                            color: COLORS.white, paddingHorizontal: SIZES.ten
+                            color: currentTheme.Background, paddingHorizontal: SIZES.ten
                         }}>{item.label}</Text>}
                     </Animatable.View>
                 </View>
@@ -76,21 +79,23 @@ const TabButton = (props) => {
 }
 
 export default function BottamTab() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
         <DrawerSceneWrapper>
 
 
             <SafeAreaView style={{ flex: 1 }}>
                 <Tab.Navigator
-
                     screenOptions={{
                         headerShown: false,
                         tabBarStyle: {
                             borderTopWidth: 3,
                             borderLeftWidth: 1,
                             borderRightWidth: 1,
-                            borderColor: COLORS.primary,
+                            borderColor: currentTheme.primary,
                             position: 'absolute',
+                            backgroundColor: currentTheme.Background,
                             // margin: SIZES.twenty,
                             marginBottom: SIZES.twenty,
                             marginHorizontal: SIZES.twenty,
@@ -113,7 +118,7 @@ export default function BottamTab() {
                                 listeners={({ navigation }) => ({
                                     tabPress: e => {
                                         e.preventDefault();
-                                        if (item.label === 'Account') {
+                                        if (item.route === "Account") {
                                             navigation.openDrawer();
                                         } else {
                                             navigation.navigate(item.route);

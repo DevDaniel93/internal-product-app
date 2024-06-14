@@ -5,19 +5,23 @@ import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import OtpInput from '../../components/OtpInput'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function EmailVerification(props) {
     const { navigation } = props
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const handleCodeFilled = (code) => {
         Alert.alert('OTP Code Entered', code);
     };
     return (
-        <View style={STYLES.container}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
-                <Text style={styles.heading}>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     {label.EmailVerification}
                 </Text>
-                <Text style={styles.subHeading}>
+                <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
                     {label.EnterCode}
                 </Text>
                 <OtpInput codeLength={6}
@@ -42,7 +46,7 @@ export default function EmailVerification(props) {
 
 const styles = StyleSheet.create({
     heading: {
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.twentyFive,
         fontWeight: "500",
         fontFamily: "Poppins",
@@ -50,7 +54,7 @@ const styles = StyleSheet.create({
     },
     subHeading: {
         marginTop: SIZES.ten,
-        color: COLORS.defaultTextColor,
+
         fontSize: SIZES.fifteen,
         fontWeight: "500",
         fontFamily: "Poppins"

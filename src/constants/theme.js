@@ -1,13 +1,12 @@
-import { Dimensions, StyleSheet, Platform } from "react-native";
-
+import { Dimensions, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 export const { width, height } = Dimensions.get("window");
-
 /* * Colors * */
 export const COLORS = {
     defaultTextColor: "#000000",
     defaultBtnColor: "#ffffff",
     lightBackground: "#ffffff",
-    darkBackground:"#000000",
+    darkBackground: "#000000",
     primary: "#FF856A",
     purple: "#4e1789",
     lightPurple: "#871af6",
@@ -32,7 +31,66 @@ export const COLORS = {
     cyan: '#21D4B4',
     lightGray: '#C0C0C0',
 };
-
+export const DarkTheme = {
+    defaultTextColor: "#ffffff",
+    defaultBtnColor: "#ffffff",
+    Background: "#131313",
+    primary: "#FF856A",
+    purple: "#4e1789",
+    lightPurple: "#871af6",
+    darkPurple: "#382649",
+    purpleShade: "#3c225d",
+    textGrey: "#8a7e9a",
+    textColor: "#B46BFF",
+    brownGray: "#5d536a",
+    black: "#000000",
+    white: "#ffffff",
+    blue: "#0037c1",
+    gray: "#767577",
+    star: "#FFD700",
+    golden: "#FFD700",
+    trueGreen: "#1eaf08",
+    halfWhite: "#eeeeee",
+    charcoalGrey: "#4a4b4d",
+    veryLightpink: "#ffeef2",
+    transparent: "transparent",
+    pink: "#d323a0",
+    red: "#FF0000",
+    cyan: '#21D4B4',
+    lightGray: '#C0C0C0',
+};
+export const LightTheme = {
+    defaultTextColor: "#000000",
+    defaultBtnColor: "#ffffff",
+    Background: "#ffffff",
+    darkBackground: "#000000",
+    primary: "#FF856A",
+    purple: "#4e1789",
+    lightPurple: "#871af6",
+    darkPurple: "#382649",
+    purpleShade: "#3c225d",
+    textGrey: "#8a7e9a",
+    textColor: "#B46BFF",
+    brownGray: "#5d536a",
+    black: "#000000",
+    white: "#ffffff",
+    blue: "#0037c1",
+    gray: "#767577",
+    star: "#FFD700",
+    golden: "#FFD700",
+    trueGreen: "#1eaf08",
+    halfWhite: "#eeeeee",
+    charcoalGrey: "#4a4b4d",
+    veryLightpink: "#ffeef2",
+    transparent: "transparent",
+    pink: "#d323a0",
+    red: "#FF0000",
+    cyan: '#21D4B4',
+    lightGray: '#C0C0C0',
+};
+export const getTheme = (theme) => {
+    return theme === 'light' ? LightTheme : DarkTheme;
+};
 const appTheme = { COLORS };
 
 export default appTheme;
@@ -220,9 +278,9 @@ export const FONTS = {
 export const STYLES = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightBackground,
         paddingHorizontal: SIZES.twenty,
         paddingTop: SIZES.twenty * 1.5,
+        // backgroundColor: COLORS.white
         // marginTop: 20
 
     },

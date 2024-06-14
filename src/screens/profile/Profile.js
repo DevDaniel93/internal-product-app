@@ -8,8 +8,12 @@ import { Icon, IconType } from '../../components'
 import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
 import CustomModal from '../../components/CustomModal'
 import { label } from '../../constants/lables'
+import { useSelector } from 'react-redux'
+import { getTheme } from '../../constants/theme'
 
 export default function Profile(props) {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     const { navigation } = props
     const [isEdit, setIsEdit] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
@@ -46,8 +50,8 @@ export default function Profile(props) {
         setIsEdit(pre => !pre)
     }
     return (
-        <View style={STYLES.container}>
-            <HeaderWithArrow label={isEdit ? label.EditProfile: label.Profile} />
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
+            <HeaderWithArrow label={isEdit ? label.EditProfile : label.Profile} />
             <ProfilePic />
             <EditText
                 value={firstName}
@@ -75,7 +79,7 @@ export default function Profile(props) {
                         setChangePasswordModal(!changePasswordModal)
                     }}
                     txtstyle={styles.txtstyle}
-                    btnStyle={styles.btnStyle}
+                    btnStyle={[styles.btnStyle, { backgroundColor: currentTheme.Background, }]}
                     label={label.ChangePassword}
                 />
             }
@@ -124,7 +128,7 @@ export default function Profile(props) {
 
 const styles = StyleSheet.create({
     btnStyle: {
-        backgroundColor: COLORS.white,
+
         borderColor: COLORS.primary,
         borderWidth: 1,
 
