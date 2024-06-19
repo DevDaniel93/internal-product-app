@@ -1,0 +1,19 @@
+{
+  "ConfirmationMail": "Courriel de confirmation",
+  "EnterEmail": "Entrez votre adresse e-mail pour vérification.",
+  "Email": "E-mail",
+  "Send": "Envoyer",
+  "EmailVerification": "vérification de l'E-mail",
+  "EnterCode": "Entrez le code de vérification à 6 chiffres envoyé à votre adresse e-mail.",
+  "Proceed": "Procéder",
+  "Login": "Se connecter",
+  "NoAccount": "Vous n'avez pas de compte ?",
+  "Signup": "S'inscrire",
+  "Password": "Mot de passe",
+  "ForgotPassword": "Mot de passe oublié?",
+  "YouAgreeToOur": "En vous connectant, vous acceptez notre",
+  "PrivacyPolicy": "politique de confidentialité",
+  "And": "et",
+  "TermsAndConditions": "Termes et conditions.",
+  "NewPassword": "nouveau mot de passe"
+}

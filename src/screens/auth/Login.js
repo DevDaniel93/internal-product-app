@@ -5,37 +5,41 @@ import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
-import { getTheme } from '../../constants/theme'
+import { COLORS, getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 
 export default function Login(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
 
-    console.log("theme", theme)
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor }]}>
-                    {label.Login}
+                    {t('Login')}
+
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.NoAccount}
+                    {t('NoAccount')}
 
                     <Text
                         onPress={() => { navigation.navigate(SCREENS.SignUp) }}
                         style={{ color: currentTheme.primary, fontWeight: "600" }}>
                         {" "}
-                        {label.Signup}
+                        {t('Signup')}
+
                     </Text>
                 </Text>
                 <EditText
-                    label={label.Email}
+                    label={t('Email')}
+
                     required
                 />
                 <EditText
-                    label={label.Password}
+                    label={t('Password')}
                     password
                     required
                 />
@@ -43,23 +47,31 @@ export default function Login(props) {
                     onPress={() => navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })}
                 >
                     <Text style={[styles.forget, { color: currentTheme.primary, }]}>
-                        {label.ForgotPassword}
+
+                        {t('ForgotPassword')}
+
                     </Text>
                 </TouchableOpacity>
+
                 <CustomButton
                     onPress={() => {
                         navigation.navigate(SCREENS.Drawer)
                     }}
-                    label={label.Login}
+
+                    label={t('Login')}
                 />
             </View>
+
             <Text style={[styles.bottamText, { color: currentTheme.defaultTextColor, }]}>
-                {label.YouAgreeToOur}
+
+                {t('YouAgreeToOur')}
                 <Text style={{ color: currentTheme.primary }}>{" "}{label.PrivacyPolicy}{" "}
                 </Text>
-                {label.And}
+
+                {t('And')}
                 <Text style={{ color: currentTheme.primary }}>
-                    {" "}{label.TermsAndConditions}{" "}
+
+                    {" "}   {t('TermsAndConditions')}{" "}
                 </Text>
 
             </Text>

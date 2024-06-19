@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
+import './src/translation/i18n';
 import {
   LogBox,
   StyleSheet,
@@ -15,7 +16,7 @@ import MainNavigation from './src/navigation/MainNavigation';
 import { AnimatedSplash, Icon, IconType } from './src/components';
 import { COLORS, FONTS, IMAGES, SIZES } from './src/constants';
 import { store } from './src/redux/store';
-import DrawerSceneWrapper from './src/components/DrawerSceneWrapper';
+
 
 const App = () => {
   const [networkState, setNetworkState] = useState(true);
@@ -41,19 +42,21 @@ const App = () => {
   });
 
   return (
-    <AnimatedSplash
-      translucent={true}
-      isLoaded={isLoaded}
-      logoImage={IMAGES.logo}
-      backgroundColor={COLORS.primary}
-      logoHeight={SIZES.fifty * 4}
-      logoWidth={SIZES.fifty * 4}>
-      <SafeAreaView style={styles.safeAreaView}>
-        <StatusBar
-          backgroundColor={COLORS.transparent}
-          translucent={Platform.OS === 'android'}
-          barStyle={"dark-content"}
-        />
+    <SafeAreaView style={styles.safeAreaView}>
+
+      <StatusBar
+        backgroundColor={COLORS.transparent}
+        // translucent={Platform.OS === 'android'}
+        barStyle={"dark-content"}
+      />
+      <AnimatedSplash
+        translucent={true}
+        isLoaded={isLoaded}
+        logoImage={IMAGES.logo}
+        backgroundColor={COLORS.primary}
+        logoHeight={SIZES.fifty * 4}
+        logoWidth={SIZES.fifty * 4}>
+
 
         {networkState ? (
           <Provider store={store}>
@@ -86,15 +89,15 @@ const App = () => {
             </View>
           </View>
         )}
-      </SafeAreaView>
-    </AnimatedSplash>
+      </AnimatedSplash>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: COLORS.lightBackground,
+
   },
   noInternetView: {
     flex: 1,

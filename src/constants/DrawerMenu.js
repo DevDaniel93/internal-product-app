@@ -21,6 +21,7 @@ export const Menu = [
     { route: SCREENS.contactUs, label: 'Contact Us', type: IconType.MaterialIcons, icon: 'contact-page', component: ContactUs, notification: 0, },
     { route: SCREENS.termAndCondition, label: 'Terms and Conditon', type: IconType.Foundation, icon: 'clipboard-notes', component: termAndCondition, notification: 0, },
     { route: SCREENS.privacyPolicy, label: 'Privacy Policy', type: IconType.MaterialCommunityIcons, icon: 'credit-card-scan', component: PrivacyPolicy, notification: 0, },
+    { route: "language", label: 'Select Language', type: IconType.FontAwesome, icon: 'language', component: PrivacyPolicy, notification: 0, },
     { route: 'logout', label: 'logout', type: IconType.Ionicons, icon: 'log-out-sharp', component: DrawerScreen, notification: 0, },
 ];
 

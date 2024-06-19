@@ -12,8 +12,8 @@ export default function Signup(props) {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     return (
-        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <ScrollView style={{ flex: 1 }}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
+            <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     {label.Sign_Up}
                 </Text>

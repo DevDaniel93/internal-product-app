@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SCREENS } from "../constants";
+import { COLORS, SCREENS } from "../constants";
 import { View } from "react-native";
 import BottamTab from "./bottamTab/BottamTab";
 import DrawerNav from "./drawer/DrawerNav";
@@ -22,13 +22,16 @@ import PrivacyPolicy from "../screens/content/PrivacyPolicy";
 import AboutUs from "../screens/content/AboutUs";
 import Profile from "../screens/profile/Profile";
 import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
+import { useSelector } from "react-redux";
+import { getTheme } from "../constants/theme";
 
 const Stack = createNativeStackNavigator();
 const screenOptions = {
     headerShown: false,
     animation: "slide_from_right",
     headerStyle: {
-        backgroundColor: '#121212',
+        color: COLORS.white
+        // backgroundColor: '#121212',
     },
 
 };
@@ -40,9 +43,12 @@ const Demo = () => {
     )
 }
 export default function MainNavigation() {
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
     return (
         <NavigationContainer
         >
+
             <Stack.Navigator
                 screenOptions={screenOptions}
                 initialRouteName={SCREENS.Login}
@@ -53,6 +59,9 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.ConfirmationMail} component={ConfirmationMail}
                     options={({ route }) => ({
                         headerShown: true,
+                        headerTintColor: currentTheme.defaultTextColor,
+                        headerTitleStyle: { color: currentTheme.defaultTextColor },
+                        headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
                         headerTitle: route.params.title,
                     })}
@@ -60,6 +69,9 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.EmailVerification} component={EmailVerification}
                     options={({ route }) => ({
                         headerShown: true,
+                        headerTintColor: currentTheme.defaultTextColor,
+                        headerTitleStyle: { color: currentTheme.defaultTextColor },
+                        headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
                         headerTitle: "Forgot Password",
                     })} />
@@ -67,6 +79,9 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.NewPassword} component={NewPassword}
                     options={({ route }) => ({
                         headerShown: true,
+                        headerTintColor: currentTheme.defaultTextColor,
+                        headerTitleStyle: { color: currentTheme.defaultTextColor },
+                        headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
                         headerTitle: "Create Password",
                     })}

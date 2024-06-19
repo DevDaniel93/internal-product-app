@@ -13,14 +13,16 @@ import LottieView from 'lottie-react-native';
 import CustomButton from '../../components/CustomButton';
 import { getTheme } from '../../constants/theme';
 import { toggleTheme } from '../../redux/slices/theme';
-
+import { useTranslation } from 'react-i18next';
 
 export default CustomDrawer = (props) => {
     const navigation = useNavigation();
+    const { t, i18n } = useTranslation();
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const dispatch = useDispatch()
     const [isvisible, setIsvisible] = useState(false)
+    const [isvisibleLanguageModal, setIsvisibleLanguageModal] = useState(false)
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => {
         console.log("isEnabled", isEnabled)
@@ -61,6 +63,9 @@ export default CustomDrawer = (props) => {
                                         if (item?.route === "logout") {
                                             setIsvisible(!isvisible)
                                         }
+                                        else if (item?.route === "language") {
+                                            setIsvisibleLanguageModal(!isvisibleLanguageModal)
+                                        }
                                         else {
 
                                             navigation.navigate(item?.route)
@@ -78,6 +83,33 @@ export default CustomDrawer = (props) => {
                     }
 
                 </ScrollView>
+                {/* ===========================================language select =================================== */}
+                <CustomModal isvisible={isvisibleLanguageModal}>
+                    <Text style={[styles.modelText, { color: currentTheme.defaultTextColor }]}>
+                        Select {" "}
+                        <Text style={{ color: COLORS.primary }}>
+                            Langauge
+                        </Text>
+                    </Text>
+                    <TouchableOpacity style={[styles.languageContiner, { borderColor: currentTheme.primary }]} onPress={() => {
+                        i18n.changeLanguage("en")
+                        setIsvisibleLanguageModal(!isvisibleLanguageModal)
+                    }
+                    }>
+                        <Text style={{ color: currentTheme.defaultTextColor, fontSize: SIZES.fifteen }}>English</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.languageContiner, { borderColor: currentTheme.primary }]}
+                        onPress={() => {
+                            i18n.changeLanguage("fr")
+                            setIsvisibleLanguageModal(!isvisibleLanguageModal)
+                        }
+                        }>
+                        <Text style={{ color: currentTheme.defaultTextColor, fontSize: SIZES.fifteen }}>French</Text>
+                    </TouchableOpacity>
+
+                </CustomModal>
+
+                {/* ========================= logout modal========================== */}
                 <CustomModal isvisible={isvisible}>
                     <Text style={[styles.modelText, { color: currentTheme.defaultTextColor }]}>
                         Are you sure you want to {" "}
@@ -181,5 +213,11 @@ const styles = StyleSheet.create({
         marginRight: SIZES.ten,
         fontWeight: "600",
         fontFamily: FONTFAMILY.Poppins
+    },
+    languageContiner: {
+        borderWidth: 1,
+        padding: SIZES.ten,
+        borderRadius: SIZES.ten,
+        marginTop: SIZES.ten
     }
 });

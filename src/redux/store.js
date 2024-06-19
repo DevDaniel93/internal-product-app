@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import UserTypeReducer from './slices/userType';
 import CartReducer from './slices/Cart';
 import ThemeReducer from './slices/theme';
+import AuthReducer from './slices/auth';
 
 
 const persistConfig = {
@@ -15,7 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     Theme: ThemeReducer,
     Cart: CartReducer,
-
+    Auth: AuthReducer,
     UserType: UserTypeReducer,
 });
 
