@@ -3,25 +3,26 @@ import React from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function ConfirmationMail(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.ConfirmationMail}
+                    {t('ConfirmationMail')}
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.EnterEmail}
+                    {t('EnterEmail')}
                 </Text>
                 <EditText
-                    label={label.Email}
+                    label={t('Email')}
                     required
                 />
 
@@ -29,7 +30,7 @@ export default function ConfirmationMail(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.EmailVerification)
                     }}
-                    label={label.Send}
+                    label={t('Send')}
                 />
             </View>
 

@@ -3,61 +3,73 @@ import React from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function Signup(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
             <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.Sign_Up}
+                    {t('Sign_Up')}
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.AlreadyHaveAccount}
+
+                    {t('AlreadyHaveAccount')}
                     <Text
                         onPress={() => { navigation.navigate(SCREENS.Login) }}
                         style={{ color: currentTheme.primary, fontWeight: "600" }}>
                         {" "}
-                        {label.Login}
+                        {t('Login')}
+
                     </Text>
                 </Text>
                 <EditText
-                    label={label.Username}
-                    placeholder={label.EnterYourUsername}
+                    label={t('Username')}
+                    placeholder={t('EnterYourUsername')}
+
                 />
                 <EditText
-                    label={label.FirstName}
-                    placeholder={label.EnterYourFirstName}
+                    label={t('FirstName')}
+
+                    placeholder={t('EnterYourFirstName')}
+
                 />
                 <EditText
-                    label={label.LastName}
-                    placeholder={label.EnterYourLastName}
+                    label={t('LastName')}
+
+                    placeholder={t('EnterYourLastName')}
+
                 />
                 <EditText
-                    label={label.EnterYourEmail}
-                    placeholder={label.EnterYourEmail}
+                    label={t('EnterYourEmail')}
+                    placeholder={t('EnterYourEmail')}
+
                 />
                 <EditText
-                    label={label.EnterYourPassword}
-                    placeholder={label.EnterYourPassword}
+                    label={t('EnterYourPassword')}
+                    placeholder={t('EnterYourPassword')}
+
                     password
                 />
                 <EditText
-                    label={label.ConfirmPassword}
-                    placeholder={label.ConfirmYourPassword}
+                    label={t('ConfirmPassword')}
+                    placeholder={t('ConfirmYourPassword')}
+
                     password
                 />
 
                 <CustomButton
                     onPress={() => {
-                        navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })
+                        navigation.navigate(SCREENS.ConfirmationMail, { title: t('ForgotPassword') })
                     }}
-                    label={label.Sign_Up}
+                    label={t('Sign_Up')}
+
                 />
             </ScrollView>
 

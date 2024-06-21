@@ -304,7 +304,20 @@ export const CONSTANTS = {
 
     API_URLS: {
         BASE: "",
-        LOGIN: ""
+        LOGIN: "",
+        CREATE_ORDER: "/wp-json/wc/v3/orders",
+        RETRIEVE_ORDER: " /wp-json/wc/v3/orders/",
+        ALL_ORDER: "/wp-json/wc/v3/orders",
+        UPDATE_ORDER: "/wp-json/wc/v3/orders/",
+        DELETE_ORDER: "/wp-json/wc/v3/orders/",
+        CREATE_PRODUCT: "/wp-json/wc/v3/products",
+        RETRIEVE_PRODUCT: "/wp-json/wc/v3/products/",
+        ALL_PRODUCT: "/wp-json/wc/v3/products",
+        UPDATE_PRODUCT: "/wp-json/wc/v3/products/",
+        DELETE_PRODUCT: "/wp-json/wc/v3/products/"
+
+
+
 
     },
 

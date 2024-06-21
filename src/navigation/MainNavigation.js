@@ -24,6 +24,7 @@ import Profile from "../screens/profile/Profile";
 import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 import { useSelector } from "react-redux";
 import { getTheme } from "../constants/theme";
+import { useTranslation } from "react-i18next";
 
 const Stack = createNativeStackNavigator();
 const screenOptions = {
@@ -45,6 +46,7 @@ const Demo = () => {
 export default function MainNavigation() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
     return (
         <NavigationContainer
         >
@@ -73,7 +75,8 @@ export default function MainNavigation() {
                         headerTitleStyle: { color: currentTheme.defaultTextColor },
                         headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
-                        headerTitle: "Forgot Password",
+                        headerTitle: t('ForgotPassword')
+
                     })} />
 
                 <Stack.Screen name={SCREENS.NewPassword} component={NewPassword}
@@ -83,7 +86,7 @@ export default function MainNavigation() {
                         headerTitleStyle: { color: currentTheme.defaultTextColor },
                         headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
-                        headerTitle: "Create Password",
+                        headerTitle: t('CreatePassword')
                     })}
                 />
                 <Stack.Screen name={SCREENS.PasswordSuccessful} component={PasswordSuccessful} />

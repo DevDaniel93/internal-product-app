@@ -9,8 +9,8 @@ import { useFocusEffect } from '@react-navigation/native'
 import CustomButton from '../../components/CustomButton'
 import CustomModal from '../../components/CustomModal'
 import LottieView from 'lottie-react-native';
-import { label } from '../../constants/lables'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function MyCart(props) {
     const { navigation } = props
@@ -24,6 +24,8 @@ export default function MyCart(props) {
     const [voucherCode, setVoucherCode] = useState("")
     const [shippingCost, setShippingCost] = useState(0)
     const totalAmount = useSelector(selectTotalAmount);
+    const { t } = useTranslation();
+
 
     // ================================Remove item Cart===============================
     const handleRemoveFromCart = (productId) => {
@@ -56,11 +58,13 @@ export default function MyCart(props) {
             <View style={[styles.voucherContainer, { borderColor: currentTheme.defaultTextColor }]}>
                 <TextInput
                     placeholderTextColor={COLORS.gray}
-                    placeholder={label.EnterVoucherCode}
+                    placeholder={t('EnterVoucherCode')}
+
                 />
                 <CustomButton
                     btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
-                    label={label.Apply}
+
+                    label={t('Apply')}
                 />
                 {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
                     <Text style={{ color: COLORS.white, }}>
@@ -132,7 +136,8 @@ export default function MyCart(props) {
 
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow
-                label={label.MyCart} />
+                label={t('MyCart')}
+            />
             <ScrollView showsVerticalScrollIndicator={false} style={{ flexGrow: 1 }}>
 
 
@@ -146,15 +151,18 @@ export default function MyCart(props) {
 
                 <View style={styles.estArea}>
                     <Text style={{ color: currentTheme.white }}>
-                        {label.EstimatedTime7days}
+
+                        {t('EstimatedTime7days')}
                     </Text>
                 </View>
                 <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
-                    {label.OrderInfo}
+
+                    {t('OrderInfo')}
                 </Text>
                 <View style={styles.PricingRow}>
                     <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
-                        {label.SubTotal}
+
+                        {t('SubTotal')}
                     </Text>
                     <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
                         $ {Number(totalAmount).toFixed(2)}
@@ -162,18 +170,22 @@ export default function MyCart(props) {
                 </View>
                 <View style={styles.PricingRow}>
                     <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
-                        {label.ShippingCost}
+
+                        {t('ShippingCost')}
+
                     </Text>
                     <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
-                        $ {shippingCost}
+
+                        $ {Number(shippingCost).toFixed(2)}
                     </Text>
                 </View>
                 <View style={styles.PricingRow}>
                     <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
-                        {label.Total}
+
+                        {t('Total')}
                     </Text>
                     <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
-                        {Number(shippingCost + totalAmount).toFixed(2)}
+                        $ {Number(shippingCost + totalAmount).toFixed(2)}
                     </Text>
                 </View>
                 <VoucherApply />
@@ -182,13 +194,15 @@ export default function MyCart(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.checkOut)
                     }}
-                    label={label.Checkout}
+
+                    label={t('Checkout')}
                 />
 
                 {/* =======================================delete Modal========================== */}
                 <CustomModal isvisible={isvisible}>
                     <Text style={[styles.modelText, { color: currentTheme.defaultTextColor, }]}>
-                        {label.AreYourSureYouWantToRemoveTheProductFromCart}
+
+                        {t('AreYourSureYouWantToRemoveTheProductFromCart')}
                     </Text>
                     <LottieView
                         style={styles.lottie}
@@ -205,9 +219,10 @@ export default function MyCart(props) {
                                 handleRemoveFromCart(selectCartid)
                                 setIsvisible(!isvisible)
                             }}
-                            label={label.Yes} />
+                            label={t('Yes')}
+                        />
                         <CustomButton btnStyle={styles.btnStyle1}
-                            label={label.No}
+                            label={t('No')}
                             onPress={() => {
                                 setIsvisible(!isvisible)
                             }}

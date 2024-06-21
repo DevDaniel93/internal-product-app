@@ -7,13 +7,15 @@ import CustomButton from '../../components/CustomButton'
 import { Icon, IconType } from '../../components'
 import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
 import CustomModal from '../../components/CustomModal'
-import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function Profile(props) {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
+
     const { navigation } = props
     const [isEdit, setIsEdit] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
@@ -51,27 +53,30 @@ export default function Profile(props) {
     }
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <HeaderWithArrow label={isEdit ? label.EditProfile : label.Profile} />
+            <HeaderWithArrow label={isEdit ? t('EditProfile') : t('Profile')} />
             <ProfilePic />
             <EditText
-                value={firstName}
+
+                value={t('FirstName')}
                 editable={isEdit ? true : false}
-                label={label.FirstName}
+                label={t('FirstName')}
             />
             <EditText
+                value={t('LastName')}
                 editable={isEdit ? true : false}
-                value={lastName}
-                label={label.LastName}
+                label={t('LastName')}
+
             />
             <EditText
+                value={t('Email')}
                 editable={isEdit ? true : false}
-                value={email}
-                label={label.Email}
+                label={t('Email')}
+
             />
             <CustomButton
                 onPress={handleChanges}
                 btnStyle={{ marginTop: SIZES.twentyFive }}
-                label={isEdit ? label.SaveChanges : label.EditProfile}
+                label={isEdit ? t('SaveChanges') : t('EditProfile')}
             />
             {isEdit === true &&
                 <CustomButton
@@ -80,7 +85,8 @@ export default function Profile(props) {
                     }}
                     txtstyle={styles.txtstyle}
                     btnStyle={[styles.btnStyle, { backgroundColor: currentTheme.Background, }]}
-                    label={label.ChangePassword}
+                    label={t('ChangePassword')}
+
                 />
             }
             <UploadPhotoModal
@@ -92,25 +98,22 @@ export default function Profile(props) {
                 isvisible={changePasswordModal}
             >
                 <Text style={styles.heading}>
-                    {label.ChangePassword}
+                    {t('ChangePassword')}
+
                 </Text>
                 <EditText
-
                     required
-                    label={label.EnterOldPassword}
+                    label={t('EnterOldPassword')}
 
                 />
                 <EditText
-
                     required
-                    label={label.EnterNewPassword}
+                    label={t('EnterNewPassword')}
 
                 />
                 <EditText
-
                     required
-                    label={label.ConfirmPassword}
-
+                    label={t('ConfirmPassword')}
                 />
                 <CustomButton
                     btnStyle={{ marginVertical: SIZES.fifteen }}
@@ -118,7 +121,8 @@ export default function Profile(props) {
                         setChangePasswordModal(!changePasswordModal)
 
                     }}
-                    label={label.Update} />
+                    label={t('Update')}
+                />
 
             </CustomModal>
 

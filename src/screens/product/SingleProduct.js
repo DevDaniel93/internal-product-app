@@ -7,12 +7,14 @@ import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCart, emptyCart } from '../../redux/slices/Cart'
 import CustomModal from '../../components/CustomModal'
-import { label } from '../../constants/lables'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function SingleProduct(props) {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
+
     const { navigation, route } = props
     const { productDetails } = route?.params
     const [quantity, setQuantity] = useState(1)
@@ -176,7 +178,7 @@ export default function SingleProduct(props) {
                     onPress={() => {
                         addToCart()
                     }}
-                    label={"Add to cart | $ " + Number(quantity * productDetails?.price).toFixed(2)}
+                    label={t('Addtocart') + " | $ " + Number(quantity * productDetails?.price).toFixed(2)}
                 />
                 <Reviews />
             </View>
@@ -193,7 +195,8 @@ export default function SingleProduct(props) {
                     />
                 </TouchableOpacity>
                 <Text style={styles.modalText}>
-                    {label.SelectProductSize}
+
+                    {t('SelectProductSize')}
                 </Text>
             </CustomModal>
         </ScrollView>

@@ -3,7 +3,6 @@ import React from 'react'
 import { SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { COLORS, getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
@@ -44,7 +43,7 @@ export default function Login(props) {
                     required
                 />
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(SCREENS.ConfirmationMail, { title: "Forgot Password" })}
+                    onPress={() => navigation.navigate(SCREENS.ConfirmationMail, { title: t('ForgotPassword') })}
                 >
                     <Text style={[styles.forget, { color: currentTheme.primary, }]}>
 
@@ -65,7 +64,7 @@ export default function Login(props) {
             <Text style={[styles.bottamText, { color: currentTheme.defaultTextColor, }]}>
 
                 {t('YouAgreeToOur')}
-                <Text style={{ color: currentTheme.primary }}>{" "}{label.PrivacyPolicy}{" "}
+                <Text style={{ color: currentTheme.primary }}>{" "}{t('PrivacyPolicy')}{" "}
                 </Text>
 
                 {t('And')}

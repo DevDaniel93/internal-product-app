@@ -49,47 +49,47 @@ const App = () => {
         // translucent={Platform.OS === 'android'}
         barStyle={"dark-content"}
       />
-      <AnimatedSplash
+      {/* <AnimatedSplash
         translucent={true}
         isLoaded={isLoaded}
         logoImage={IMAGES.logo}
         backgroundColor={COLORS.primary}
         logoHeight={SIZES.fifty * 4}
-        logoWidth={SIZES.fifty * 4}>
+        logoWidth={SIZES.fifty * 4}> */}
 
 
-        {networkState ? (
-          <Provider store={store}>
-            <MainNavigation />
-          </Provider>
-        ) : (
+      {networkState ? (
+        <Provider store={store}>
+          <MainNavigation />
+        </Provider>
+      ) : (
 
-          <View style={styles.noInternetView}>
-            <View style={styles.imgStyle}>
-              <Icon
-                name={'wifi-off'}
-                type={IconType.Feather}
-                size={SIZES.fifty * 1.75}
-                color={COLORS.primary}
-              />
-            </View>
-            <Text style={[FONTS.boldFont22, styles.headingStyle]}>
-              No Internet
-            </Text>
-            <Text style={[FONTS.boldFont22, styles.headingStyle]}>
-              Connection Available
-            </Text>
-            <View style={{ marginTop: SIZES.twenty }}>
-              <Text style={[FONTS.mediumFont14, styles.textStyle]}>
-                Your device is not connected to internet
-              </Text>
-              <Text style={[FONTS.mediumFont14, styles.textStyle]}>
-                Please make sure your connection is working
-              </Text>
-            </View>
+        <View style={styles.noInternetView}>
+          <View style={styles.imgStyle}>
+            <Icon
+              name={'wifi-off'}
+              type={IconType.Feather}
+              size={SIZES.fifty * 1.75}
+              color={COLORS.primary}
+            />
           </View>
-        )}
-      </AnimatedSplash>
+          <Text style={[FONTS.boldFont22, styles.headingStyle]}>
+            No Internet
+          </Text>
+          <Text style={[FONTS.boldFont22, styles.headingStyle]}>
+            Connection Available
+          </Text>
+          <View style={{ marginTop: SIZES.twenty }}>
+            <Text style={[FONTS.mediumFont14, styles.textStyle]}>
+              Your device is not connected to internet
+            </Text>
+            <Text style={[FONTS.mediumFont14, styles.textStyle]}>
+              Please make sure your connection is working
+            </Text>
+          </View>
+        </View>
+      )}
+      {/* </AnimatedSplash> */}
     </SafeAreaView>
   );
 };

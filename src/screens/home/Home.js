@@ -9,10 +9,13 @@ import DrawerSceneWrapper from '../../components/DrawerSceneWrapper'
 import SearchFilter from '../../components/SearchFilter'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function Home() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
+
     const images = [
         IMAGES.DummyBanner.banner1,
         IMAGES.DummyBanner.banner2,

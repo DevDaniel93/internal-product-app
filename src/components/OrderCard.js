@@ -6,25 +6,28 @@ import { useNavigation } from '@react-navigation/native'
 import CustomButton from './CustomButton'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 
 export default function OrderCard(props) {
     const navigation = useNavigation()
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
+
     return (
 
         <ShadedBox>
             <View style={styles.row}>
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
-                    Order Number{" "}
+                    {t('OrderNumber')}{" "}
                     <Text style={{ fontWeight: "600" }}>
                         #{props?.data?.orderNumber}
                     </Text>
                 </Text>
                 <View style={{ width: width * .3, justifyContent: "center", alignItems: "center" }}>
                     <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
-                        Status{"  "}
+                        {t('Status')}{"  "}
                         <Text style={{ fontWeight: "600" }}>
                             {props?.data?.status}
                         </Text>
@@ -34,19 +37,19 @@ export default function OrderCard(props) {
             <View style={styles.dotLine} />
             <View style={styles.row}>
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
-                    Total Price{"   "}
+                    {t('TotalPrice')}{"  "}
                     <Text style={{ fontWeight: "600" }}>
                         ${props?.data?.amount}
                     </Text>
                     {" "}
-                    ({props?.data?.quantity} Items)
+                    ({props?.data?.quantity} {t('Items')})
                 </Text>
                 <CustomButton
                     btnStyle={styles.btn}
                     onPress={() => {
                         navigation.navigate(SCREENS.OrderDetails)
                     }}
-                    label={'View'}
+                    label={t('View')}
                 />
                 {/* <TouchableOpacity style={styles.btn}
                     onPress={() => {

@@ -3,13 +3,16 @@ import React from 'react'
 import { IMAGES, SIZES, STYLES } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
-import { label } from '../../constants/lables'
+
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function WishList() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
+
     const products = [
         {
             productId: 1,
@@ -154,7 +157,9 @@ export default function WishList() {
     ];
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <HeaderWithArrow label={label.Wishlist} />
+            <HeaderWithArrow
+                label={t('Wishlist')}
+            />
             <FlatList
                 columnWrapperStyle={{
                     justifyContent: "space-between",

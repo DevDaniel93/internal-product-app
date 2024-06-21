@@ -4,37 +4,45 @@ import { SIZES, STYLES, height, width } from '../../constants'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function ContactUs() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
+
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <HeaderWithArrow label={label.ContactUs} />
-            <EditText
-                styleTxtArea={styles.textArea}
-                placeholder={label.EnterYourName}
+            <HeaderWithArrow
+                label={t('ContactUs')}
             />
             <EditText
                 styleTxtArea={styles.textArea}
-                placeholder={label.EnterYourEmail}
+
+                placeholder={t('EnterYourName')}
             />
             <EditText
                 styleTxtArea={styles.textArea}
-                placeholder={label.EnterYourSubject}
+
+                placeholder={t('EnterYourEmail')}
+
+            />
+            <EditText
+                styleTxtArea={styles.textArea}
+                placeholder={t('EnterYourSubject')}
+
             />
             <EditText
                 styleTxtArea={styles.textArea}
                 inputArea={styles.multiInput}
                 multiline={true}
                 style={styles.multiInputTxt}
-                placeholder={label.EnterYourMessage}
+                placeholder={t('EnterYourMessage')}
             />
             <CustomButton
-                label={label.Submit}
+                label={t('Submit')}
             />
         </View>
     )

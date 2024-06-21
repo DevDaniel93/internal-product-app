@@ -13,6 +13,7 @@ import MyCart from '../../screens/cart/MyCart';
 import DrawerSceneWrapper from '../../components/DrawerSceneWrapper';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../../constants/theme';
+import { useTranslation } from 'react-i18next';
 
 
 const Demo = () => {
@@ -34,6 +35,7 @@ const TabArr = [
 const Tab = createBottomTabNavigator();
 
 const TabButton = (props) => {
+    const { t } = useTranslation();
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { item, onPress, accessibilityState } = props;
@@ -79,8 +81,17 @@ const TabButton = (props) => {
 }
 
 export default function BottamTab() {
+    const { t } = useTranslation();
+
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const getTranslatedMenu = () => {
+        return TabArr.map((item) => ({
+            ...item,
+            label: t(item.label)
+        }));
+    };
+    const translatedMenu = getTranslatedMenu();
     return (
         <DrawerSceneWrapper>
 
@@ -108,7 +119,7 @@ export default function BottamTab() {
                     }}
                 >
 
-                    {TabArr.map((item, index) => {
+                    {translatedMenu.map((item, index) => {
                         return (
                             <Tab.Screen key={index} name={item.route} component={item.component}
                                 options={{
