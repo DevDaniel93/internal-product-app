@@ -7,11 +7,13 @@ import OtpInput from '../../components/OtpInput'
 import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function EmailVerification(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
     const handleCodeFilled = (code) => {
         Alert.alert('OTP Code Entered', code);
     };
@@ -19,10 +21,10 @@ export default function EmailVerification(props) {
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.EmailVerification}
+                    {t('EmailVerification')}
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.EnterCode}
+                    {t('EnterCode')}
                 </Text>
                 <OtpInput codeLength={6}
                     onCodeFilled={handleCodeFilled}
@@ -36,7 +38,7 @@ export default function EmailVerification(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.NewPassword)
                     }}
-                    label={label.Proceed}
+                    label={t('Proceed')}
                 />
             </View>
 

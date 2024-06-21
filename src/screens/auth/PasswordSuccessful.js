@@ -6,10 +6,12 @@ import { COLORS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../../con
 import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 const PasswordSuccessful = (props) => {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
+    const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
@@ -21,13 +23,13 @@ const PasswordSuccessful = (props) => {
                     style={styles.img}
                     resizeMode='contain' />
             </ImageBackground>
-            <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>{label.NewPasswordSetSuccessfully}</Text>
-            <Text style={[styles.text, { color: currentTheme.defaultTextColor, }]}>{label.CongratulationsPasswordSetSuccessfully}</Text>
+            <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>{t('NewPasswordSetSuccessfully')}</Text>
+            <Text style={[styles.text, { color: currentTheme.defaultTextColor, }]}>{t('CongratulationsPasswordSetSuccessfully')}</Text>
             <CustomButton
                 onPress={() => {
                     navigation.navigate(SCREENS.Login)
                 }}
-                label={label.Login} />
+                label={t('Login')} />
         </View>
     )
 }

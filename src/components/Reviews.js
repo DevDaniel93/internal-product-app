@@ -8,10 +8,13 @@ import EditText from './EditText';
 import CustomButton from './CustomButton';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../constants/theme';
+import { label } from '../constants/lables';
+import { useTranslation } from 'react-i18next';
 export default function Reviews() {
     const [star, setStar] = useState(0)
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
 
     const CustomerReviews = () => {
         return (
@@ -48,7 +51,7 @@ export default function Reviews() {
     return (
         <View>
             <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                Reviews
+                {t('Reviews')}
             </Text>
             <View style={{ alignItems: "flex-start", marginVertical: SIZES.five }}>
                 <Stars
@@ -63,11 +66,11 @@ export default function Reviews() {
                 />
             </View>
             <EditText
-                placeholder={"Write your reviews"}
+                placeholder={t('WriteYourReviews')}
                 inputArea={{ borderRadius: SIZES.fifty }}
             />
             <CustomButton
-                label={"Add Review"}
+                label={t('AddReview')}
             />
             <CustomerReviews />
             <CustomerReviews />

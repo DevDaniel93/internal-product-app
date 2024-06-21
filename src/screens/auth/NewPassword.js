@@ -6,9 +6,11 @@ import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function NewPassword(props) {
     const { navigation } = props
+    const { t } = useTranslation();
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const [password, setPassword] = useState('')
@@ -17,23 +19,23 @@ export default function NewPassword(props) {
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
             <View style={{ flex: 1 }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.NewPassword}
+                    {t('NewPassword')}
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
-                    {label.EnterNewPasswordAndRemember}
+                    {t('EnterNewPasswordAndRemember')}
                 </Text>
 
                 <EditText
-                    label={label.EnterYourPassword}
-                    placeholder={label.EnterYourPassword}
+                    label={t('EnterYourPassword')}
+                    placeholder={t('EnterYourPassword')}
                     value={password}
                     onChangeText={(txt) => setPassword(txt)}
                     password
                     required
                 />
                 <EditText
-                    label={label.ConfirmPassword}
-                    placeholder={label.ConfirmYourPassword}
+                    label={t('ConfirmPassword')}
+                    placeholder={t('ConfirmYourPassword')}
                     value={confirmPassword}
                     onChangeText={(txt) => setConfirmPassword(txt)}
                     password
@@ -42,12 +44,12 @@ export default function NewPassword(props) {
                 {
                     confirmPassword !== '' && password !== confirmPassword &&
                     <Text style={[styles.notMatchTxt, { color: currentTheme.primary, }]}>
-                        {label.PasswordDoNotMatch}
+                        {t('PasswordDoNotMatch')}
                     </Text>
                 }
                 <CustomButton
                     btnStyle={styles.btn}
-                    label={label.UpdatePassword}
+                    label={t('UpdatePassword')}
                     onPress={() => { navigation.navigate(SCREENS.PasswordSuccessful) }}
                 />
             </View>

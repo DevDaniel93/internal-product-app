@@ -6,17 +6,19 @@ import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 export default function OrderDetails() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const { t } = useTranslation();
     const data = [
-        { key: label.FullName, value: "John Doe" },
-        { key: label.MobileNumber, value: "+123-456-789" },
-        { key: label.State, value: "Dummy" },
-        { key: label.City, value: "Dummy" },
-        { key: label.StreetAddress, value: "XYZ Address" },
-        { key: label.PostalCode, value: "12345" },
+        { key: t('FullName'), value: "John Doe" },
+        { key: t('MobileNumber'), value: "+123-456-789" },
+        { key: t('State'), value: "Dummy" },
+        { key: t('City'), value: "Dummy" },
+        { key: t('StreetAddress'), value: "XYZ Address" },
+        { key: t('PostalCode'), value: "12345" },
     ]
 
     const renderItem = ({ item }) => (
@@ -32,13 +34,13 @@ export default function OrderDetails() {
                 <Image source={IMAGES.ProductImage} style={[styles.img, STYLES.shadow]} />
                 <View style={{ justifyContent: "space-around", margin: SIZES.twentyFive, }}>
                     <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
-                        I’m Him
+                        {t('IAmHim')}
                     </Text>
                     <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
-                        Quantity: 1
+                        {t('Quantity')}: 1
                     </Text>
                     <Text style={[styles.productText, { fontWeight: "bold", color: currentTheme.primary }]}>
-                        Unit Price: $20.00
+                        {t('UnitPrice')}: $20.00
                     </Text>
 
                 </View>
@@ -47,14 +49,14 @@ export default function OrderDetails() {
     }
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <HeaderWithArrow label={"Order Details"} />
+            <HeaderWithArrow label={t('OrderDetails')} />
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
                 <View style={styles.row}>
                     <ShadedBox style={styles.box}>
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                            Order Number
+                            {t('OrderNumber')}
                         </Text>
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                             #45322
@@ -62,7 +64,7 @@ export default function OrderDetails() {
                     </ShadedBox>
                     <ShadedBox style={styles.box}>
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                            Order Date
+                            {t('OrderDate')}
                         </Text>
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                             Jun 6, 2024
@@ -71,15 +73,15 @@ export default function OrderDetails() {
                 </View>
                 <ShadedBox style={styles.statusBox}>
                     <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                        Order Status
+                        {t('OrderStatus')}
                     </Text>
                     <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                        Pending
+                        {t('Pending')}
                     </Text>
                 </ShadedBox>
                 <View style={styles.dotLine} />
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                    Shipping Details
+                    {t('ShippingDetails')}
                 </Text>
                 <View>
                     <FlatList
@@ -103,7 +105,7 @@ export default function OrderDetails() {
                 </View>
                 <View style={styles.totalRow}>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
-                        Sub Total
+                        {t('SubTotal')}
                     </Text>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         $25.27
@@ -111,7 +113,7 @@ export default function OrderDetails() {
                 </View>
                 <View style={styles.totalRow}>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
-                        Sub Total
+                        {t('SubTotal')}
                     </Text>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         $25.27
@@ -119,7 +121,7 @@ export default function OrderDetails() {
                 </View>
                 <View style={[styles.totalRow, { marginBottom: SIZES.twenty }]}>
                     <Text style={[styles.infoTxt, { color: currentTheme.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
-                        Total
+                        {t('Total')}
                     </Text>
                     <Text style={[styles.infoTxt, { color: currentTheme.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
                         $6236
