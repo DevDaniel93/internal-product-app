@@ -12,7 +12,6 @@ export default function WishList() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-
     const products = [
         {
             productId: 1,

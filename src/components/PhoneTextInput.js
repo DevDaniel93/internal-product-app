@@ -5,8 +5,10 @@ import { COLORS, SIZES } from '../constants';
 import { useSelector } from 'react-redux';
 import { getTheme } from '../constants/theme';
 import { label } from '../constants/lables';
+import { useTranslation } from 'react-i18next';
 
 export default function PhoneTextInput(props) {
+    const { t } = useTranslation();
     const { phone, setPhone, setCountryCode } = props;
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
@@ -23,7 +25,7 @@ export default function PhoneTextInput(props) {
 
     return (
         <View>
-            <Text style={styles.textLabel}> {label.PhoneNumber} <Text style={styles.required}> *</Text></Text>
+            <Text style={styles.textLabel}> {t('PhoneNumber')} <Text style={styles.required}> *</Text></Text>
             <PhoneInput
                 layout="first"
                 defaultCode="US"
@@ -38,7 +40,7 @@ export default function PhoneTextInput(props) {
             />
 
             {phone.length && !phoneInput.current?.isValidNumber(phone) ? (
-                <Text style={styles.textStyle}>Invalid phone number</Text>
+                <Text style={styles.textStyle}>{t('InvalidPhoneNumber')}</Text>
             ) : null}
         </View>
     );

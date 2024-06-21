@@ -6,8 +6,10 @@ import { COLORS, SIZES } from '../../constants';
 import CustomDropDownPicker from '../../components/CustomDropDownPicker';
 import axios from 'axios';
 import { label } from '../../constants/lables';
+import { useTranslation } from 'react-i18next';
 
 const Shipping = () => {
+  const { t } = useTranslation();
     const [name, setName] = useState('');
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
@@ -51,52 +53,52 @@ const Shipping = () => {
     return (
         <View>
             <EditText
-                label={label.FullName}
+                label={t('FullName')}
                 value={name}
                 required
                 onChangeText={(e) => {
                     setName(e)
                 }}
-                placeholder={label.EnterFullName}
+                placeholder={t('EnterFullName')}
             />
 
 
             <PhoneTextInput phone={phone} setPhone={setPhone} setCountryCode={setCountryCode} />
 
             <CustomDropDownPicker
-                label={label.State}
+                label={t('State')}
                 list={states.map(state => ({ label: state.name, value: state.state_code }))}
                 width={"100%"}
-                placeholder={label.selectedState}
+                placeholder={t('selectedState')}
                 zIndex={1000}
                 onChangeValue={handleStateChange}
             />
             <CustomDropDownPicker
-                label={label.City}
+                label={t('City')}
                 list={cities.map(city => ({ label: city.name, value: city.name }))}
                 width={"100%"}
-                placeholder={label.SelectCity}
+                placeholder={t('SelectCity')}
                 zIndex={1}
                 onChangeValue={(value) => setCity(value)}
             />
 
             <EditText
-                label={label.StreetAddress}
+                label={t('StreetAddress')}
                 value={address}
                 required
                 onChangeText={(e) => {
                     setAddress(e)
                 }}
-                placeholder={label.EnterStreetAddress}
+                placeholder={t('EnterStreetAddress')}
             />
             <EditText
-                label={label.PostalCode}
+                label={t('PostalCode')}
                 value={postalCode}
                 required
                 onChangeText={(e) => {
                     setPostalCode(e)
                 }}
-                placeholder={label.EnterPostalCode}
+                placeholder={t('EnterPostalCode')}
             />
         </View>
     )

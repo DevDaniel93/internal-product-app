@@ -11,7 +11,6 @@ export default function OrderDetails() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-
     const data = [
         { key: t('FullName'), value: "John Doe" },
         { key: t('MobileNumber'), value: "+123-456-789" },
@@ -34,7 +33,7 @@ export default function OrderDetails() {
                 <Image source={IMAGES.ProductImage} style={[styles.img, STYLES.shadow]} />
                 <View style={{ justifyContent: "space-around", margin: SIZES.twentyFive, }}>
                     <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
-                        I’m Him
+                        {t('IAmHim')}
                     </Text>
                     <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
                         {t('Quantity')}: 1
@@ -78,7 +77,7 @@ export default function OrderDetails() {
                         {t('OrderStatus')}
                     </Text>
                     <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                        Pending
+                        {t('Pending')}
                     </Text>
                 </ShadedBox>
                 <View style={styles.dotLine} />

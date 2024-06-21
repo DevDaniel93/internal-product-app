@@ -19,6 +19,7 @@ export default function SingleProduct(props) {
     const { productDetails } = route?.params
     const [quantity, setQuantity] = useState(1)
     const [isvisible, setIsvisible] = useState(false)
+
     const dispatch = useDispatch()
     const [selectedAttributes, setSelectedAttributes] = useState([]);
     const cart = useSelector(state => state.Cart.cart)
@@ -115,7 +116,7 @@ export default function SingleProduct(props) {
                             <Text style={[styles.ratText, { color: currentTheme.defaultTextColor, }]}>
                                 {" "}{productDetails?.rating} {" "}
                                 <Text style={{ color: COLORS.primary }}>
-                                    (7.932 reviews)
+                                    (7.932 {t('reviews')})
                                 </Text>
                             </Text>
                         </View>
@@ -159,7 +160,7 @@ export default function SingleProduct(props) {
                     <ScrollView style={{ marginVertical: SIZES.ten }}>
                         {Object.keys(productDetails?.attributes).map((key, index) => (
                             <View key={index}>
-                                <Text style={[styles.attributesTitle, { color: currentTheme.defaultTextColor, }]}>Choose {key}</Text>
+                                <Text style={[styles.attributesTitle, { color: currentTheme.defaultTextColor, }]}>{t('Choose')} {key}</Text>
                                 <ScrollView horizontal>
                                     {productDetails?.attributes[key].map((value, index) => (
                                         <TouchableOpacity
@@ -195,7 +196,6 @@ export default function SingleProduct(props) {
                     />
                 </TouchableOpacity>
                 <Text style={styles.modalText}>
-
                     {t('SelectProductSize')}
                 </Text>
             </CustomModal>

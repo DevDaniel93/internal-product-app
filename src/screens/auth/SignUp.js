@@ -19,14 +19,12 @@ export default function Signup(props) {
                     {t('Sign_Up')}
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
-
                     {t('AlreadyHaveAccount')}
                     <Text
                         onPress={() => { navigation.navigate(SCREENS.Login) }}
                         style={{ color: currentTheme.primary, fontWeight: "600" }}>
                         {" "}
                         {t('Login')}
-
                     </Text>
                 </Text>
                 <EditText
@@ -49,18 +47,15 @@ export default function Signup(props) {
                 <EditText
                     label={t('EnterYourEmail')}
                     placeholder={t('EnterYourEmail')}
-
                 />
                 <EditText
                     label={t('EnterYourPassword')}
                     placeholder={t('EnterYourPassword')}
-
                     password
                 />
                 <EditText
                     label={t('ConfirmPassword')}
                     placeholder={t('ConfirmYourPassword')}
-
                     password
                 />
 
@@ -69,7 +64,6 @@ export default function Signup(props) {
                         navigation.navigate(SCREENS.ConfirmationMail, { title: t('ForgotPassword') })
                     }}
                     label={t('Sign_Up')}
-
                 />
             </ScrollView>
 

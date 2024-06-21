@@ -10,7 +10,6 @@ export default function TermAndCondition() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-
     const content = [
         {
             id: 1,

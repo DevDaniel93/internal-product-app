@@ -15,7 +15,6 @@ export default function Reviews() {
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
 
-
     const CustomerReviews = () => {
         return (
             <View style={{ paddingVertical: SIZES.ten, borderBottomWidth: 1, borderColor: currentTheme.defaultTextColor }}>

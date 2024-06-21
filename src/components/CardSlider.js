@@ -3,11 +3,14 @@
 import React, { useRef, useState } from 'react';
 import { View, FlatList, Image, Dimensions, StyleSheet, ImageBackground, Text } from 'react-native';
 import { COLORS, IMAGES, SIZES, height, width } from '../constants';
+import { label } from '../constants/lables';
+import { useTranslation } from 'react-i18next';
 
 
 const imageWidth = width * 0.8;
 
 const CardSlider = ({ data }) => {
+    const { t } = useTranslation();
     const [activeIndex, setActiveIndex] = useState(0);
     const flatListRef = useRef(null);
 
@@ -28,10 +31,10 @@ const CardSlider = ({ data }) => {
                     style={styles.image} >
                     <View style={styles.row}>
                         <Text style={styles.heading}>
-                            Credit
+                            {t('Credit')}
                         </Text>
                         <Text style={styles.heading}>
-                            Discover
+                            {t('Discover')}
                         </Text>
                     </View>
                     <View >

@@ -13,8 +13,9 @@ import { useTranslation } from 'react-i18next'
 
 export default function Profile(props) {
     const theme = useSelector(state => state.Theme.theme)
-    const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const currentTheme = getTheme(theme)
+
 
     const { navigation } = props
     const [isEdit, setIsEdit] = useState(false)
@@ -86,7 +87,6 @@ export default function Profile(props) {
                     txtstyle={styles.txtstyle}
                     btnStyle={[styles.btnStyle, { backgroundColor: currentTheme.Background, }]}
                     label={t('ChangePassword')}
-
                 />
             }
             <UploadPhotoModal
@@ -99,7 +99,6 @@ export default function Profile(props) {
             >
                 <Text style={styles.heading}>
                     {t('ChangePassword')}
-
                 </Text>
                 <EditText
                     required

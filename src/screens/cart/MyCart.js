@@ -151,17 +151,14 @@ export default function MyCart(props) {
 
                 <View style={styles.estArea}>
                     <Text style={{ color: currentTheme.white }}>
-
                         {t('EstimatedTime7days')}
                     </Text>
                 </View>
                 <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
-
                     {t('OrderInfo')}
                 </Text>
                 <View style={styles.PricingRow}>
                     <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
-
                         {t('SubTotal')}
                     </Text>
                     <Text style={[styles.PricingTxt, { color: currentTheme.defaultTextColor, }]}>
@@ -181,7 +178,6 @@ export default function MyCart(props) {
                 </View>
                 <View style={styles.PricingRow}>
                     <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
-
                         {t('Total')}
                     </Text>
                     <Text style={[styles.orderInfoText, { color: currentTheme.defaultTextColor, }]}>
@@ -194,14 +190,12 @@ export default function MyCart(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.checkOut)
                     }}
-
                     label={t('Checkout')}
                 />
 
                 {/* =======================================delete Modal========================== */}
                 <CustomModal isvisible={isvisible}>
                     <Text style={[styles.modelText, { color: currentTheme.defaultTextColor, }]}>
-
                         {t('AreYourSureYouWantToRemoveTheProductFromCart')}
                     </Text>
                     <LottieView

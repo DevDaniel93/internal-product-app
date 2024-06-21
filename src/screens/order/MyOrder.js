@@ -13,7 +13,6 @@ export default function MyOrder() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-
     const data = {
         orderNumber: "15454",
         status: "pending",

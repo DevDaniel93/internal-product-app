@@ -3,9 +3,12 @@ import React from 'react'
 import { COLORS, FONTFAMILY, SIZES } from '../constants'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../constants/theme'
+import { label } from '../constants/lables'
+import { useTranslation } from 'react-i18next'
 
 export default function Categories(props) {
     const theme = useSelector(state => state.Theme.theme)
+    const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const _renderItem = ({ item }) => {
         return (
@@ -21,11 +24,13 @@ export default function Categories(props) {
         <View>
             <View style={styles.row}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                    Categories
+                    {t('Categories')}
                 </Text>
-                <Text style={[styles.seeAll, { color: currentTheme.primary, }]}>
-                    see all
-                </Text>
+                <TouchableOpacity>
+                    <Text style={[styles.seeAll, { color: currentTheme.primary, }]}>
+                        {t('seeAll')}
+                    </Text>
+                </TouchableOpacity>
             </View>
             <FlatList
                 showsHorizontalScrollIndicator={false}

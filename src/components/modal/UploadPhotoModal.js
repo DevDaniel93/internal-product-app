@@ -5,6 +5,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { COLORS, FONTS, SIZES } from '../../constants';
 import Icon, { IconType } from '../Icons';
 import Card from '../Card';
+import { label } from '../../constants/lables';
+import { useTranslation } from 'react-i18next';
 
 export default function UploadPhotoModal({
     isCircle,
@@ -15,6 +17,7 @@ export default function UploadPhotoModal({
     onImageSelected,
     includeBase64,
 }) {
+    const { t } = useTranslation();
     //======================= Image Picker From Gallery Methood ================================//
     const choosePhotoFromGallery = () => {
         ImagePicker.openPicker({
@@ -62,7 +65,7 @@ export default function UploadPhotoModal({
                                 color: COLORS.defaultTextColor,
                             },
                         ]}>
-                        Upload Photo
+                        {t('UploadPhoto')}
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
@@ -83,7 +86,7 @@ export default function UploadPhotoModal({
                             color: COLORS.brownGrey,
                         },
                     ]}>
-                    Select a photo from
+                    {t('SelectAPhotoFrom')}
                 </Text>
                 <View
                     style={{

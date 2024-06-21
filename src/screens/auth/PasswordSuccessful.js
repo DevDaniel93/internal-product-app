@@ -10,8 +10,9 @@ import { useTranslation } from 'react-i18next'
 const PasswordSuccessful = (props) => {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
-    const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const currentTheme = getTheme(theme)
+
 
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>

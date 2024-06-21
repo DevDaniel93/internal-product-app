@@ -9,8 +9,9 @@ import { useTranslation } from 'react-i18next'
 
 export default function NewPassword(props) {
     const { navigation } = props
-    const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
+    const theme = useSelector(state => state.Theme.theme)
+
     const currentTheme = getTheme(theme)
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -37,7 +38,6 @@ export default function NewPassword(props) {
                 <EditText
                     label={t('ConfirmPassword')}
                     placeholder={t('ConfirmYourPassword')}
-
                     value={confirmPassword}
                     onChangeText={(txt) => setConfirmPassword(txt)}
                     password
@@ -47,17 +47,16 @@ export default function NewPassword(props) {
                     confirmPassword !== '' && password !== confirmPassword &&
                     <Text style={[styles.notMatchTxt, { color: currentTheme.primary, }]}>
                         {t('PasswordDoNotMatch')}
-
-                    </Text>
+                    </Text >
                 }
                 <CustomButton
                     btnStyle={styles.btn}
                     label={t('UpdatePassword')}
                     onPress={() => { navigation.navigate(SCREENS.PasswordSuccessful) }}
                 />
-            </View>
+            </View >
 
-        </View>
+        </View >
     )
 }
 

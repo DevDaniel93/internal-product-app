@@ -1,8 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { label } from '../constants/lables'
+import { useTranslation } from 'react-i18next';
 
 export default function DrawerScreen({ navigation }) {
+    const { t } = useTranslation();
     return (
         <View>
             <TouchableOpacity
@@ -11,7 +13,7 @@ export default function DrawerScreen({ navigation }) {
                 }
             >
                 <Text>
-                    {label.OpenDrawer}
+                    {t('OpenDrawer')}
                 </Text>
             </TouchableOpacity>
         </View >

@@ -11,10 +11,12 @@ import CustomButton from '../../components/CustomButton'
 import { label } from '../../constants/lables'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
+import { useTranslation } from 'react-i18next'
 
 
 export default function CheckOut() {
     const theme = useSelector(state => state.Theme.theme)
+    const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const [progress, setProgress] = useState(0)
 
@@ -28,7 +30,7 @@ export default function CheckOut() {
     return (
         <ScrollView style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow
-                label={label.Checkout} />
+                label={t('Checkout')} />
 
             <ProgressBar mode={progress} />
 
@@ -45,7 +47,7 @@ export default function CheckOut() {
                     <CustomButton
                         txtstyle={styles.txtstyle}
                         btnStyle={[styles.btnStyle1, { backgroundColor: currentTheme.Background }]}
-                        label={label.Back}
+                        label={t('Back')}
                         onPress={moveToPrevios} />
                 }
                 {progress > 0 &&
@@ -53,7 +55,7 @@ export default function CheckOut() {
                 }
                 <CustomButton
                     btnStyle={styles.btnStyle}
-                    label={progress === 0 ? label.Payment : progress === 1 ? label.Review : label.PlaceOrder}
+                    label={progress === 0 ? t('Payment') : progress === 1 ? t('Review') : t('PlaceOrder')}
                     onPress={moveToNext} />
 
 

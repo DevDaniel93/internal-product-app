@@ -39,7 +39,6 @@ export default function EmailVerification(props) {
                     onPress={() => {
                         navigation.navigate(SCREENS.NewPassword)
                     }}
-
                     label={t('Proceed')}
                 />
             </View>

@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next'
 
 export default function PrivacyPolicy() {
     const theme = useSelector(state => state.Theme.theme)
-    const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const currentTheme = getTheme(theme)
 
     const content = [
         {
