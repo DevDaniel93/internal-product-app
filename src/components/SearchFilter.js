@@ -38,7 +38,7 @@ export default function SearchFilter(props) {
 const styles = StyleSheet.create({
     conatiner: {
         flexDirection: "row",
-        marginTop: SIZES.fifteen
+        marginBottom: SIZES.fifteen
     },
     InnerConatiner: {
         borderWidth: 1,

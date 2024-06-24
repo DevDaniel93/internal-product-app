@@ -103,7 +103,7 @@ export default function Home() {
             title: "Summer Dress",
             category: "Dresses",
 
-            price: 39.99, 
+            price: 39.99,
             stockQuantity: 100,
             image: "https://www.parents.com/thmb/tNa-YQ94dPXWVA2UaX52r2MQbGc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/parents-update-brovave-womens-2023-summer-casual-boho-sundress-polka-dot-spaghetti-strap-tout-dcf8382ee3be4c29b6f37fdc129625bb.jpg",
             rating: 4.0,
@@ -272,17 +272,17 @@ export default function Home() {
                 // style={STYLES.container}
                 showsVerticalScrollIndicator={false}
             >
-                <BannerSlider images={images} />
                 <SearchFilter />
+                <BannerSlider images={images} />
                 <Categories data={categoriesData} />
-                <FlatList
+                <FlatList 
 
                     columnWrapperStyle={{
                         justifyContent: "space-between",
-                        paddingHorizontal: 10
+                        // paddingHorizontal: 10
                     }}
                     showsVerticalScrollIndicator={false}
-                    data={products}
+                    data={products} 
                     keyExtractor={item => item.id}
                     numColumns={"2"}
                     renderItem={({ item }) => {

@@ -97,7 +97,7 @@ export default function BottamTab() {
 
 
             <SafeAreaView style={{ flex: 1 }}>
-                <Tab.Navigator
+                <Tab.Navigator  
                     screenOptions={{
                         headerShown: false,
                         tabBarStyle: {

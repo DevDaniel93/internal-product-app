@@ -27,7 +27,7 @@ const ProductCard = ({ item }) => {
                 <Icon
                     name={"heart"}
                     type={IconType.Entypo}
-                    color={COLORS.red}
+                    color={COLORS.primary}
                     size={SIZES.twenty}
                 />
             </TouchableOpacity>
@@ -53,12 +53,12 @@ export default ProductCard
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: SIZES.twenty,
-        width: width * .4,
+        // marginTop: SIZES.ten,
+        width: width * .43,
         height: height * .25,
         borderColor: COLORS.gray,
         borderWidth: .5,
-        marginBottom: SIZES.ten
+        marginBottom: SIZES.twenty + 6
     },
     img: {
         width: "100%",
@@ -66,14 +66,12 @@ const styles = StyleSheet.create({
     },
     starContainer: {
         position: "absolute",
-
         padding: SIZES.five,
         borderRadius: SIZES.twentyFive,
         right: SIZES.ten,
         top: SIZES.ten
     },
     detail: {
-
         padding: SIZES.ten,
         borderWidth: 1,
         position: "absolute",
@@ -85,7 +83,6 @@ const styles = StyleSheet.create({
     },
     txt: {
         fontFamily: FONTFAMILY.Poppins,
-
         fontSize: 14,
     },
     price: {

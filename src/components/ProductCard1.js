@@ -65,10 +65,9 @@ export default ProductCard1
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: SIZES.twenty,
-        width: width * .4,
+        width: width * .42,
         height: height * .25,
-        marginBottom: SIZES.ten,
+        marginBottom: SIZES.twenty + 6,
         backgroundColor: "#f7f5f5",
         paddingHorizontal: 15,
         paddingTop: 15,

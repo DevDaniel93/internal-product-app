@@ -33,7 +33,7 @@ export default function UploadPhotoModal({
             onImageSelected(image);
         });
     };
-
+   
     //======================= Image Capture From Camera Methood ================================//
     const takePhotoFromCamera = async () => {
         ImagePicker.openCamera({
