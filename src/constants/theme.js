@@ -37,7 +37,7 @@ export const DarkTheme = {
     defaultTextColor: "#ffffff",
     defaultBtnColor: "#ffffff",
     Background: "#131313",
-    onBackground:'#1c1c1c',
+    onBackground: '#1c1c1c',
     primary: "#FF856A",
     purple: "#4e1789",
     lightPurple: "#871af6",
@@ -66,7 +66,7 @@ export const LightTheme = {
     defaultTextColor: "#000000",
     defaultBtnColor: "#ffffff",
     Background: "#ffffff",
-    onBackground:'#f7f5f5',
+    onBackground: '#f7f5f5',
     darkBackground: "#000000",
     primary: "#FF856A",
     purple: "#4e1789",
@@ -123,6 +123,7 @@ export const FONTFAMILY = {
 
 /* * Images * */
 export const IMAGES = {
+    icon: require("../assets/images/icon.png"),
     logo: require("../assets/images/logo.png"),
     avatar: require("../assets/images/avatar.png"),
     user: require("../assets/images/user.png"),

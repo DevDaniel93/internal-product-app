@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { COLORS, SCREENS } from "../constants";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import BottamTab from "./bottamTab/BottamTab";
 import DrawerNav from "./drawer/DrawerNav";
 import Login from "../screens/auth/Login";
@@ -24,39 +24,42 @@ import Profile from "../screens/profile/Profile";
 import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 import { useSelector } from "react-redux";
 import { getTheme } from "../constants/theme";
-import { useTranslation } from "react-i18next";
+
 import ProductDetail from "../screens/product/ProductDetail";
 
 const Stack = createNativeStackNavigator();
-const screenOptions = {
-    headerShown: false,
-    animation: "slide_from_right",
-    headerStyle: {
-        color: COLORS.white
-        // backgroundColor: '#121212',
-    },
 
-};
 const Demo = () => {
     return (
-        <View>
-
+        <View style={{ backgroundColor: "red", flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Text style={{
+                color: "white",
+                fontSize: 25
+            }}>
+                Han bhai build kal dy don?
+            </Text>
         </View>
     )
 }
 export default function MainNavigation() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
-    const { t } = useTranslation();
+    const screenOptions = {
+        headerShown: false,
+        animation: "slide_from_right",
+        headerStyle: {
+            color: COLORS.white
+            // backgroundColor: '#121212',
+        },
+
+    };
     return (
         <NavigationContainer
         >
-
             <Stack.Navigator
                 screenOptions={screenOptions}
                 initialRouteName={SCREENS.Login}
             >
-
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />
                 <Stack.Screen name={SCREENS.ConfirmationMail} component={ConfirmationMail}
@@ -76,8 +79,7 @@ export default function MainNavigation() {
                         headerTitleStyle: { color: currentTheme.defaultTextColor },
                         headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
-                        headerTitle: t('ForgotPassword')
-
+                        headerTitle: route.params.title
                     })} />
 
                 <Stack.Screen name={SCREENS.NewPassword} component={NewPassword}
@@ -87,12 +89,11 @@ export default function MainNavigation() {
                         headerTitleStyle: { color: currentTheme.defaultTextColor },
                         headerStyle: { backgroundColor: currentTheme.Background },
                         headerShadowVisible: false,
-                        headerTitle: t('CreatePassword')
+                        headerTitle: route.params.title,
                     })}
                 />
                 <Stack.Screen name={SCREENS.PasswordSuccessful} component={PasswordSuccessful} />
                 <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
-                {/* <Stack.Screen name={SCREENS.Home} component={Home} /> */}
                 <Stack.Screen name={SCREENS.OrderDetails} component={OrderDetails} />
                 <Stack.Screen name={SCREENS.contactUs} component={ContactUs} />
                 <Stack.Screen name={SCREENS.termAndCondition} component={TermAndCondition} />

@@ -19,7 +19,6 @@ export default function Login(props) {
             <View style={{ flex: 1 }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor }]}>
                     {t('Login')}
-
                 </Text>
                 <Text style={[styles.subHeading, { color: currentTheme.defaultTextColor, }]}>
                     {t('NoAccount')}

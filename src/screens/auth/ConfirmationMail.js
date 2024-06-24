@@ -28,7 +28,8 @@ export default function ConfirmationMail(props) {
 
                 <CustomButton
                     onPress={() => {
-                        navigation.navigate(SCREENS.EmailVerification)
+                        navigation.navigate(SCREENS.EmailVerification, { title: t('ForgotPassword') })
+
                     }}
                     label={t('Send')}
                 />

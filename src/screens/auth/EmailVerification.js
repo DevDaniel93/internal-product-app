@@ -37,7 +37,7 @@ export default function EmailVerification(props) {
 
                 <CustomButton
                     onPress={() => {
-                        navigation.navigate(SCREENS.NewPassword)
+                        navigation.navigate(SCREENS.NewPassword, { title: t('CreatePassword') })
                     }}
                     label={t('Proceed')}
                 />
