@@ -30,7 +30,7 @@ export default function CustomHeader() {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: SIZES.twenty,
+        marginBottom: SIZES.twenty,
         flexDirection: "row",
         alignItems: "center"
 

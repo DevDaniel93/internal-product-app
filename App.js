@@ -49,13 +49,13 @@ const App = () => {
         // translucent={Platform.OS === 'android'}
         barStyle={"dark-content"}
       />
-      {/* <AnimatedSplash
+      <AnimatedSplash
         translucent={true}
         isLoaded={isLoaded}
         logoImage={IMAGES.logo}
         backgroundColor={COLORS.primary}
         logoHeight={SIZES.fifty * 4}
-        logoWidth={SIZES.fifty * 4}> */}
+        logoWidth={SIZES.fifty * 4}>
 
 
       {networkState ? (
@@ -89,7 +89,7 @@ const App = () => {
           </View>
         </View>
       )}
-      {/* </AnimatedSplash> */}
+      </AnimatedSplash>
     </SafeAreaView>
   );
 };

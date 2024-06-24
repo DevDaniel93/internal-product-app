@@ -30,6 +30,8 @@ export const COLORS = {
     red: "#FF0000",
     cyan: '#21D4B4',
     lightGray: '#C0C0C0',
+    backgroundGray: "#DCDCDC",
+    yellowTxt: "#FFBF00",
 };
 export const DarkTheme = {
     defaultTextColor: "#ffffff",
@@ -177,6 +179,7 @@ export const SCREENS = {
     MyCart: "MyCart",
     checkOut: "CheckOut",
     PasswordSuccessful: "PasswordSuccessful",
+    ProductDetail: "ProductDetail",
 
 };
 

@@ -25,6 +25,7 @@ import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 import { useSelector } from "react-redux";
 import { getTheme } from "../constants/theme";
 import { useTranslation } from "react-i18next";
+import ProductDetail from "../screens/product/ProductDetail";
 
 const Stack = createNativeStackNavigator();
 const screenOptions = {
@@ -53,7 +54,7 @@ export default function MainNavigation() {
 
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={SCREENS.SignUp}
+                initialRouteName={SCREENS.Login}
             >
 
                 <Stack.Screen name={SCREENS.Login} component={Login} />
@@ -97,6 +98,7 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.termAndCondition} component={TermAndCondition} />
                 <Stack.Screen name={SCREENS.privacyPolicy} component={PrivacyPolicy} />
                 <Stack.Screen name={SCREENS.singleProduct} component={SingleProduct} />
+                <Stack.Screen name={SCREENS.ProductDetail} component={ProductDetail} />
                 <Stack.Screen name={SCREENS.checkOut} component={CheckOut} />
                 <Stack.Screen name={SCREENS.About} component={AboutUs} />
                 <Stack.Screen name={SCREENS.profile} component={Profile} />

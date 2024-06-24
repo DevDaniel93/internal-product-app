@@ -122,4 +122,5 @@ export const label = {
     Discover: "Discover",
     UploadPhoto: "Upload Photo",
     SelectAPhotoFrom: "Select a photo from", 
+    Description: "Description"
 }
