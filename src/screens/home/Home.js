@@ -275,20 +275,20 @@ export default function Home() {
                 <SearchFilter />
                 <BannerSlider images={images} />
                 <Categories data={categoriesData} />
-                <FlatList 
+                <FlatList
 
                     columnWrapperStyle={{
                         justifyContent: "space-between",
                         // paddingHorizontal: 10
                     }}
                     showsVerticalScrollIndicator={false}
-                    data={products} 
+                    data={products}
                     keyExtractor={item => item.id}
                     numColumns={"2"}
                     renderItem={({ item }) => {
                         return (
-                            // <ProductCard item={item} />
-                            <ProductCard1 item={item} />
+                            <ProductCard item={item} />
+                            // <ProductCard1 item={item} />
                         )
                     }}
                 />

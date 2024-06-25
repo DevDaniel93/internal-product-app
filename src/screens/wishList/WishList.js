@@ -162,17 +162,17 @@ export default function WishList() {
         return products.favourite === true
     }
     const wishListedProducts = products.filter(favouriteProducts)
-    console.log({wishListedProducts})
+    console.log({ wishListedProducts })
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow
                 label={t('Wishlist')}
             />
-            
+
             <FlatList
                 columnWrapperStyle={{
                     justifyContent: "space-between",
-                    paddingHorizontal: 10
+                    // paddingHorizontal: 10
                 }}
                 showsVerticalScrollIndicator={false}
                 data={wishListedProducts}
@@ -180,8 +180,8 @@ export default function WishList() {
                 numColumns={"2"}
                 renderItem={({ item }) => {
                     return (
-                        // <ProductCard item={item} />
-                        <ProductCard1 item={item}/>
+                        <ProductCard item={item} />
+                        // <ProductCard1 item={item}/>
                     )
                 }}
                 ListFooterComponent={() => {

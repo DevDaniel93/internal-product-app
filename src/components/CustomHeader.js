@@ -1,30 +1,36 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { COLORS, FONTFAMILY, IMAGES, SIZES } from '../constants'
 import { useSelector } from 'react-redux'
-import { getTheme } from '../constants/theme'
+import { SCREENS, getTheme } from '../constants/theme'
 import { label } from '../constants/lables'
 import { useTranslation } from 'react-i18next'
+import { useNavigation } from '@react-navigation/native'
 
 export default function CustomHeader() {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const navigation = useNavigation()
     return (
-        <View style={styles.container}>
+        <TouchableOpacity
+            onPress={() => {
+                navigation.navigate(SCREENS.profile)
+            }}
+            style={styles.container}>
             <Image
                 style={[styles.img, { borderColor: currentTheme.primary, }]}
                 source={IMAGES.user}
             />
             <View>
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                {t('HelloWelcomeBack')} 👋
+                    {t('HelloWelcomeBack')} 👋
                 </Text>
                 <Text style={[styles.txt, { fontWeight: "600", color: currentTheme.defaultTextColor, }]}>
                     John Doe
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
