@@ -184,13 +184,22 @@ const App = () => {
           backgroundColor={COLORS.transparent}
           barStyle={"dark-content"}
         />
-        <View style={styles.loadingContainer}>
+        <AnimatedSplash
+          translucent={true}
+          isLoaded={isLoaded && isI18nInitialized}
+          logoImage={IMAGES.logo}
+          backgroundColor={COLORS.primary}
+          logoHeight={SIZES.fifty * 4}
+          logoWidth={SIZES.fifty * 4}
+        />
+        {/* <View style={styles.loadingContainer}>
+
           <Image
             source={IMAGES.icon}
             style={styles.img}
           />
           <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
+        </View> */}
       </SafeAreaView>
     );
   }

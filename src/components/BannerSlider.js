@@ -94,7 +94,7 @@ import { View, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../constants';
 
 const { width } = Dimensions.get('window');
-const imageWidth = width * 0.9;
+const imageWidth = width * 0.87;
 
 const BannerSlider = ({ images }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -123,7 +123,7 @@ const BannerSlider = ({ images }) => {
                 showsHorizontalScrollIndicator={false}
                 onScroll={handleScroll}
                 keyExtractor={(item, index) => index.toString()}
-                snapToInterval={width} 
+                snapToInterval={width}
                 decelerationRate="fast"
             />
             <View style={styles.pagination}>
