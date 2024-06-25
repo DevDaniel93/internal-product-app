@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { COLORS, SCREENS } from "../constants";
-import { Text, View } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 import BottamTab from "./bottamTab/BottamTab";
 import DrawerNav from "./drawer/DrawerNav";
 import Login from "../screens/auth/Login";
@@ -53,6 +53,12 @@ export default function MainNavigation() {
         },
 
     };
+
+    useEffect(() => {
+        StatusBar.setBarStyle(currentTheme.statusBarStyle, true);
+        StatusBar.setBackgroundColor(currentTheme.statusBarColor, true);
+    }, [theme]);
+
     return (
         <NavigationContainer
         >
