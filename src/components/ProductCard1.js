@@ -20,9 +20,9 @@ const ProductCard1 = ({ item }) => {
         }}
             style={[styles.container, STYLES.shadow, {backgroundColor: currentTheme.onBackground }]}>
             <Image
-                style={styles.img}
+                style={[styles.img, {backgroundColor: currentTheme.Background}]}
                 source={{ uri: item?.image }}
-                resizeMode="contain"
+                resizeMode="cover"
             />
             <TouchableOpacity
                 style={[styles.starContainer, {}]}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "70%",
         borderRadius: 10,
-        backgroundColor: COLORS.white
+        // backgroundColor: COLORS.white
     },
     starContainer: {
         position: "absolute",
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         left: SIZES.fifty * 1.85,
-        bottom: -SIZES.five,
+        bottom: SIZES.five,
         backgroundColor: COLORS.black
     },
     detail: {

@@ -67,11 +67,11 @@ const TabButton = (props) => {
                     style={[StyleSheet.absoluteFillObject, { backgroundColor: currentTheme.primary, borderRadius: SIZES.twentyFive, }]} />
                 <View style={[styles.btn]}>
 
-                    <Icon type={item.type} name={item.icon} color={focused ? currentTheme.Background : currentTheme.defaultTextColor} size={SIZES.twenty} />
+                    <Icon type={item.type} name={item.icon} color={focused ? COLORS.white : currentTheme.defaultTextColor} size={SIZES.twenty} />
                     <Animatable.View
                         ref={textViewRef}>
                         {focused && <Text style={{
-                            color: currentTheme.Background, paddingHorizontal: SIZES.ten
+                            color: COLORS.white, paddingHorizontal: SIZES.ten
                         }}>{item.label}</Text>}
                     </Animatable.View>
                 </View>

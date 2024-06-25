@@ -36,8 +36,8 @@ export const COLORS = {
 export const DarkTheme = {
     defaultTextColor: "#ffffff",
     defaultBtnColor: "#ffffff",
-    Background: "#131313",
-    onBackground: '#232323',
+    Background: "#24262b",
+    onBackground: '#363841',
     primary: "#FF856A",
     purple: "#4e1789",
     lightPurple: "#871af6",
