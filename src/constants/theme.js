@@ -172,6 +172,7 @@ export const SCREENS = {
     OrderDetails: "OrderDetails",
     About: "About",
     wishList: "wishList",
+    drawwer: "drawwer",
     profile: "profile",
     order: "Order",
     products: "products",

@@ -19,7 +19,7 @@ const ProductDetail = (props) => {
     const [wishList, setWishList] = useState(props.favourite)
     const { navigation, route } = props
     const { productDetails } = route?.params
-    console.log(productDetails.attributes.color)
+
 
 
     const renderItem = ({ item }) => {

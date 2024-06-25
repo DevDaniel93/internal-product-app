@@ -162,7 +162,7 @@ export default function WishList() {
         return products.favourite === true
     }
     const wishListedProducts = products.filter(favouriteProducts)
-    console.log({ wishListedProducts })
+
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow

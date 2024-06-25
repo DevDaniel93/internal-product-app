@@ -250,7 +250,7 @@ const CustomDrawer = (props) => {
     const [isEnabled, setIsEnabled] = useState(false);
 
     const toggleSwitch = () => {
-        console.log("isEnabled", isEnabled);
+
         if (theme === 'light') {
             dispatch(toggleTheme("dark"));
         } else {

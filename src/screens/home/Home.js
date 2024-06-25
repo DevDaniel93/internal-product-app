@@ -293,7 +293,7 @@ export default function Home() {
                     }}
                 />
 
-                <View style={{ height: SIZES.fifty * 2 }} />
+                <View style={{ height: SIZES.fifty * 1.5 }} />
             </ScrollView>
         </View>
 

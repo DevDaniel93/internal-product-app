@@ -33,9 +33,10 @@ export default function UploadPhotoModal({
             onImageSelected(image);
         });
     };
-   
+
     //======================= Image Capture From Camera Methood ================================//
     const takePhotoFromCamera = async () => {
+
         ImagePicker.openCamera({
             cropping: cropping,
             width: SIZES.ten * 40,
@@ -44,7 +45,9 @@ export default function UploadPhotoModal({
             cropperCircleOverlay: isCircle,
             includeBase64: includeBase64,
         }).then(image => {
+
             setVisibility(false);
+
             onImageSelected(image);
         });
     };
