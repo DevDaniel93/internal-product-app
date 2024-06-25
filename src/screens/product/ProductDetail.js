@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, FlatList, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import CustomHeader from '../../components/CustomHeader'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
@@ -24,7 +24,17 @@ const ProductDetail = (props) => {
 
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={[styles.colorOptions, { backgroundColor: item.toLowerCase() }]}
+            <TouchableOpacity style={[styles.colorOptions, { backgroundColor: item.toLowerCase(), }, item.toLowerCase() === "white" && {
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 7,
+                },
+                shadowOpacity: 0.41,
+                shadowRadius: 9.11,
+
+                elevation: 14,
+            }]}
                 onPress={() => setSelectedColor(item)}
             >
                 {selectedColor === item &&
@@ -37,82 +47,85 @@ const ProductDetail = (props) => {
             <HeaderWithArrow
                 label={t('Details')}
             />
-            <ImageBackground
-                resizeMode='contain'
-                style={styles?.imgContainer}
-                source={{ uri: productDetails?.image }}>
-                <View style={styles.TxtAndRating}>
-                    <View style={styles.txtView}>
-                        <Text style={styles.title}>{productDetails?.title}</Text>
-                        <Text style={styles.category}>{productDetails?.category}</Text>
-                    </View>
-                    <View style={styles.reviewContainer}>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Icon
-                                name={'star'}
-                                type={IconType.MaterialCommunityIcons}
-                                color={COLORS.golden}
-                            />
-                            <Text style={styles.rating}>{" "}6.5</Text>
+            <ScrollView>
+                <ImageBackground
+                    resizeMode='contain'
+                    style={[styles?.imgContainer, { backgroundColor: currentTheme.onBackground }]}
+                    source={{ uri: productDetails?.image }}>
+                    <View style={styles.TxtAndRating}>
+                        <View style={styles.txtView}>
+                            <Text style={styles.title}>{productDetails?.title}</Text>
+                            <Text style={styles.category}>{productDetails?.category}</Text>
                         </View>
-                        <Text style={styles.review}>250 {t('reviews')}</Text>
+                        <View style={styles.reviewContainer}>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Icon
+                                    name={'star'}
+                                    type={IconType.MaterialCommunityIcons}
+                                    color={COLORS.golden}
+                                />
+                                <Text style={styles.rating}>{" "}6.5</Text>
+                            </View>
+                            <Text style={styles.review}>250 {t('reviews')}</Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+                <View style={styles.description}>
+                    <Text style={[styles.descriptionHeading, { color: currentTheme.defaultTextColor, }]}>{t('Description')}</Text>
+                    <Text style={{ color: currentTheme.defaultTextColor }}>Introducing our stylish and versatile WJM Logo twill hat with leather patch – the perfect blend of fashion and functionality for any occasion. Crafted with meticulous attention to detail, this hat is designed to provide...</Text>
+                </View>
+                <View style={{ flexDirection: "row", margin: 20, alignItems: "center" }}>
+                    <Text style={[styles.descriptionHeading, { color: currentTheme.defaultTextColor }]}>{t('Color')}</Text>
+                    <FlatList
+                        style={{ right: 10 }}
+                        data={productDetails.attributes.color}
+                        renderItem={renderItem}
+                        horizontal
+                        scrollEnabled={false}
+                    />
+                    <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: COLORS.primary, borderRadius: 10 }}>
+                        <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
+                            onPress={() => {
+                                if (quantity !== 0) {
+                                    setQuantity(quantity - 1)
+                                }
+                            }}
+                        >
+                            <Icon
+                                name={"minus"}
+                                type={IconType.Entypo}
+                                color={COLORS.black}
+                            />
+                        </TouchableOpacity>
+                        <Text style={[styles.quantityText, { color: currentTheme.defaultTextColor, }]}>
+                            {quantity}
+                        </Text>
+                        <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
+                            onPress={() => setQuantity(quantity + 1)}
+                        >
+                            <Icon
+                                name={"plus"}
+                                type={IconType.Entypo}
+                                color={COLORS.black}
+                            />
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </ImageBackground>
-            <View style={styles.description}>
-                <Text style={[styles.descriptionHeading, { color: currentTheme.defaultTextColor, }]}>{t('Description')}</Text>
-                <Text style={{ color: currentTheme.defaultTextColor }}>Introducing our stylish and versatile WJM Logo twill hat with leather patch – the perfect blend of fashion and functionality for any occasion. Crafted with meticulous attention to detail, this hat is designed to provide...</Text>
-            </View>
-            <View style={{ flexDirection: "row", margin: 20, alignItems: "center" }}>
-                <Text style={[styles.descriptionHeading, { color: currentTheme.defaultTextColor }]}>{t('Color')}</Text>
-                <FlatList
-                    style={{ right: 10 }}
-                    data={productDetails.attributes.color}
-                    renderItem={renderItem}
-                    horizontal
-                />
-                <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: COLORS.primary, borderRadius: 10 }}>
-                    <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
-                        onPress={() => {
-                            if (quantity !== 0) {
-                                setQuantity(quantity - 1)
-                            }
-                        }}
+                <View style={{ flexDirection: "row", justifyContent: "space-around", alignItems: 'center', bottom: 10 }}>
+                    <TouchableOpacity
+                        style={styles.favIcon}
+                        onPress={() => setWishList(!wishList)}
                     >
                         <Icon
-                            name={"minus"}
+                            name={wishList ? "heart" : "heart-outlined"}
                             type={IconType.Entypo}
-                            color={COLORS.black}
+                            color={wishList ? COLORS.red : COLORS.black}
+                            size={SIZES.twenty + 3}
                         />
                     </TouchableOpacity>
-                    <Text style={[styles.quantityText, { color: currentTheme.defaultTextColor, }]}>
-                        {quantity}
-                    </Text>
-                    <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
-                        onPress={() => setQuantity(quantity + 1)}
-                    >
-                        <Icon
-                            name={"plus"}
-                            type={IconType.Entypo}
-                            color={COLORS.black}
-                        />
-                    </TouchableOpacity>
+                    <CustomButton label={t('AddToCart')} btnStyle={{ width: "60%", borderRadius: 10 }} icon={{ name: 'shoppingcart', type: IconType.AntDesign, color: COLORS.black }} />
                 </View>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-around", alignItems: 'center' }}>
-                <TouchableOpacity
-                    style={styles.favIcon}
-                    onPress={() => setWishList(!wishList)}
-                >
-                    <Icon
-                        name={wishList ? "heart" : "heart-outlined"}
-                        type={IconType.Entypo}
-                        color={wishList ? COLORS.red : COLORS.black}
-                        size={SIZES.twenty + 3}
-                    />
-                </TouchableOpacity>
-                <CustomButton label={t('AddToCart')} btnStyle={{ width: "60%", borderRadius: 10 }} icon={{ name: 'shoppingcart', type: IconType.AntDesign, color: COLORS.black }} />
-            </View>
+            </ScrollView>
         </View>
     )
 }
@@ -122,7 +135,7 @@ export default ProductDetail
 const styles = StyleSheet.create({
     imgContainer: {
         height: height * .5,
-        backgroundColor: COLORS.backgroundGray,
+        // backgroundColor: COLORS.backgroundGray,
         margin: SIZES.twentyFive,
         borderRadius: 20
     },

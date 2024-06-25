@@ -10,13 +10,15 @@ import { useNavigation } from '@react-navigation/native'
 const ProductCard1 = ({ item }) => {
     const navigation = useNavigation()
     const [wishList, setWishList] = useState(item.favourite)
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
 
 
     return (
         <TouchableOpacity onPress={() => {
             navigation.navigate(SCREENS.ProductDetail, { productDetails: item })
         }}
-            style={[styles.container, STYLES.shadow, {}]}>
+            style={[styles.container, STYLES.shadow, {backgroundColor: currentTheme.onBackground }]}>
             <Image
                 style={styles.img}
                 source={{ uri: item?.image }}
@@ -34,7 +36,7 @@ const ProductCard1 = ({ item }) => {
                 />
             </TouchableOpacity>
             <View style={[styles.detail, {}]}>
-                <Text style={[styles.txt, { color: COLORS.defaultTextColor, }]}>
+                <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {item?.title}
                 </Text>
                 <View style={{ flexDirection: "row", marginTop: 2, }}>
