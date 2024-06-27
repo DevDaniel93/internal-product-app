@@ -288,7 +288,6 @@ export default function BottomTab() {
                             listeners={({ navigation }) => ({
                                 tabPress: e => {
                                     e.preventDefault();
-                                    console.log(`Tab pressed: ${item.route}`);
                                     if (item.route === SCREENS.drawwer) {
                                         navigation.openDrawer();
                                     } else {

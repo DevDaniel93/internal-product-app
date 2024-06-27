@@ -9,25 +9,27 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function CustomHeader() {
     const theme = useSelector(state => state.Theme.theme)
+    const user = useSelector(state => state.Auth.user)
+
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
     const navigation = useNavigation()
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate(SCREENS.profile)
+                navigation.navigate(user !== null ? SCREENS.profile : SCREENS.Login)
             }}
             style={styles.container}>
             <Image
                 style={[styles.img, { borderColor: currentTheme.primary, }]}
-                source={IMAGES.user}
+                source={user !== null ? { uri: user?.image } : IMAGES.avatar}
             />
             <View>
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {t('HelloWelcomeBack')} 👋
                 </Text>
                 <Text style={[styles.txt, { fontWeight: "600", color: currentTheme.defaultTextColor, }]}>
-                    John Doe
+                    {user !== null ? user.name : "Guest User"}
                 </Text>
             </View>
         </TouchableOpacity>

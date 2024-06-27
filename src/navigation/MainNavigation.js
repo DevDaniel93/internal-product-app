@@ -22,10 +22,14 @@ import PrivacyPolicy from "../screens/content/PrivacyPolicy";
 import AboutUs from "../screens/content/AboutUs";
 import Profile from "../screens/profile/Profile";
 import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getTheme } from "../constants/theme";
 
 import ProductDetail from "../screens/product/ProductDetail";
+import { getProducts } from "../redux/slices/products";
+import { getCategories } from "../redux/slices/categories";
+import Loading from "../components/Loading";
+import { setLoading } from "../redux/slices/utils";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +47,9 @@ const Demo = () => {
 }
 export default function MainNavigation() {
     const theme = useSelector(state => state.Theme.theme)
+    const loading = useSelector(state => state.utils.loading)
     const currentTheme = getTheme(theme)
+    const dispatch = useDispatch()
     const screenOptions = {
         headerShown: false,
         animation: "slide_from_right",
@@ -51,12 +57,18 @@ export default function MainNavigation() {
             color: COLORS.white
             // backgroundColor: '#121212',
         },
-
     };
+    const getpro = async () => {
+        dispatch(setLoading(true))
+        await dispatch(getProducts())
+        await dispatch(getCategories())
+        dispatch(setLoading(false))
 
+    }
     useEffect(() => {
-        StatusBar.setBarStyle(currentTheme.statusBarStyle, true);
-        StatusBar.setBackgroundColor(currentTheme.statusBarColor, true);
+        getpro()
+        StatusBar.setBarStyle(currentTheme.statusBarColor, true);
+        StatusBar.setBackgroundColor(currentTheme.statusBarStyle, true);
     }, [theme]);
 
     return (
@@ -110,7 +122,7 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.About} component={AboutUs} />
                 <Stack.Screen name={SCREENS.profile} component={Profile} />
             </Stack.Navigator>
-
+            <Loading loading={loading} />
         </NavigationContainer>
     );
 }

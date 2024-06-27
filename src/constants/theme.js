@@ -61,6 +61,8 @@ export const DarkTheme = {
     red: "#FF0000",
     cyan: '#21D4B4',
     lightGray: '#C0C0C0',
+    statusBarColor: 'light-content',
+    statusBarStyle: "#000000"
 };
 export const LightTheme = {
     defaultTextColor: "#000000",
@@ -91,9 +93,11 @@ export const LightTheme = {
     red: "#FF0000",
     cyan: '#21D4B4',
     lightGray: '#C0C0C0',
+    statusBarColor: 'dark-content',
+    statusBarStyle: "#ffffff"
 };
 export const getTheme = (theme) => {
-    return theme === 'light' ? LightTheme : DarkTheme;
+    return theme === 'Light' ? LightTheme : DarkTheme;
 };
 const appTheme = { COLORS };
 
@@ -310,7 +314,9 @@ export const CONSTANTS = {
 
 
     API_URLS: {
-        BASE: "",
+        Consumer_key: "ck_13ee7c5724a3ca26d336a18801c53fdeb64fe360",
+        Consumer_secret: "cs_b697803fa868f5b51293cb4ccb05b4f3f5ad3e66",
+        BASE: "https://demo25.mystagingserver.site/cpap-2/",
         LOGIN: "",
         CREATE_ORDER: "/wp-json/wc/v3/orders",
         RETRIEVE_ORDER: " /wp-json/wc/v3/orders/",
@@ -320,6 +326,7 @@ export const CONSTANTS = {
         CREATE_PRODUCT: "/wp-json/wc/v3/products",
         RETRIEVE_PRODUCT: "/wp-json/wc/v3/products/",
         ALL_PRODUCT: "/wp-json/wc/v3/products",
+        ALL_Categories: "wp-json/wc/v3/products/categories",
         UPDATE_PRODUCT: "/wp-json/wc/v3/products/",
         DELETE_PRODUCT: "/wp-json/wc/v3/products/"
 

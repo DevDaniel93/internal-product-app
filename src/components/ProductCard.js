@@ -18,7 +18,7 @@ const ProductCard = ({ item }) => {
             style={[styles.container, STYLES.shadow, { backgroundColor: currentTheme.Background, }]}>
             <Image
                 style={styles.img}
-                source={{ uri: item?.image }}
+                source={{ uri: item?.images[0]?.src }}
                 resizeMode="contain"
             />
             <TouchableOpacity
@@ -33,7 +33,7 @@ const ProductCard = ({ item }) => {
             </TouchableOpacity>
             <View style={[styles.detail, { backgroundColor: currentTheme.Background, }]}>
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                    {item?.title}
+                    {item?.name}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 2 }}>
                     <Text style={[styles.price, { color: currentTheme.defaultTextColor, }]}>
@@ -41,7 +41,7 @@ const ProductCard = ({ item }) => {
                     </Text>
                     <View style={styles.rating}>
                         <Icon type={IconType.FontAwesome} name={'star'} size={18} color={COLORS.star} />
-                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>{item?.rating}</Text>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, marginLeft: SIZES.five }]}>{item?.rating_count}</Text>
                     </View>
                 </View>
             </View>

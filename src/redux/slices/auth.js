@@ -45,7 +45,6 @@ export const logout = () => async (dispatch) => {
     }
 };
 
-
 export const AuthSlice = createSlice({
     name: 'auth',
     initialState,
