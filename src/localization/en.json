@@ -48,7 +48,7 @@
   "EnterYourLastName": "Enter Your Last Name",
   "EnterYourEmail": "Enter Your Email",
   "EnterVoucherCode": "Enter Voucher Code",
-  "HelloWelcomeBack":"Hello Welcome Back",
+  "HelloWelcomeBack": "Hello Welcome Back",
   "Apply": "Apply",
   "MyCart": "My Cart",
   "EstimatedTime7days": "Estimated time: 7 working days",
@@ -86,7 +86,8 @@
   "OrderDate": "Order Date",
   "OrderStatus": "Order Status",
   "ShippingDetails": "Shipping Details",
-
+  "Categories": "Categories",
+  "seeAll": "see all",
   "View": "View",
   "ShippingAddress": "Shipping Address",
   "Sub_Total": "Sub Total",
@@ -118,5 +119,7 @@
   "Profile": "Profile",
   "SelectProductSize": "Please select Product size, color etc",
   "Wishlist": "Wishlist",
-  "OpenDrawer": "Open drawer"
+  "OpenDrawer": "Open drawer",
+  "Minimum Price": "Minimum Price",
+  "Maximum Price": "Maximum Price"
 }

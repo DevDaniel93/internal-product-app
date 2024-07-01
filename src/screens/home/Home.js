@@ -8,14 +8,17 @@ import Categories from '../../components/Categories'
 import DrawerSceneWrapper from '../../components/DrawerSceneWrapper'
 import SearchFilter from '../../components/SearchFilter'
 import { useSelector } from 'react-redux'
-import { getTheme } from '../../constants/theme'
+import { SCREENS, getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import ProductCard1 from '../../components/ProductCard1'
+import FilterModal from '../../components/FilterModal'
 
-export default function Home() {
+export default function Home(props) {
+    const { navigation } = props
+    const modal = React.useRef(null)
     const theme = useSelector(state => state.Theme.theme)
     const products = useSelector(state => state?.Product?.products)
-    const categories = useSelector(state => state?.categories?.categories)
+    // const categories = useSelector(state => state?.categories?.categories)
 
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
@@ -29,32 +32,32 @@ export default function Home() {
         {
             id: 1,
             image: IMAGES.DummyCategories.cat1,
-            label: "Grocery"
+            name: "Grocery"
         },
         {
             id: 2,
             image: IMAGES.DummyCategories.cat2,
-            label: "Fashion"
+            name: "Fashion"
         },
         {
             id: 3,
             image: IMAGES.DummyCategories.cat3,
-            label: "Cosmetics"
+            name: "Cosmetics"
         },
         {
             id: 4,
             image: IMAGES.DummyCategories.cat4,
-            label: "Electronics"
+            name: "Electronics"
         },
         {
             id: 5,
             image: IMAGES.DummyCategories.cat1,
-            label: "Grocery"
+            name: "Grocery"
         },
         {
             id: 6,
             image: IMAGES.DummyCategories.cat2,
-            label: "Fashion"
+            name: "Fashion"
         },
     ]
     // const products = [
@@ -264,20 +267,34 @@ export default function Home() {
             title: "Broly "
         },
     ]
+    const onCancel = () => {
+        if (modal.current) {
+            modal.current.close();
+        }
+    }
+    const onApply = () => {
+
+    }
 
     return (
 
-
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-
             <CustomHeader />
             <ScrollView
                 // style={STYLES.container}
                 showsVerticalScrollIndicator={false}
             >
-                <SearchFilter />
+                <SearchFilter
+                    onPress={() => {
+                        if (modal.current) {
+                            modal.current.open();
+                        }
+                    }}
+                />
                 <BannerSlider images={images} />
-                <Categories data={categories} />
+                <Categories data={categoriesData} onPress={(item) => {
+                    navigation.navigate(SCREENS.AllProduct, { item: item })
+                }} />
                 <FlatList
 
                     columnWrapperStyle={{
@@ -298,6 +315,7 @@ export default function Home() {
 
                 <View style={{ height: SIZES.fifty * 1.5 }} />
             </ScrollView>
+            <FilterModal modalizeRef={modal} onApply={onApply} onCancel={onCancel} />
         </View>
 
 

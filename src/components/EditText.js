@@ -22,7 +22,6 @@ export default function EditText(props) {
                         <Text style={styles.required}> *</Text>}
                 </Text>
             }
-
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={[styles.textInputArea, { borderColor: focusColor }, props?.inputArea]}>
                     {props.hasIcon ? (
@@ -57,7 +56,7 @@ export default function EditText(props) {
                                 type={IconType.FontAwesome}
                                 style={{
                                     fontSize: 20,
-                                    color: currentTheme.placeholderColor,
+                                    color: currentTheme.defaultTextColor,
                                     marginLeft: 5,
                                 }}
                             />
@@ -69,8 +68,6 @@ export default function EditText(props) {
         </View>
     );
 }
-
-
 
 const styles = StyleSheet.create({
     textInputView: {
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 1,
-
     },
     textLabel: {
         fontFamily: "Poppins",

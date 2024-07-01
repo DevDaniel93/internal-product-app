@@ -1,41 +1,50 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { COLORS, FONTFAMILY, SIZES } from '../constants'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTheme } from '../constants/theme'
+import { SCREENS, getTheme } from '../constants/theme'
 import { label } from '../constants/lables'
 import { useTranslation } from 'react-i18next'
 import { getProducts } from '../redux/slices/products'
 import { setLoading } from '../redux/slices/utils'
+import { SuccessAlert } from '../utils/utils'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Categories(props) {
+    const navigation = useNavigation()
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
     const dispatch = useDispatch()
     const currentTheme = getTheme(theme)
+    const [selectId, setSelectedId] = useState(null)
 
-    const getPro = async (id) => {
-        try {
-            dispatch(setLoading(true))
-            const params = {
-                category: id
-            }
-            await dispatch(getProducts(params))
-            dispatch(setLoading(false))
+    // const getPro = async (id) => {
+    //     try {
+    //         dispatch(setLoading(true))
+    //         const params = {
+    //             category: id
+    //         }
+    //         await dispatch(getProducts(params))
+    //         dispatch(setLoading(false))
 
-        } catch (error) {
-            console.log("error when try to get product by category")
-        }
-    }
+    //     } catch (error) {
+    //         console.log("error when try to get product by category")
+    //     }
+    // }
 
     const _renderItem = ({ item }) => {
         return (
             <TouchableOpacity
                 onPress={() => {
-                    getPro(item.id)
+                    setSelectedId(item?.id)
+                    props.onPress(item)
+
                 }}
                 style={styles.CategoryContainer}>
-                <Image style={styles.img} source={{ uri: item?.image }} />
+                <Image style={[styles.img, { borderColor: selectId === item?.id ? COLORS.primary : currentTheme.Background }]}
+                    source={item?.image}
+                //  source={{ uri: item?.image }}
+                />
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {item?.name}
                 </Text>
@@ -48,11 +57,19 @@ export default function Categories(props) {
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
                     {t('Categories')}
                 </Text>
-                <TouchableOpacity>
-                    <Text style={[styles.seeAll, { color: currentTheme.primary, }]}>
-                        {t('seeAll')}
-                    </Text>
-                </TouchableOpacity>
+                {!props.hide &&
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation?.navigate(SCREENS.AllProduct, { item: null })
+                        }}
+                    >
+                        <Text style={[styles.seeAll, { color: currentTheme.primary, }]}>
+                            {t('seeAll')}
+                        </Text>
+                    </TouchableOpacity>
+                }
+
             </View>
             <FlatList
                 showsHorizontalScrollIndicator={false}
@@ -95,7 +112,7 @@ const styles = StyleSheet.create({
         height: SIZES.fifty * .9,
         borderRadius: SIZES.fifty,
         borderWidth: 1,
-        borderColor: COLORS.primary,
+
         resizeMode: "contain"
     },
     txt: {

@@ -30,6 +30,8 @@ import { getProducts } from "../redux/slices/products";
 import { getCategories } from "../redux/slices/categories";
 import Loading from "../components/Loading";
 import { setLoading } from "../redux/slices/utils";
+import AllProducts from "../screens/product/AllProducts";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -76,8 +78,9 @@ export default function MainNavigation() {
         >
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={SCREENS.Login}
+                initialRouteName={SCREENS.Drawer}
             >
+                <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />
                 <Stack.Screen name={SCREENS.ConfirmationMail} component={ConfirmationMail}
@@ -111,7 +114,6 @@ export default function MainNavigation() {
                     })}
                 />
                 <Stack.Screen name={SCREENS.PasswordSuccessful} component={PasswordSuccessful} />
-                <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
                 <Stack.Screen name={SCREENS.OrderDetails} component={OrderDetails} />
                 <Stack.Screen name={SCREENS.contactUs} component={ContactUs} />
                 <Stack.Screen name={SCREENS.termAndCondition} component={TermAndCondition} />
@@ -121,8 +123,10 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.checkOut} component={CheckOut} />
                 <Stack.Screen name={SCREENS.About} component={AboutUs} />
                 <Stack.Screen name={SCREENS.profile} component={Profile} />
+                <Stack.Screen name={SCREENS.AllProduct} component={AllProducts} />
             </Stack.Navigator>
             <Loading loading={loading} />
+
         </NavigationContainer>
     );
 }

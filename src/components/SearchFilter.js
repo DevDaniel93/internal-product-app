@@ -1,10 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { TextInput } from 'react-native-gesture-handler'
+import { StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
+import React, { useState } from 'react'
+
 import Icon, { IconType } from './Icons'
 import { COLORS, SIZES } from '../constants'
 
+
 export default function SearchFilter(props) {
+
 
     return (
         <View style={styles.conatiner}>
@@ -18,13 +20,15 @@ export default function SearchFilter(props) {
 
                 <TextInput
                     style={styles.TextInput}
-                    {...props}
                     placeholderTextColor={COLORS.gray}
                     placeholder='Search Items Here...'
+                    {...props}
                 />
             </View>
 
-            <TouchableOpacity style={styles.iconContiner}>
+            <TouchableOpacity
+                onPress={props.onPress}
+                style={styles.iconContiner}>
                 <Icon
                     name={"sliders"}
                     color={COLORS.white}

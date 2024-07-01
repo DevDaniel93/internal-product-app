@@ -33,37 +33,7 @@ export const COLORS = {
     backgroundGray: "#DCDCDC",
     yellowTxt: "#FFBF00",
 };
-export const DarkTheme = {
-    defaultTextColor: "#ffffff",
-    defaultBtnColor: "#ffffff",
-    Background: "#24262b",
-    onBackground: '#363841',
-    primary: "#FF856A",
-    purple: "#4e1789",
-    lightPurple: "#871af6",
-    darkPurple: "#382649",
-    purpleShade: "#3c225d",
-    textGrey: "#8a7e9a",
-    textColor: "#B46BFF",
-    brownGray: "#5d536a",
-    black: "#000000",
-    white: "#ffffff",
-    blue: "#0037c1",
-    gray: "#767577",
-    star: "#FFD700",
-    golden: "#FFD700",
-    trueGreen: "#1eaf08",
-    halfWhite: "#eeeeee",
-    charcoalGrey: "#4a4b4d",
-    veryLightpink: "#ffeef2",
-    transparent: "transparent",
-    pink: "#d323a0",
-    red: "#FF0000",
-    cyan: '#21D4B4',
-    lightGray: '#C0C0C0',
-    statusBarColor: 'light-content',
-    statusBarStyle: "#000000"
-};
+
 export const LightTheme = {
     defaultTextColor: "#000000",
     defaultBtnColor: "#ffffff",
@@ -95,6 +65,37 @@ export const LightTheme = {
     lightGray: '#C0C0C0',
     statusBarColor: 'dark-content',
     statusBarStyle: "#ffffff"
+};
+export const DarkTheme = {
+    defaultTextColor: "#ffffff",
+    defaultBtnColor: "#ffffff",
+    Background: "#24262b",
+    onBackground: '#363841',
+    primary: "#FF856A",
+    purple: "#4e1789",
+    lightPurple: "#871af6",
+    darkPurple: "#382649",
+    purpleShade: "#3c225d",
+    textGrey: "#8a7e9a",
+    textColor: "#B46BFF",
+    brownGray: "#5d536a",
+    black: "#000000",
+    white: "#ffffff",
+    blue: "#0037c1",
+    gray: "#767577",
+    star: "#FFD700",
+    golden: "#FFD700",
+    trueGreen: "#1eaf08",
+    halfWhite: "#eeeeee",
+    charcoalGrey: "#4a4b4d",
+    veryLightpink: "#ffeef2",
+    transparent: "transparent",
+    pink: "#d323a0",
+    red: "#FF0000",
+    cyan: '#21D4B4',
+    lightGray: '#C0C0C0',
+    statusBarColor: 'light-content',
+    statusBarStyle: "#000000"
 };
 export const getTheme = (theme) => {
     return theme === 'Light' ? LightTheme : DarkTheme;
@@ -188,6 +189,7 @@ export const SCREENS = {
     checkOut: "CheckOut",
     PasswordSuccessful: "PasswordSuccessful",
     ProductDetail: "ProductDetail",
+    AllProduct: "AllProduct",
 
 };
 

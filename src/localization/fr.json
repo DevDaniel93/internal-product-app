@@ -95,7 +95,8 @@
   "PostalCode": "Code Postal",
   "EnterFullName": "Entrez le nom complet",
   "PhoneNumber": "Numéro de téléphone",
-
+  "Categories": "Catégories",
+  "seeAll": "voir tout",
   "SelectState": "Sélectionnez l'état",
 
   "SelectCity": "Sélectionnez une ville",
@@ -119,5 +120,7 @@
   "Profile": "Profil",
   "SelectProductSize": "Veuillez sélectionner la taille, la couleur, etc. du produit",
   "Wishlist": "Liste de souhaits",
-  "OpenDrawer": "Tiroir ouvert"
+  "OpenDrawer": "Tiroir ouvert",
+  "Minimum Price": "Prix ​​minimum",
+  "Maximum Price": "Prix ​​maximum"
 }

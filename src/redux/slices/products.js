@@ -14,7 +14,7 @@ export const getProducts = (params) => async (dispatch) => {
         await Getproducts(params).then(async (response) => {
             dispatch(saveProducts(response))
         }).catch((error) => {
-            console.log("error===========>", error)
+            console.log("error===========>", error?.response?.data?.message)
         })
 
     } catch (error) {

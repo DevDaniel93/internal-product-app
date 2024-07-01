@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         // marginTop: SIZES.twenty,
-        marginHorizontal: SIZES.five
+        marginHorizontal: SIZES.five,
     },
     IconContainer: {
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
         fontSize: SIZES.twenty,
         marginLeft: SIZES.fifteen,
-        fontWeight: "bold",
+        fontWeight: "600",
         fontFamily: FONTFAMILY.Poppins
 
     }

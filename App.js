@@ -139,12 +139,18 @@ import { AnimatedSplash, Icon, IconType } from './src/components';
 import { COLORS, FONTS, IMAGES, SIZES, height, width } from './src/constants';
 import { store } from './src/redux/store';
 import i18n from './src/translation/i18n';
-
+import Toast from 'react-native-toast-message';
+import CustomToast from './src/components/CustomToast';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const App = () => {
   const [networkState, setNetworkState] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isI18nInitialized, setIsI18nInitialized] = useState(false);
 
+  const toastConfig = {
+    custom_toast: (internalState) => <CustomToast {...internalState} />,
+    // You can add other custom toast types here if needed
+  };
   useEffect(() => {
     LogBox.ignoreAllLogs();
     setTimeout(() => {
@@ -211,9 +217,13 @@ const App = () => {
         barStyle={"dark-content"}
       />
       {networkState ? (
-        <Provider store={store}>
-          <MainNavigation />
-        </Provider>
+        <GestureHandlerRootView>
+          <Provider store={store}>
+            <MainNavigation />
+            <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
+          </Provider>
+        </GestureHandlerRootView>
+
       ) : (
         <View style={styles.noInternetView}>
           <View style={styles.imgStyle}>

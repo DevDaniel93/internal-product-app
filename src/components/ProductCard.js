@@ -18,7 +18,9 @@ const ProductCard = ({ item }) => {
             style={[styles.container, STYLES.shadow, { backgroundColor: currentTheme.Background, }]}>
             <Image
                 style={styles.img}
-                source={{ uri: item?.images[0]?.src }}
+                // source={{ uri: item?.images[0]?.src }}
+                source={{ uri: item?.image }}
+
                 resizeMode="contain"
             />
             <TouchableOpacity
