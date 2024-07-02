@@ -15,8 +15,8 @@ export default function Login(props) {
     const { t } = useTranslation();
 
     return (
-        <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <View style={{ flex: 1 }}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
+            <View style={{ flex: 1, }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor }]}>
                     {t('Login')}
                 </Text>
