@@ -8,6 +8,7 @@ import utilsReducer from './slices/utils';
 import AuthReducer from './slices/auth';
 import ProductReducer from './slices/products';
 import CategoryReducer from './slices/categories';
+import OrderReducer from './slices/orders';
 
 
 const persistConfig = {
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     Auth: AuthReducer,
     UserType: UserTypeReducer,
     Product: ProductReducer,
-    categories: CategoryReducer
+    categories: CategoryReducer,
+    Orders: OrderReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

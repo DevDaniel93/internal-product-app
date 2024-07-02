@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
@@ -15,7 +15,7 @@ export default function Login(props) {
     const { t } = useTranslation();
 
     return (
-        <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
+        <View style={[STYLES.container, { backgroundColor: currentTheme.Background, flexGrow: 1 }]}>
             <View style={{ flex: 1, }}>
                 <Text style={[styles.heading, { color: currentTheme.defaultTextColor }]}>
                     {t('Login')}
@@ -58,21 +58,40 @@ export default function Login(props) {
 
                     label={t('Login')}
                 />
+                <CustomButton
+                    txtstyle={{ color: COLORS.primary }}
+                    btnStyle={[styles.btnStyle1, { backgroundColor: currentTheme.Background }]}
+                    label={t('Continue as guest')}
+                    onPress={() => {
+                        navigation.navigate(SCREENS.Drawer)
+                    }}
+                />
+
+            </View>
+            <View style={{ position: "absolute", bottom: SIZES.twentyFive, alignSelf: "center", zIndex: -100 }}>
+                <Text style={[styles.bottamText, { color: currentTheme.defaultTextColor, }]}>
+                    {t('YouAgreeToOur')}
+                    <Text
+                        onPress={() => {
+                            navigation.navigate(SCREENS.privacyPolicy)
+                        }}
+                        style={{ color: currentTheme.primary }}>{" "}{t('PrivacyPolicy')}{" "}
+                    </Text>
+
+
+                    {t('And')}
+
+                    <Text
+                        onPress={() => {
+                            navigation.navigate(SCREENS.termAndCondition)
+                        }}
+                        style={{ color: currentTheme.primary }}>
+
+                        {" "}   {t('TermsAndConditions')}{" "}
+                    </Text>
+                </Text>
             </View>
 
-            <Text style={[styles.bottamText, { color: currentTheme.defaultTextColor, }]}>
-
-                {t('YouAgreeToOur')}
-                <Text style={{ color: currentTheme.primary }}>{" "}{t('PrivacyPolicy')}{" "}
-                </Text>
-
-                {t('And')}
-                <Text style={{ color: currentTheme.primary }}>
-
-                    {" "}   {t('TermsAndConditions')}{" "}
-                </Text>
-
-            </Text>
         </View>
     )
 }
@@ -102,11 +121,15 @@ const styles = StyleSheet.create({
         marginBottom: SIZES.fifteen
     },
     bottamText: {
-
         fontWeight: "400",
         fontFamily: "Poppins",
         textAlign: "center",
         marginBottom: SIZES.twenty,
         fontSize: SIZES.fifteen + 1
-    }
+    },
+    btnStyle1: {
+        borderWidth: 1,
+        borderColor: COLORS.primary,
+
+    },
 })

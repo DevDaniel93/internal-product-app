@@ -140,17 +140,14 @@ import { COLORS, FONTS, IMAGES, SIZES, height, width } from './src/constants';
 import { store } from './src/redux/store';
 import i18n from './src/translation/i18n';
 import Toast from 'react-native-toast-message';
-import CustomToast from './src/components/CustomToast';
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const App = () => {
   const [networkState, setNetworkState] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isI18nInitialized, setIsI18nInitialized] = useState(false);
 
-  const toastConfig = {
-    custom_toast: (internalState) => <CustomToast {...internalState} />,
-    // You can add other custom toast types here if needed
-  };
+
   useEffect(() => {
     LogBox.ignoreAllLogs();
     setTimeout(() => {
@@ -220,7 +217,9 @@ const App = () => {
         <GestureHandlerRootView>
           <Provider store={store}>
             <MainNavigation />
-            <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
+            <Toast
+              position='bottom'
+              bottomOffset={SIZES.fifty} />
           </Provider>
         </GestureHandlerRootView>
 

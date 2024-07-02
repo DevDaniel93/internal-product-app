@@ -7,7 +7,7 @@ import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCart, emptyCart } from '../../redux/slices/Cart'
 import CustomModal from '../../components/CustomModal'
-import { getTheme } from '../../constants/theme'
+import { getTheme, width } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 
 export default function SingleProduct(props) {
@@ -17,6 +17,7 @@ export default function SingleProduct(props) {
 
     const { navigation, route } = props
     const { productDetails } = route?.params
+    console.log("productDetails", productDetails?.id)
     const [quantity, setQuantity] = useState(1)
     const [isvisible, setIsvisible] = useState(false)
 
@@ -104,8 +105,8 @@ export default function SingleProduct(props) {
             <View style={styles.innerContainer}>
                 <View style={[styles.row, { marginTop: SIZES.twenty }]}>
                     <View>
-                        <Text style={[styles.productTitle, { color: currentTheme.defaultTextColor, }]}>
-                            {productDetails?.title}
+                        <Text ellipsizeMode='tail' numberOfLines={1} style={[styles.productTitle, { color: currentTheme.defaultTextColor, }]}>
+                            {productDetails?.name}
                         </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginVertical: SIZES.five }}>
                             <Icon
@@ -116,7 +117,7 @@ export default function SingleProduct(props) {
                             <Text style={[styles.ratText, { color: currentTheme.defaultTextColor, }]}>
                                 {" "}{productDetails?.rating} {" "}
                                 <Text style={{ color: COLORS.primary }}>
-                                    (7.932 {t('reviews')})
+                                    ({productDetails?.average_rating} {t('reviews')})
                                 </Text>
                             </Text>
                         </View>
@@ -154,7 +155,7 @@ export default function SingleProduct(props) {
 
                 </View>
                 <Text style={[styles.ProductDetails, { color: currentTheme.defaultTextColor, }]}>
-                    Introducing our stylish and versatile WJM Logo twill hat with leather patch – the perfect blend of fashion and functionality for any occasion. Crafted with meticulous attention to detail, this hat is designed to provide...
+                    {productDetails?.description}
                 </Text>
                 {productDetails?.attributes !== undefined &&
                     <ScrollView style={{ marginVertical: SIZES.ten }}>
@@ -179,7 +180,7 @@ export default function SingleProduct(props) {
                     onPress={() => {
                         addToCart()
                     }}
-                    label={t('Addtocart') + " | $ " + Number(quantity * productDetails?.price).toFixed(2)}
+                    label={t('AddToCart') + " | $ " + Number(quantity * productDetails?.price).toFixed(2)}
                 />
                 <Reviews />
             </View>
@@ -235,8 +236,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: SIZES.fifteen,
     },
     productTitle: {
-
-        fontSize: SIZES.twenty
+        width: width * .6,
+        fontSize: SIZES.fifteen
     },
     row: {
         justifyContent: "space-between",

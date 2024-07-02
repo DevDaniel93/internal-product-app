@@ -38,9 +38,11 @@ export const LightTheme = {
     defaultTextColor: "#000000",
     defaultBtnColor: "#ffffff",
     Background: "#ffffff",
+
     onBackground: '#f7f5f5',
     darkBackground: "#000000",
     primary: "#FF856A",
+
     purple: "#4e1789",
     lightPurple: "#871af6",
     darkPurple: "#382649",
@@ -72,6 +74,7 @@ export const DarkTheme = {
     Background: "#24262b",
     onBackground: '#363841',
     primary: "#FF856A",
+
     purple: "#4e1789",
     lightPurple: "#871af6",
     darkPurple: "#382649",
@@ -320,6 +323,9 @@ export const CONSTANTS = {
         Consumer_secret: "cs_b697803fa868f5b51293cb4ccb05b4f3f5ad3e66",
         BASE: "https://demo25.mystagingserver.site/cpap-2/",
         LOGIN: "",
+        REGISTER: "",
+        VERIFY_EMAIL: "",
+        PROFILE: "",
         CREATE_ORDER: "/wp-json/wc/v3/orders",
         RETRIEVE_ORDER: " /wp-json/wc/v3/orders/",
         ALL_ORDER: "/wp-json/wc/v3/orders",

@@ -1,7 +1,24 @@
+import axios from "axios";
 import { CONSTANTS } from "../../constants";
 
 
-const login = ({ email, password }) => {
+const login = (data) => {
+    const onSuccess = (data) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN,
+        data
+    ).then(onSuccess)
+        .catch(onFailure);
+
+
+};
+const Register = (data) => {
     const onSuccess = (data) => {
         return data;
     };
@@ -10,26 +27,25 @@ const login = ({ email, password }) => {
         throw error;
     };
 
-
-    const formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("password", password);
-    const options = {
-        method: 'POST',
-        body: formdata,
-        headers: {
-            'Accept': 'application/json'
-        },
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.REGISTER,
+        data
+    ).then(onSuccess)
+        .catch(onFailure);
+};
+const VerifyEmail = (data) => {
+    const onSuccess = (data) => {
+        return data;
     };
 
-    return fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.LOGIN, options)
-        .then((response) => {
-            if (!response.ok) {
-                return response.json().then(onFailure);
-            }
-            return response.json();
-        })
-        .then(onSuccess)
+    const onFailure = error => {
+        throw error;
+    };
+
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.VERIFY_EMAIL,
+        data
+    ).then(onSuccess)
         .catch(onFailure);
 };
 
@@ -43,28 +59,20 @@ const getProfile = (token) => {
         throw error;
     };
 
-    const options = {
-        method: 'GET',
 
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/json'
-        },
-    };
-
-    return fetch(CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.PROFILE, options)
-        .then((response) => {
-            if (!response.ok) {
-                return response.json().then(onFailure);
-            }
-            return response.json();
-        })
-        .then(onSuccess)
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.PROFILE,
+        data, {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+    ).then(onSuccess)
         .catch(onFailure);
 };
 
 const authService = {
     login,
+    Register,
+    VerifyEmail,
     getProfile
 };
 

@@ -6,12 +6,34 @@ const initialState = {
     user: null
 };
 
-export const login = ({ email, password }) => async (dispatch) => {
+export const login = (data) => async (dispatch) => {
     try {
-        await authService.login({ email, password }).then(async (response) => {
+        await authService.login(data).then(async (response) => {
+            dispatch(saveAccessToken(response?.token))
             getProfile(response?.token)
         }).catch((error) => {
-
+            console.log("error===========>", error)
+        });
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+export const Register = (data) => async (dispatch) => {
+    try {
+        await authService.Register(data).then(async (response) => {
+            getProfile(response?.token)
+        }).catch((error) => {
+            console.log("error===========>", error)
+        });
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+export const VerifyEmail = (data) => async (dispatch) => {
+    try {
+        await authService.VerifyEmail(data).then(async (response) => {
+            console.log("response", response)
+        }).catch((error) => {
             console.log("error===========>", error)
         });
 
@@ -23,7 +45,8 @@ export const login = ({ email, password }) => async (dispatch) => {
 export const getProfile = (token) => async (dispatch) => {
     try {
         await authService.getProfile(token).then(async (response) => {
-
+            console.log("response==================>", response)
+            await dispatch(saveProfile(response))
         }).catch((error) => {
 
             console.log("error", error)

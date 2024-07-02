@@ -78,9 +78,8 @@ export default function MainNavigation() {
         >
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={SCREENS.Drawer}
+                initialRouteName={SCREENS.Login}
             >
-                <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />
                 <Stack.Screen name={SCREENS.ConfirmationMail} component={ConfirmationMail}
@@ -119,10 +118,13 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.termAndCondition} component={TermAndCondition} />
                 <Stack.Screen name={SCREENS.privacyPolicy} component={PrivacyPolicy} />
                 <Stack.Screen name={SCREENS.singleProduct} component={SingleProduct} />
+                <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
+
                 <Stack.Screen name={SCREENS.ProductDetail} component={ProductDetail} />
                 <Stack.Screen name={SCREENS.checkOut} component={CheckOut} />
                 <Stack.Screen name={SCREENS.About} component={AboutUs} />
                 <Stack.Screen name={SCREENS.profile} component={Profile} />
+
                 <Stack.Screen name={SCREENS.AllProduct} component={AllProducts} />
             </Stack.Navigator>
             <Loading loading={loading} />
