@@ -11,6 +11,7 @@ const ProductCard = ({ item }) => {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const navigation = useNavigation()
+
     return (
         <TouchableOpacity onPress={() => {
             navigation.navigate(SCREENS.singleProduct, { productDetails: item })
@@ -40,7 +41,7 @@ const ProductCard = ({ item }) => {
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 2 }}>
                     {item?.on_sale ?
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={[styles.price, {marginRight: SIZES.ten ,color: currentTheme.defaultTextColor, textDecorationLine: 'line-through' }]}>
+                            <Text style={[styles.price, { marginRight: SIZES.ten, color: currentTheme.defaultTextColor, textDecorationLine: 'line-through' }]}>
                                 ${item?.regular_price}
                             </Text>
                             <Text style={[styles.price, { color: currentTheme.primary, fontWeight: "700" }]}>
@@ -52,7 +53,7 @@ const ProductCard = ({ item }) => {
                         </Text>}
                     <View style={styles.rating}>
                         <Icon type={IconType.FontAwesome} name={'star'} size={18} color={COLORS.star} />
-                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, marginLeft: SIZES.five }]}>{item?.rating_count}</Text>
+                        <Text style={[styles.txt, { color: currentTheme.defaultTextColor, marginLeft: SIZES.five }]}>{item?.average_rating}</Text>
                     </View>
                 </View>
             </View>

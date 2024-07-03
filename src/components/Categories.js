@@ -42,7 +42,7 @@ export default function Categories(props) {
                 }}
                 style={styles.CategoryContainer}>
                 <Image style={[styles.img, { borderColor: selectId === item?.id ? COLORS.primary : currentTheme.defaultTextColor }]}
-                 source={{ uri: item?.image?.src }}
+                    source={{ uri: item?.image?.src }}
                 />
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {item?.name}

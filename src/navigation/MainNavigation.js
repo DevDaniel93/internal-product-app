@@ -60,15 +60,9 @@ export default function MainNavigation() {
             // backgroundColor: '#121212',
         },
     };
-    const getpro = async () => {
-        dispatch(setLoading(true))
-        await dispatch(getProducts())
-        await dispatch(getCategories())
-        dispatch(setLoading(false))
 
-    }
     useEffect(() => {
-        getpro()
+
         StatusBar.setBarStyle(currentTheme.statusBarColor, true);
         StatusBar.setBackgroundColor(currentTheme.statusBarStyle, true);
     }, [theme]);
@@ -78,7 +72,7 @@ export default function MainNavigation() {
         >
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={SCREENS.Login}
+                initialRouteName={SCREENS.Drawer}
             >
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />
@@ -119,6 +113,7 @@ export default function MainNavigation() {
                 <Stack.Screen name={SCREENS.privacyPolicy} component={PrivacyPolicy} />
                 <Stack.Screen name={SCREENS.singleProduct} component={SingleProduct} />
                 <Stack.Screen name={SCREENS.Drawer} component={DrawerNav} />
+
 
                 <Stack.Screen name={SCREENS.ProductDetail} component={ProductDetail} />
                 <Stack.Screen name={SCREENS.checkOut} component={CheckOut} />

@@ -108,7 +108,8 @@ export default function DrawerNavigator() {
                 },
                 cardStyleInterpolator: fadeInAnimation,
             }}
-            drawerContent={(props) => <CustomDrawer{...props} />}>
+            drawerContent={(props) => <CustomDrawer{...props} />}
+        >
 
             <Drawer.Screen name={SCREENS.BottamTab} component={BottamTab} options={{ headerShown: false, headerTitle: '' }} />
             {

@@ -75,12 +75,14 @@ export default function MyCart(props) {
         )
     }
     const CartItem = ({ item }) => {
+        console.log("item?.image ", item)
         return (
             <View style={styles.CartItemRow}>
                 <View style={{ flexDirection: "row" }}>
                     <Image source={{ uri: item?.image }} style={[styles.img, STYLES.shadow]} />
                     <View style={{ justifyContent: "space-around", margin: SIZES.twentyFive, }}>
-                        <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
+                        <Text numberOfLines={2}
+                            style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
                             {item?.productName}
                         </Text>
                         <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
     },
     productText: {
         fontSize: SIZES.twenty - 3,
-
+        width: width * .4,
         fontFamily: FONTFAMILY.Poppins,
         fontWeight: "600"
     },

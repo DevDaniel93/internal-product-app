@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import Categories from './Categories';
 import { getProducts } from '../redux/slices/products';
 import { setLoading } from '../redux/slices/utils';
-import { Getproducts } from '../redux/service/products.service';
+
 
 
 export default function FilterModal(props) {
@@ -22,52 +22,15 @@ export default function FilterModal(props) {
     const { t } = useTranslation();
     const categories = useSelector(state => state?.categories?.categories)
 
-
-
-    const Brands = [{ title: 'Puma' }, { title: 'Adidas' }];
-    const sizes = [{ title: 'S' }, { title: 'M' }, { title: 'L' }, { title: 'XL' }];
-    const categoriesData = [
-        {
-            id: 1,
-            image: IMAGES.DummyCategories.cat1,
-            name: "Grocery"
-        },
-        {
-            id: 2,
-            image: IMAGES.DummyCategories.cat2,
-            name: "Fashion"
-        },
-        {
-            id: 3,
-            image: IMAGES.DummyCategories.cat3,
-            name: "Cosmetics"
-        },
-        {
-            id: 4,
-            image: IMAGES.DummyCategories.cat4,
-            name: "Electronics"
-        },
-        {
-            id: 5,
-            image: IMAGES.DummyCategories.cat1,
-            name: "Grocery"
-        },
-        {
-            id: 6,
-            image: IMAGES.DummyCategories.cat2,
-            name: "Fashion"
-        },
-    ]
     const [minprice, setMinPrice] = useState(1);
     const [maxprice, setMaxPrice] = useState(1);
-    const [selectedSize, setSelectedSize] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedBrand, setSelectedBrand] = useState(null);
 
     const onReset = () => {
         setMaxPrice(1);
         setMinPrice(1);
-        setSelectedSize(null);
+
         setSelectedCategory(null);
         setSelectedBrand(null);
     };
@@ -106,15 +69,16 @@ export default function FilterModal(props) {
         </View>
     );
 
-    const getPro = async (id) => {
+    const getPro = async () => {
         try {
             dispatch(setLoading(true))
             const params = {
-                category: selectedCategory,
-                min_price: minprice !== 1 && minprice,
-                max_price: maxprice !== 1 && maxprice
+                ...(selectedCategory !== null && { category: selectedCategory }),
+                ...(minprice > 1 && { min_price: minprice }),
+                ...(maxprice > 1 && { max_price: maxprice }),
             }
-            await dispatch(Getproducts(params))
+
+            await dispatch(getProducts(params))
             dispatch(setLoading(false))
 
         } catch (error) {
@@ -139,7 +103,7 @@ export default function FilterModal(props) {
                     step={1}
                     value={minprice}
                     minimumValue={1}
-                    maximumValue={10000}
+                    maximumValue={5000}
                     trackStyle={{ height: 2.5 }}
                     thumbTintColor={COLORS.primary}
                     maximumTrackTintColor={currentTheme.defaultTextColor}
@@ -152,7 +116,7 @@ export default function FilterModal(props) {
                         ${minprice}
                     </Text>
                     <Text style={[FONTS.mediumFont12, { color: currentTheme.defaultTextColor }]}>
-                        $10,000
+                        $5,000
                     </Text>
                 </View>
             </View>
@@ -162,7 +126,7 @@ export default function FilterModal(props) {
                     step={1}
                     value={maxprice}
                     minimumValue={1}
-                    maximumValue={10000}
+                    maximumValue={5000}
                     trackStyle={{ height: 2.5 }}
                     thumbTintColor={COLORS.primary}
                     maximumTrackTintColor={currentTheme.defaultTextColor}
@@ -175,7 +139,7 @@ export default function FilterModal(props) {
                         ${maxprice}
                     </Text>
                     <Text style={[FONTS.mediumFont12, { color: currentTheme.defaultTextColor }]}>
-                        $10,000
+                        $5,000
                     </Text>
                 </View>
             </View>

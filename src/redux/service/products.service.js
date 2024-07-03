@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CONSTANTS } from "../../constants";
 
-export const Getproducts = (data) => {
+export const Getproducts = (params) => {
+
     const onSuccess = ({ data }) => {
         return data;
     };
@@ -14,8 +15,13 @@ export const Getproducts = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-            category: data?.category,
+            category: params?.category,
             status: 'publish',
+            per_page: 1,
+            page: 1,
+            max_price: params?.max_price,
+            min_price: params?.min_price
+
         },
     }
     return axios.get(

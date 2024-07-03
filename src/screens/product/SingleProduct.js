@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { COLORS, FONTFAMILY, SCREENS, SIZES, STYLES, height } from '../../constants'
 import { Icon, IconType } from '../../components'
 import Reviews from '../../components/Reviews'
+
+import Stars from 'react-native-stars';
 import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCart, emptyCart } from '../../redux/slices/Cart'
@@ -71,22 +73,22 @@ export default function SingleProduct(props) {
         try {
             if (productDetails.type === 'simple') {
                 const data = {
-                    id: productDetails?.productId,
-                    productName: productDetails?.title,
+                    id: productDetails?.id,
+                    productName: productDetails?.name,
                     quantity: quantity,
                     price: productDetails?.price,
-                    image: productDetails?.image,
+                    image: productDetails?.images[0]?.src,
                 }
                 navigation.navigate(SCREENS.MyCart)
                 dispatch(addCart(data))
             }
             else if (productDetails.type === 'variable' && selectedAttributes.length != []) {
                 const data = {
-                    id: productDetails?.productId,
-                    productName: productDetails?.title,
+                    id: productDetails?.id,
+                    productName: productDetails?.name,
                     quantity: quantity,
                     price: productDetails?.price,
-                    image: productDetails?.image,
+                    image: productDetails?.images[0]?.src,
                     attributes: selectedAttributes,
                 }
                 navigation.navigate(SCREENS.MyCart)
@@ -99,7 +101,16 @@ export default function SingleProduct(props) {
             console.log("error", error)
         }
     }
-
+    const HandleQuantity = () => {
+        if (productDetails?.manage_stock && productDetails?.stock_quantity > 0) {
+            if (quantity !== productDetails?.stock_quantity) {
+                setQuantity(pre => pre + 1)
+            }
+        }
+        else {
+            setQuantity(pre => pre + 1)
+        }
+    }
     const imagesSlider = ({ item }) => {
         return (
             <ImageBackground
@@ -117,6 +128,7 @@ export default function SingleProduct(props) {
             <View>
                 <Header />
                 <FlatList
+                    showsHorizontalScrollIndicator={false}
                     horizontal
                     pagingEnabled
                     data={productDetails?.images}
@@ -131,10 +143,20 @@ export default function SingleProduct(props) {
                             {productDetails?.name}
                         </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginVertical: SIZES.five }}>
-                            <Icon
+                            {/* <Icon
                                 name={'star'}
                                 type={IconType.MaterialCommunityIcons}
                                 color={COLORS.golden}
+                            /> */}
+                            <Stars
+                                display={productDetails?.average_rating}
+                                spacing={1}
+                                count={5}
+                                starSize={SIZES.ten}
+                                disabled={true}
+                                fullStar={<Icon name={'star'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
+                                emptyStar={<Icon name={'star-outline'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
+                                halfStar={<Icon name={'star-half'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
                             />
                             <Text style={[styles.ratText, { color: currentTheme.defaultTextColor, }]}>
                                 {" "}{productDetails?.rating}{" "}
@@ -148,6 +170,7 @@ export default function SingleProduct(props) {
                         <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
                             onPress={() => {
                                 if (quantity !== 0) {
+
                                     setQuantity(pre => pre - 1)
                                 }
                             }}
@@ -164,7 +187,9 @@ export default function SingleProduct(props) {
                         <TouchableOpacity style={[styles.btn, { borderColor: currentTheme.defaultTextColor }]}
                             onPress={() => {
 
-                                setQuantity(pre => pre + 1)
+
+                                HandleQuantity()
+
 
                             }}>
                             <Icon
@@ -215,7 +240,7 @@ export default function SingleProduct(props) {
                             :
                             t('AddToCart') + " | $ " + Number(quantity * productDetails?.price).toFixed(2)}
                 />
-                <Reviews />
+                <Reviews id={productDetails?.id} />
             </View>
             <CustomModal
                 isvisible={isvisible}

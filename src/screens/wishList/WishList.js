@@ -15,30 +15,26 @@ export default function WishList() {
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
 
-    const favouriteProducts = (products) => {
-        return products.favourite === true
-    }
-    const wishListedProducts = products.filter(favouriteProducts)
+
 
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow
                 label={t('Wishlist')}
             />
-
             <FlatList
                 columnWrapperStyle={{
                     justifyContent: "space-between",
-                    // paddingHorizontal: 10
+
                 }}
                 showsVerticalScrollIndicator={false}
-                data={wishListedProducts || []}
+                data={products || []}
                 keyExtractor={item => item.id}
                 numColumns={"2"}
                 renderItem={({ item }) => {
                     return (
                         <ProductCard item={item} />
-                        // <ProductCard1 item={item}/>
+
                     )
                 }}
                 ListFooterComponent={() => {

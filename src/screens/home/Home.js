@@ -1,5 +1,5 @@
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { IMAGES, SIZES, STYLES, height } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 import CustomHeader from '../../components/CustomHeader'
@@ -7,12 +7,14 @@ import BannerSlider from '../../components/BannerSlider'
 import Categories from '../../components/Categories'
 import DrawerSceneWrapper from '../../components/DrawerSceneWrapper'
 import SearchFilter from '../../components/SearchFilter'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SCREENS, getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
-import ProductCard1 from '../../components/ProductCard1'
 import FilterModal from '../../components/FilterModal'
-import { ErrorAlert, SuccessAlert } from '../../utils/utils'
+import { useFocusEffect } from '@react-navigation/native'
+import { getProducts } from '../../redux/slices/products'
+import { setLoading } from '../../redux/slices/utils'
+
 
 
 export default function Home(props) {
@@ -21,6 +23,7 @@ export default function Home(props) {
     const theme = useSelector(state => state.Theme.theme)
     const products = useSelector(state => state?.Product?.products)
     const categories = useSelector(state => state?.categories?.categories)
+    const dispatch = useDispatch()
 
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
@@ -30,38 +33,7 @@ export default function Home(props) {
         IMAGES.DummyBanner.banner2,
         IMAGES.DummyBanner.banner3,
     ];
-    const categoriesData = [
-        {
-            id: 1,
-            image: IMAGES.DummyCategories.cat1,
-            name: "Grocery"
-        },
-        {
-            id: 2,
-            image: IMAGES.DummyCategories.cat2,
-            name: "Fashion"
-        },
-        {
-            id: 3,
-            image: IMAGES.DummyCategories.cat3,
-            name: "Cosmetics"
-        },
-        {
-            id: 4,
-            image: IMAGES.DummyCategories.cat4,
-            name: "Electronics"
-        },
-        {
-            id: 5,
-            image: IMAGES.DummyCategories.cat1,
-            name: "Grocery"
-        },
-        {
-            id: 6,
-            image: IMAGES.DummyCategories.cat2,
-            name: "Fashion"
-        },
-    ]
+
 
     const onCancel = () => {
         if (modal.current) {
@@ -71,6 +43,18 @@ export default function Home(props) {
     const onApply = () => {
 
     }
+    useFocusEffect(
+        useCallback(async () => {
+            await dispatch(setLoading(true))
+            await dispatch(getProducts())
+            await dispatch(setLoading(false))
+
+
+            return () => {
+                // Cleanup function if needed
+            };
+        }, [])
+    );
 
     return (
 
@@ -79,7 +63,6 @@ export default function Home(props) {
 
 
             <ScrollView
-                // style={STYLES.container}
                 showsVerticalScrollIndicator={false}
             >
                 <SearchFilter
@@ -91,22 +74,23 @@ export default function Home(props) {
                 />
                 <BannerSlider images={images} />
                 <Categories data={categories} onPress={(item) => {
-                    navigation.navigate(SCREENS.AllProduct, { item: item })
+                    navigation.navigate(SCREENS.AllProduct, { item: item?.id })
                 }} />
                 <FlatList
-
                     columnWrapperStyle={{
                         justifyContent: "space-between",
-                        // paddingHorizontal: 10
+
                     }}
                     showsVerticalScrollIndicator={false}
                     data={products}
-                    keyExtractor={item => item.id}
+
                     numColumns={"2"}
                     renderItem={({ item }) => {
+
                         return (
+
                             <ProductCard item={item} />
-                            // <ProductCard1 item={item} />
+
                         )
                     }}
                 />

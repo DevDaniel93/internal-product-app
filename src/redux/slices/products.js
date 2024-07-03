@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Getproducts } from '../service/products.service';
-import { setLoading } from './utils';
+import { getCategories } from './categories';
+
 
 
 const initialState = {
@@ -12,10 +13,12 @@ export const getProducts = (params) => async (dispatch) => {
     try {
 
         await Getproducts(params).then(async (response) => {
+            await dispatch(getCategories())
             dispatch(saveProducts(response))
         }).catch((error) => {
             console.log("error===========>", error?.response?.data?.message)
         })
+
 
     } catch (error) {
         console.log("error===========>", error)

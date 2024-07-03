@@ -2,19 +2,23 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { STYLES } from '../../constants'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SIZES, getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import SearchFilter from '../../components/SearchFilter'
 import FilterModal from '../../components/FilterModal'
 import ProductCard from '../../components/ProductCard'
+import { getProducts } from '../../redux/slices/products'
+import { setLoading } from '../../redux/slices/utils'
 
 export default function AllProducts(props) {
     const { navigation, route } = props
     const modal = React.useRef(null)
+    const dispatch = useDispatch()
     const products = useSelector(state => state?.Product?.products)
-    // const { item } = route?.params
+    const { item } = route?.params
+
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
@@ -33,6 +37,23 @@ export default function AllProducts(props) {
 
     }
 
+    const getPro = async () => {
+        try {
+            dispatch(setLoading(true))
+            const params = {
+                ...(item !== null && { category: item }),
+
+            }
+            await dispatch(getProducts(params))
+            dispatch(setLoading(false))
+
+        } catch (error) {
+            dispatch(setLoading(false))
+
+            console.log("error when try to get product by category")
+        }
+    }
+
     const filterProductsBySearch = (searchText) => {
         if (searchText !== "") {
             const filtered = products.filter(product =>
@@ -46,8 +67,19 @@ export default function AllProducts(props) {
 
     useEffect(() => {
         filterProductsBySearch(search);
-    }, [search]);
-
+    }, [search, products]);
+    useEffect(() => {
+        getPro()
+    }, []);
+    const renderEmptyComponent = () => {
+        return (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
+                    No Product found
+                </Text>
+            </View>
+        )
+    }
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <HeaderWithArrow label={t("Products")} />
@@ -71,6 +103,7 @@ export default function AllProducts(props) {
                     }}
                     showsVerticalScrollIndicator={false}
                     data={filterProducts}
+
                     keyExtractor={item => item.productId}
                     numColumns={"2"}
                     renderItem={({ item }) => {
@@ -78,6 +111,7 @@ export default function AllProducts(props) {
                             <ProductCard item={item} />
                         )
                     }}
+                    ListEmptyComponent={renderEmptyComponent}
                 />
             </ScrollView>
 
