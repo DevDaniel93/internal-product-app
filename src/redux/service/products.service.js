@@ -14,7 +14,8 @@ export const Getproducts = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-            category: data?.category
+            category: data?.category,
+            status: 'publish',
         },
     }
     return axios.get(

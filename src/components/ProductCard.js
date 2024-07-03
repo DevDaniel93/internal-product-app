@@ -21,7 +21,7 @@ const ProductCard = ({ item }) => {
                 source={{ uri: item?.images[0]?.src }}
                 // source={{ uri: item?.image }}
 
-                resizeMode="contain"
+                resizeMode="cover"
             />
             <TouchableOpacity
                 style={[styles.starContainer, { backgroundColor: currentTheme.white, }]}
@@ -34,13 +34,22 @@ const ProductCard = ({ item }) => {
                 />
             </TouchableOpacity>
             <View style={[styles.detail, { backgroundColor: currentTheme.Background, }]}>
-                <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
+                <Text numberOfLines={1} style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {item?.name}
                 </Text>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 2 }}>
-                    <Text style={[styles.price, { color: currentTheme.defaultTextColor, }]}>
-                        ${item?.price}
-                    </Text>
+                    {item?.on_sale ?
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={[styles.price, {marginRight: SIZES.ten ,color: currentTheme.defaultTextColor, textDecorationLine: 'line-through' }]}>
+                                ${item?.regular_price}
+                            </Text>
+                            <Text style={[styles.price, { color: currentTheme.primary, fontWeight: "700" }]}>
+                                ${item?.sale_price}
+                            </Text>
+                        </View> :
+                        <Text style={[styles.price, { color: currentTheme.defaultTextColor, }]}>
+                            ${item?.price}
+                        </Text>}
                     <View style={styles.rating}>
                         <Icon type={IconType.FontAwesome} name={'star'} size={18} color={COLORS.star} />
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, marginLeft: SIZES.five }]}>{item?.rating_count}</Text>

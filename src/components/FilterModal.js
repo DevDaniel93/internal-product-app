@@ -106,26 +106,13 @@ export default function FilterModal(props) {
         </View>
     );
 
-    const RenderItem = ({ title, onPress, selected }) => (
-        <TouchableOpacity
-            style={selected?.title === title ? styles.itemStyle1 : styles.itemStyle2}
-            onPress={onPress}>
-            <Text
-                style={[
-                    FONTS.mediumFont16,
-                    { color: selected?.title === title ? COLORS.white : COLORS.gray },
-                ]}>
-                {title}
-            </Text>
-        </TouchableOpacity>
-    );
     const getPro = async (id) => {
         try {
             dispatch(setLoading(true))
             const params = {
                 category: selectedCategory,
                 min_price: minprice !== 1 && minprice,
-                max_price: maxprice !== 1 & maxprice
+                max_price: maxprice !== 1 && maxprice
             }
             await dispatch(Getproducts(params))
             dispatch(setLoading(false))
@@ -192,24 +179,10 @@ export default function FilterModal(props) {
                     </Text>
                 </View>
             </View>
-            <Categories hide={true} data={categoriesData} onPress={(item) => {
+            <Categories hide={true} data={categories} onPress={(item) => {
                 setSelectedCategory(item?.id)
             }} />
 
-            <View style={{}}>
-                <Text style={[FONTS.mediumFont18, { color: currentTheme.defaultTextColor }]}>Brand</Text>
-                <View style={styles.itemsContainer}>
-                    {Brands?.map((item, index) => (
-                        <View key={index}>
-                            <RenderItem
-                                title={item.title}
-                                selected={selectedBrand}
-                                onPress={() => setSelectedBrand(item)}
-                            />
-                        </View>
-                    ))}
-                </View>
-            </View>
 
             <CustomButton
                 label="Apply"

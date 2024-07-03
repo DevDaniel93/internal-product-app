@@ -319,24 +319,24 @@ export const CONSTANTS = {
 
 
     API_URLS: {
-        Consumer_key: "ck_13ee7c5724a3ca26d336a18801c53fdeb64fe360",
-        Consumer_secret: "cs_b697803fa868f5b51293cb4ccb05b4f3f5ad3e66",
-        BASE: "https://demo25.mystagingserver.site/cpap-2/",
+        Consumer_key: "ck_7c8cdbbfb4b76cc2cd28c6c95dde54209a015cc2",
+        Consumer_secret: "cs_7e50fedc161c40f4b55ec828418a7ac23927007e",
+        BASE: "https://custom3.mystagingserver.site/digi-cart-app/wp-json",
         LOGIN: "",
         REGISTER: "",
         VERIFY_EMAIL: "",
         PROFILE: "",
-        CREATE_ORDER: "/wp-json/wc/v3/orders",
-        RETRIEVE_ORDER: " /wp-json/wc/v3/orders/",
-        ALL_ORDER: "/wp-json/wc/v3/orders",
-        UPDATE_ORDER: "/wp-json/wc/v3/orders/",
-        DELETE_ORDER: "/wp-json/wc/v3/orders/",
-        CREATE_PRODUCT: "/wp-json/wc/v3/products",
-        RETRIEVE_PRODUCT: "/wp-json/wc/v3/products/",
-        ALL_PRODUCT: "/wp-json/wc/v3/products",
-        ALL_Categories: "wp-json/wc/v3/products/categories",
-        UPDATE_PRODUCT: "/wp-json/wc/v3/products/",
-        DELETE_PRODUCT: "/wp-json/wc/v3/products/"
+        CREATE_ORDER: "/wc/v3/orders",
+        RETRIEVE_ORDER: " /wc/v3/orders/",
+        ALL_ORDER: "/wc/v3/orders",
+        UPDATE_ORDER: "/wc/v3/orders/",
+        DELETE_ORDER: "/wc/v3/orders/",
+        CREATE_PRODUCT: "/wc/v3/products",
+        RETRIEVE_PRODUCT: "/wc/v3/products/",
+        ALL_PRODUCT: "/wc/v3/products",
+        ALL_Categories: "/wc/v3/products/categories",
+        UPDATE_PRODUCT: "/wc/v3/products/",
+        DELETE_PRODUCT: "/wc/v3/products/"
 
 
 
