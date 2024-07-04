@@ -71,7 +71,7 @@ export default function Reviews({ id }) {
                 <View style={[styles.row, { justifyContent: "space-between" }]}>
                     <View style={styles.row}>
                         <Image
-                            source={IMAGES.user}
+                            source={{uri: item?.reviewer_avatar_urls["48"]}}
                             style={styles.img}
                             resizeMode='contain'
                         />

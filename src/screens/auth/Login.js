@@ -1,18 +1,42 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React,{useState} from 'react'
 import { SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { COLORS, getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { login } from '../../redux/slices/auth'
+import { setLoading } from '../../redux/slices/utils'
 
 
 export default function Login(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
+    const[email,setEmail]=useState(__DEV__?'Taimoor@yopmail.com':"")
+    const[password,setPassword]=useState(__DEV__?'Taimoor123':"")
     const { t } = useTranslation();
+    const dispatch = useDispatch()
+
+
+
+    const onLogin = async () => {
+        try {
+            dispatch(setLoading(true))
+          
+            const response = await dispatch(login(email,password))
+            if(response?.status===true){
+                navigation.navigate(SCREENS.drawwer)
+            }
+            dispatch(setLoading(false))
+            
+        } catch (error) {
+         console.log({error})   
+         dispatch(setLoading(false))
+
+        }
+    }
 
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background, flexGrow: 1 }]}>
@@ -32,13 +56,22 @@ export default function Login(props) {
                     </Text>
                 </Text>
                 <EditText
+                value={email}
                     label={t('Email')}
-
+onChangeText={(e)=>{
+setEmail(e)
+}}
                     required
                 />
                 <EditText
+                value={password}
+
                     label={t('Password')}
                     password
+                    onChangeText={(e)=>{
+                        setPassword(e)
+                        }}
+                           
                     required
                 />
                 <TouchableOpacity
@@ -52,9 +85,7 @@ export default function Login(props) {
                 </TouchableOpacity>
 
                 <CustomButton
-                    onPress={() => {
-                        navigation.navigate(SCREENS.Drawer)
-                    }}
+                    onPress={() => onLogin()}
 
                     label={t('Login')}
                 />

@@ -1,46 +1,80 @@
 import { createSlice } from '@reduxjs/toolkit';
 import authService from '../service/auth.service';
+import { ErrorAlert, SuccessAlert } from '../../utils/utils';
 
 const initialState = {
     token: null,
     user: null
 };
 
-export const login = (data) => async (dispatch) => {
+
+export const login = (email, password) => async (dispatch) => {
     try {
-        await authService.login(data).then(async (response) => {
-            dispatch(saveAccessToken(response?.token))
-            getProfile(response?.token)
-        }).catch((error) => {
-            console.log("error===========>", error)
-        });
+        const response = await authService.login(email, password);
+        SuccessAlert(response?.msg);
+        await dispatch(saveProfile(response?.user));
+        return response; // Return the response from authService.login
+
     } catch (error) {
-        console.log("error===========>", error)
-    };
+        ErrorAlert(error.response?.data?.msg || "An error occurred");
+        throw error; // Re-throw the error to propagate it back to caller
+    }
 };
+
 export const Register = (data) => async (dispatch) => {
     try {
-        await authService.Register(data).then(async (response) => {
-            getProfile(response?.token)
-        }).catch((error) => {
-            console.log("error===========>", error)
-        });
+        const response = await authService.Register(data);
+   
+        SuccessAlert(response?.msg);
+        return response; 
+
     } catch (error) {
-        console.log("error===========>", error)
-    };
+        // console.log("error===>",error?.response?.data)
+        ErrorAlert(error.response?.data?.msg || "An error occurred");
+        throw error; // Re-throw the error to propagate it back to caller
+    }
 };
 export const VerifyEmail = (data) => async (dispatch) => {
     try {
-        await authService.VerifyEmail(data).then(async (response) => {
-            console.log("response", response)
-        }).catch((error) => {
-            console.log("error===========>", error)
-        });
-
+        const response = await authService.VerifyEmail(data);
+        
+        SuccessAlert(response?.msg);
+        return response; 
 
     } catch (error) {
-        console.log("error===========>", error)
-    };
+        // console.log("error===>",error?.response?.data)
+        ErrorAlert(error.response?.data?.msg || "An error occurred");
+        throw error; // Re-throw the error to propagate it back to caller
+    }
+   
+};
+export const VerifyOTP = (data) => async (dispatch) => {
+    try {
+        const response = await authService.VerifyOTP(data);
+        
+        SuccessAlert(response?.msg);
+        return response; 
+
+    } catch (error) {
+        // console.log("error===>",error?.response?.data)
+        ErrorAlert(error.response?.data?.msg || "An error occurred");
+        throw error; // Re-throw the error to propagate it back to caller
+    }
+   
+};
+export const ResetPassword = (data) => async (dispatch) => {
+    try {
+        const response = await authService.ResetPassword(data);
+        
+        SuccessAlert(response?.msg);
+        return response; 
+
+    } catch (error) {
+        // console.log("error===>",error?.response?.data)
+        ErrorAlert(error.response?.data?.msg || "An error occurred");
+        throw error; // Re-throw the error to propagate it back to caller
+    }
+   
 };
 export const getProfile = (token) => async (dispatch) => {
     try {

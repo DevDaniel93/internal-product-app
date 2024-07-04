@@ -71,7 +71,7 @@ export default function FilterModal(props) {
 
     const getPro = async () => {
         try {
-            dispatch(setLoading(true))
+            // dispatch(setLoading(true))
             const params = {
                 ...(selectedCategory !== null && { category: selectedCategory }),
                 ...(minprice > 1 && { min_price: minprice }),
@@ -79,7 +79,7 @@ export default function FilterModal(props) {
             }
 
             await dispatch(getProducts(params))
-            dispatch(setLoading(false))
+            // dispatch(setLoading(false))
 
         } catch (error) {
             dispatch(setLoading(false))

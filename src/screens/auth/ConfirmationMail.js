@@ -1,17 +1,49 @@
 import { StyleSheet, Text, View, } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { setLoading } from '../../redux/slices/utils'
+import { VerifyEmail } from '../../redux/slices/auth'
+import { ErrorAlert } from '../../utils/utils'
 
 export default function ConfirmationMail(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
+    const dispatch = useDispatch()
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const [email, setEmail] = useState('')
+    const onEmailVerify = async () => {
+        try {
+            dispatch(setLoading(true))
+            if (email === '') {
+                ErrorAlert("Please enter your email")
+                dispatch(setLoading(false))
+                return
+            }
+
+            const data = {
+                email: email
+            }
+
+            const response = await dispatch(VerifyEmail(data))
+            if (response?.status === true) {
+              
+                navigation.navigate(SCREENS.EmailVerification, { title: t('ForgotPassword'),userId:response?.user_id})
+
+            }
+            dispatch(setLoading(false))
+
+        } catch (error) {
+            console.log({ error })
+            dispatch(setLoading(false))
+
+        }
+    }
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <View style={{ flex: 1 }}>
@@ -22,13 +54,17 @@ export default function ConfirmationMail(props) {
                     {t('EnterEmail')}
                 </Text>
                 <EditText
+                    value={email}
+                    onChangeText={(e) => {
+                        setEmail(e)
+                    }}
                     label={t('Email')}
                     required
                 />
 
                 <CustomButton
                     onPress={() => {
-                        navigation.navigate(SCREENS.EmailVerification, { title: t('ForgotPassword') })
+                        onEmailVerify()
 
                     }}
                     label={t('Send')}

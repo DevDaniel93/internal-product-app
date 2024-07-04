@@ -322,9 +322,11 @@ export const CONSTANTS = {
         Consumer_key: "ck_7c8cdbbfb4b76cc2cd28c6c95dde54209a015cc2",
         Consumer_secret: "cs_7e50fedc161c40f4b55ec828418a7ac23927007e",
         BASE: "https://custom3.mystagingserver.site/digi-cart-app/wp-json",
-        LOGIN: "",
-        REGISTER: "",
-        VERIFY_EMAIL: "",
+        LOGIN: "/api/login",
+        REGISTER: "/api/register",
+        FORGOT_PASSWORD: "/api/forgot_password",
+        VERIFY_OTP: "/api/otp_verification",
+        RESET_PASSWORD: "/api/reset_password",
         PROFILE: "",
         CREATE_ORDER: "/wc/v3/orders",
         RETRIEVE_ORDER: " /wc/v3/orders/",
@@ -337,7 +339,8 @@ export const CONSTANTS = {
         ALL_REVIEWS: "/wc/v3/products/reviews/",
         ALL_Categories: "/wc/v3/products/categories",
         UPDATE_PRODUCT: "/wc/v3/products/",
-        DELETE_PRODUCT: "/wc/v3/products/"
+        DELETE_PRODUCT: "/wc/v3/products/",
+        APPLY_VOUCHER: "/wc/v3/coupons"
 
 
 

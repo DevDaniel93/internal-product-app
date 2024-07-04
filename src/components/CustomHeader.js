@@ -10,7 +10,6 @@ import { useNavigation } from '@react-navigation/native'
 export default function CustomHeader() {
     const theme = useSelector(state => state.Theme.theme)
     const user = useSelector(state => state.Auth.user)
-
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
     const navigation = useNavigation()
@@ -22,14 +21,14 @@ export default function CustomHeader() {
             style={styles.container}>
             <Image
                 style={[styles.img, { borderColor: currentTheme.primary, }]}
-                source={user !== null ? { uri: user?.image } : IMAGES.avatar}
+                source={user !== null ? { uri: user?.user_avatar } : IMAGES.avatar}
             />
             <View>
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
                     {t('HelloWelcomeBack')} 👋
                 </Text>
                 <Text style={[styles.txt, { fontWeight: "600", color: currentTheme.defaultTextColor, }]}>
-                    {user !== null ? user.name : "Guest User"}
+                    {user !== null ? user.username : "Guest User"}
                 </Text>
             </View>
         </TouchableOpacity>

@@ -15,22 +15,23 @@ export default function Profile(props) {
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
-
+    const user = useSelector(state => state.Auth.user)
+    console.log({user})
 
     const { navigation } = props
     const [isEdit, setIsEdit] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const [changePasswordModal, setChangePasswordModal] = useState(false)
     const [image, setImage] = useState('')
-    const [firstName, setFirstName] = useState(__DEV__ ? "Taimoor" : '')
-    const [lastName, setLastName] = useState(__DEV__ ? "khan" : '')
-    const [email, setEmail] = useState(__DEV__ ? "taimoor@yopmail.com" : '')
+    const [firstName, setFirstName] = useState(user?.first_name)
+    const [lastName, setLastName] = useState(user?.last_name)
+    const [email, setEmail] = useState(user?.email)
 
 
     const ProfilePic = () => {
         return (
             <View style={styles.imgConatiner}>
-                <Image source={image !== "" ? { uri: image?.path } : IMAGES.user} style={styles.img} resizeMode="contain" />
+                <Image source={image !== "" ? { uri: image?.path } : user!==null?{uri:user?.user_avatar}:IMAGES.user} style={styles.img} resizeMode="contain" />
                 {isEdit &&
                     <TouchableOpacity
                         onPress={() => {
@@ -58,18 +59,29 @@ export default function Profile(props) {
             <ProfilePic />
             <EditText
 
-                value={t('FirstName')}
+                value={firstName}
+                onChangeText={(e)=>{
+                    setFirstName(e)
+                }}
                 editable={isEdit ? true : false}
                 label={t('FirstName')}
             />
             <EditText
-                value={t('LastName')}
+             value={lastName}
+             onChangeText={(e)=>{
+                 setLastName(e)
+             }}
+              
                 editable={isEdit ? true : false}
                 label={t('LastName')}
 
             />
             <EditText
-                value={t('Email')}
+            value={email}
+            onChangeText={(e)=>{
+                setEmail(e)
+            }}
+              
                 editable={isEdit ? true : false}
                 label={t('Email')}
 

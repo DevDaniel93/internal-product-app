@@ -1,17 +1,62 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { setLoading } from '../../redux/slices/utils'
+import { Register } from '../../redux/slices/auth'
+import { ErrorAlert } from '../../utils/utils'
 
 export default function Signup(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
+    const dispatch = useDispatch()
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const [username, setUserName] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPasswrd] = useState('')
+
+    const onSignUp = async () => {
+        try {
+            dispatch(setLoading(true))
+            if (username === '' || firstName === '' || lastName === '' || email === '' || password === '') {
+                ErrorAlert("All field Required")
+                dispatch(setLoading(false))
+                return
+            }
+            if (password !== confirmPassword) {
+                ErrorAlert("Confirm Password not Match")
+                dispatch(setLoading(false))
+                return
+            }
+            const data = {
+                first_name: firstName,
+                last_name: lastName,
+                username: username,
+                email: email,
+                password: password,
+                confirm_password: confirmPassword
+            }
+
+            const response = await dispatch(Register(data))
+            if (response?.status === true) {
+                navigation.navigate(SCREENS.Login)
+            }
+            dispatch(setLoading(false))
+
+        } catch (error) {
+            //  console.log({error})   
+            dispatch(setLoading(false))
+
+        }
+    }
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background, }]}>
             <ScrollView style={{ flex: 1, }} showsVerticalScrollIndicator={false}>
@@ -28,32 +73,61 @@ export default function Signup(props) {
                     </Text>
                 </Text>
                 <EditText
+                    required
+                    value={username}
+                    onChangeText={(e) => {
+                        setUserName(e)
+                    }}
                     label={t('Username')}
                     placeholder={t('EnterYourUsername')}
 
                 />
                 <EditText
+                    required
+                    value={firstName}
+                    onChangeText={(e) => {
+                        setFirstName(e)
+                    }}
                     label={t('FirstName')}
-
                     placeholder={t('EnterYourFirstName')}
 
                 />
-                <EditText
-                    label={t('LastName')}
 
+                <EditText
+                    required
+                    value={lastName}
+                    onChangeText={(e) => {
+                        setLastName(e)
+                    }}
+                    label={t('LastName')}
                     placeholder={t('EnterYourLastName')}
 
                 />
                 <EditText
+                    required
+                    value={email}
+                    onChangeText={(e) => {
+                        setEmail(e)
+                    }}
                     label={t('EnterYourEmail')}
                     placeholder={t('EnterYourEmail')}
                 />
                 <EditText
+                    required
+                    value={password}
+                    onChangeText={(e) => {
+                        setPassword(e)
+                    }}
                     label={t('EnterYourPassword')}
                     placeholder={t('EnterYourPassword')}
                     password
                 />
                 <EditText
+                    required
+                    value={confirmPassword}
+                    onChangeText={(e) => {
+                        setConfirmPasswrd(e)
+                    }}
                     label={t('ConfirmPassword')}
                     placeholder={t('ConfirmYourPassword')}
                     password
@@ -61,7 +135,7 @@ export default function Signup(props) {
 
                 <CustomButton
                     onPress={() => {
-                        navigation.navigate(SCREENS.ConfirmationMail, { title: t('ForgotPassword') })
+                        onSignUp()
                     }}
                     label={t('Sign_Up')}
                 />

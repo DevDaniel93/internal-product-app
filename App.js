@@ -218,8 +218,7 @@ const App = () => {
           <Provider store={store}>
             <MainNavigation />
             <Toast
-              position='bottom'
-              bottomOffset={SIZES.fifty} />
+             />
           </Provider>
         </GestureHandlerRootView>
 

@@ -15,6 +15,7 @@ import CustomButton from '../../components/CustomButton';
 import { getTheme } from '../../constants/theme';
 import { toggleTheme } from '../../redux/slices/theme';
 import { useTranslation } from 'react-i18next';
+import { removeProfile } from '../../redux/slices/auth';
 
 const CustomDrawer = (props) => {
     const navigation = useNavigation();
@@ -47,6 +48,7 @@ const CustomDrawer = (props) => {
     async function handleLogout() {
         try {
             setIsvisible(!isvisible);
+            dispatch(removeProfile())
             navigation.navigate(SCREENS.Login);
         } catch (e) {
             console.error(e);

@@ -4,17 +4,42 @@ import { COLORS, SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
 import OtpInput from '../../components/OtpInput'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { VerifyOTP } from '../../redux/slices/auth'
+import { setLoading } from '../../redux/slices/utils'
 
 export default function EmailVerification(props) {
-    const { navigation } = props
+    const { navigation,route } = props
+    const{userId}=route?.params
+    const dispatch=useDispatch()
+ 
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-    const handleCodeFilled = (code) => {
-        Alert.alert('OTP Code Entered', code);
+    const handleCodeFilled =async (code) => {
+        try {
+            dispatch(setLoading(true))
+          
+            const data = {
+                user_id: userId,
+                otp:code
+            }
+
+            const response = await dispatch(VerifyOTP(data))
+            if (response?.status === true) {
+              
+                navigation.navigate(SCREENS.NewPassword, { title: t('New Password'),userId:userId})
+
+            }
+            dispatch(setLoading(false))
+
+        } catch (error) {
+            console.log({ error })
+            dispatch(setLoading(false))
+
+        }
     };
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
@@ -27,13 +52,10 @@ export default function EmailVerification(props) {
 
                     {t('EnterCode')}
                 </Text>
-                <OtpInput codeLength={6}
+                <OtpInput codeLength={5}
                     onCodeFilled={handleCodeFilled}
                 />
-                {/* <OtpInput /> */}
-                {/* <EditText
-                    label={"Email"}
-                /> */}
+           
 
                 <CustomButton
                     onPress={() => {

@@ -10,6 +10,7 @@ import ProductReducer from './slices/products';
 import CategoryReducer from './slices/categories';
 import OrderReducer from './slices/orders';
 import ReviewReducer from './slices/Reviews';
+import VoucherReducer from './slices/vouchers';
 
 
 const persistConfig = {
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     Product: ProductReducer,
     categories: CategoryReducer,
     Orders: OrderReducer,
-    Review: ReviewReducer
+    Review: ReviewReducer,
+    Voucher: VoucherReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
