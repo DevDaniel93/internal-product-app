@@ -45,15 +45,15 @@ export default function Home(props) {
     }
     useFocusEffect(
         useCallback(async () => {
-            await dispatch(setLoading(true))
-            await dispatch(getProducts())
-            await dispatch(setLoading(false))
+            // await dispatch(setLoading(true))
+            // await dispatch(getProducts())
+            // await dispatch(setLoading(false))
 
 
             return () => {
                 // Cleanup function if needed
             };
-        }, [])
+        }, [products])
     );
 
     return (

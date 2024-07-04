@@ -337,6 +337,7 @@ export const CONSTANTS = {
         RETRIEVE_PRODUCT: "/wc/v3/products/",
         ALL_PRODUCT: "/wc/v3/products",
         ALL_REVIEWS: "/wc/v3/products/reviews/",
+        GET_CONTENT: "/api/get_web_content",
         ALL_Categories: "/wc/v3/products/categories",
         UPDATE_PRODUCT: "/wc/v3/products/",
         DELETE_PRODUCT: "/wc/v3/products/",

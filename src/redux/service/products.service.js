@@ -17,7 +17,7 @@ export const Getproducts = (params) => {
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
             category: params?.category,
             status: 'publish',
-            per_page: 2,
+            per_page: 10,
             page: 1,
             max_price: params?.max_price,
             min_price: params?.min_price

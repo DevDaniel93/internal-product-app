@@ -11,7 +11,7 @@ import { addCart, emptyCart } from '../../redux/slices/Cart'
 import CustomModal from '../../components/CustomModal'
 import { getTheme, width } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
-import BannerSlider from '../../components/BannerSlider'
+import RenderHtml from 'react-native-render-html';
 
 export default function SingleProduct(props) {
     const theme = useSelector(state => state.Theme.theme)
@@ -143,11 +143,7 @@ export default function SingleProduct(props) {
                             {productDetails?.name}
                         </Text>
                         <View style={{ flexDirection: "row", alignItems: "center", marginVertical: SIZES.five }}>
-                            {/* <Icon
-                                name={'star'}
-                                type={IconType.MaterialCommunityIcons}
-                                color={COLORS.golden}
-                            /> */}
+
                             <Stars
                                 display={productDetails?.average_rating}
                                 spacing={1}
@@ -201,9 +197,47 @@ export default function SingleProduct(props) {
                     </View>
 
                 </View>
-                <Text style={[styles.ProductDetails, { color: currentTheme.defaultTextColor, }]}>
+                <RenderHtml
+                    contentWidth={width * 0.5}
+                    source={{
+                        html: `
+                        <div class="text-black">
+                          ${productDetails?.description}
+                        </div>
+                      `
+                    }}
+                    tagsStyles={{
+                        div: {
+                            color: 'black'
+                        },
+                        p: {
+                            color: 'black'
+                        },
+                        span: {
+                            color: 'black'
+                        }
+                    }}
+                    classesStyles={{
+                        'text-black': {
+                            color: 'black'
+                        }
+                    }}
+                    renderersProps={{
+                        div: {
+                            style: { color: 'black' }
+                        },
+                        p: {
+                            style: { color: 'black' }
+                        },
+                        span: {
+                            style: { color: 'black' }
+                        }
+                    }}
+                />
+                {/* <Text style={[styles.ProductDetails, { color: currentTheme.defaultTextColor, }]}>
                     {productDetails?.description.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()}
-                </Text>
+
+                </Text> */}
 
                 {productDetails?.attributes?.length &&
                     <ScrollView style={{ marginVertical: SIZES.ten }}>
@@ -231,6 +265,7 @@ export default function SingleProduct(props) {
                     </ScrollView>
                 }
                 <CustomButton
+                    disabled={productDetails?.manage_stock === true && productDetails?.stock_quantity ? true : false}
                     onPress={() => {
                         addToCart()
                     }}

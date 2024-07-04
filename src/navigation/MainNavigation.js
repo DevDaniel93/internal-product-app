@@ -31,6 +31,7 @@ import { getCategories } from "../redux/slices/categories";
 import Loading from "../components/Loading";
 import { setLoading } from "../redux/slices/utils";
 import AllProducts from "../screens/product/AllProducts";
+import { getAbout, getPrivacyPolicy, getTermsAndCondition } from "../redux/slices/content";
 
 
 const Stack = createNativeStackNavigator();
@@ -61,8 +62,31 @@ export default function MainNavigation() {
         },
     };
 
-    useEffect(() => {
+    const getContent = async () => {
+        try {
+            dispatch(setLoading(true))
+            await dispatch(getTermsAndCondition())
+            await dispatch(getPrivacyPolicy())
+            await dispatch(getAbout())
+            dispatch(setLoading(false))
 
+
+        } catch (error) {
+            dispatch(setLoading(false))
+            console.log({ error })
+
+        }
+    }
+    useEffect(() => {
+        getContent()
+
+    }, []);
+    useEffect(() => {
+        async () => {
+            await dispatch(getTermsAndCondition())
+            await dispatch(getPrivacyPolicy())
+            await dispatch(getAbout())
+        }
         StatusBar.setBarStyle(currentTheme.statusBarColor, true);
         StatusBar.setBackgroundColor(currentTheme.statusBarStyle, true);
     }, [theme]);

@@ -20,8 +20,7 @@ export default function Reviews({ id }) {
     const [review, setReview] = useState('')
     const theme = useSelector(state => state.Theme.theme)
     const reviews = useSelector(state => state.Review.reviews)
-
-
+    const user = useSelector(state => state.Auth.user)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
     const getReview = async () => {
@@ -42,8 +41,8 @@ export default function Reviews({ id }) {
             else {
                 const formdata = new FormData()
                 formdata.append("product_id", id)
-                formdata.append("reviewer", "dummy User")
-                formdata.append("reviewer_email", "dummy@user.com")
+                formdata.append("reviewer", user?.username)
+                formdata.append("reviewer_email", user?.email)
                 formdata.append("review", review)
                 formdata.append("rating", star)
 
@@ -71,7 +70,7 @@ export default function Reviews({ id }) {
                 <View style={[styles.row, { justifyContent: "space-between" }]}>
                     <View style={styles.row}>
                         <Image
-                            source={{uri: item?.reviewer_avatar_urls["48"]}}
+                            source={{ uri: item?.reviewer_avatar_urls["48"] }}
                             style={styles.img}
                             resizeMode='contain'
                         />
