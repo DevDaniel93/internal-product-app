@@ -7,6 +7,7 @@ import { getTheme } from '../constants/theme';
 
 
 const CustomDropDownPicker = (props) => {
+    console.log("list", props?.list)
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const [focusColor, setFocusColor] = useState(COLORS.charcoalGrey);
@@ -14,7 +15,7 @@ const CustomDropDownPicker = (props) => {
     const [value, setValue] = useState(props?.value ? props?.value : null)
     const [items, setItems] = useState(props?.list ? props?.list : [])
 
-
+    // console.log({ items })
     return (
         <View style={[styles.textInputView, props.styleTxtArea, { marginTop: SIZES.ten }]}>
             {props?.label

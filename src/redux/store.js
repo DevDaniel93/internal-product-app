@@ -12,6 +12,9 @@ import OrderReducer from './slices/orders';
 import ReviewReducer from './slices/Reviews';
 import VoucherReducer from './slices/vouchers';
 import ContentReducer from './slices/content';
+import ShippingReducer from './slices/shipping';
+import BannerReducer from './slices/banner';
+import ContactReducer from './slices/contactUs';
 
 
 const persistConfig = {
@@ -31,7 +34,10 @@ const rootReducer = combineReducers({
     Orders: OrderReducer,
     Review: ReviewReducer,
     Voucher: VoucherReducer,
-    Content: ContentReducer
+    Content: ContentReducer,
+    Shipping: ShippingReducer,
+    Banner: BannerReducer,
+    Contact: ContactReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,6 +45,13 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
     reducer: persistedReducer,
     devTools: true,
+    middleware: (getDefaultMiddleware) => {
+        return getDefaultMiddleware({
+            immutableCheck: false, // Disable ImmutableStateInvariantMiddleware
+            serializableCheck: false, // Optionally disable other middleware checks
+        });
+    },
+
 });
 
 export const persistor = persistStore(store);

@@ -24,9 +24,9 @@ export const login = (email, password) => async (dispatch) => {
 export const Register = (data) => async (dispatch) => {
     try {
         const response = await authService.Register(data);
-   
+
         SuccessAlert(response?.msg);
-        return response; 
+        return response;
 
     } catch (error) {
         // console.log("error===>",error?.response?.data)
@@ -37,52 +37,70 @@ export const Register = (data) => async (dispatch) => {
 export const VerifyEmail = (data) => async (dispatch) => {
     try {
         const response = await authService.VerifyEmail(data);
-        
+
         SuccessAlert(response?.msg);
-        return response; 
+        return response;
 
     } catch (error) {
         // console.log("error===>",error?.response?.data)
         ErrorAlert(error.response?.data?.msg || "An error occurred");
         throw error; // Re-throw the error to propagate it back to caller
     }
-   
+
 };
 export const VerifyOTP = (data) => async (dispatch) => {
     try {
         const response = await authService.VerifyOTP(data);
-        
+
         SuccessAlert(response?.msg);
-        return response; 
+        return response;
 
     } catch (error) {
         // console.log("error===>",error?.response?.data)
         ErrorAlert(error.response?.data?.msg || "An error occurred");
         throw error; // Re-throw the error to propagate it back to caller
     }
-   
+
 };
 export const ResetPassword = (data) => async (dispatch) => {
     try {
         const response = await authService.ResetPassword(data);
-        
+
         SuccessAlert(response?.msg);
-        return response; 
+        return response;
 
     } catch (error) {
         // console.log("error===>",error?.response?.data)
         ErrorAlert(error.response?.data?.msg || "An error occurred");
         throw error; // Re-throw the error to propagate it back to caller
     }
-   
-};
-export const getProfile = (token) => async (dispatch) => {
-    try {
-        await authService.getProfile(token).then(async (response) => {
-            console.log("response==================>", response)
-            await dispatch(saveProfile(response))
-        }).catch((error) => {
 
+};
+export const updateProfile = (data) => async (dispatch) => {
+    try {
+        await authService.updateProfile(data).then(async (response) => {
+            console.log("response==================>", response)
+            SuccessAlert(response?.msg);
+            await dispatch(saveProfile(response?.user));
+
+        }).catch((error) => {
+            ErrorAlert(error.response?.data?.msg || "An error occurred");
+            console.log("error", error.response)
+        });
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+export const ChangePassword = (data) => async (dispatch) => {
+    try {
+        await authService.changePassword(data).then(async (response) => {
+            console.log("response==================>", response)
+            SuccessAlert(response?.msg);
+
+            // await dispatch(saveProfile(response?.user));
+
+        }).catch((error) => {
+            ErrorAlert(error.response?.data?.msg || "An error occurred");
             console.log("error", error)
         });
 

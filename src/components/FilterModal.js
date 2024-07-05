@@ -9,7 +9,7 @@ import CustomButton from './CustomButton';
 import { getTheme, IMAGES } from '../constants/theme';
 import { useTranslation } from 'react-i18next';
 import Categories from './Categories';
-import { getProducts } from '../redux/slices/products';
+import { getFilterProducts, getProducts } from '../redux/slices/products';
 import { setLoading } from '../redux/slices/utils';
 
 
@@ -71,15 +71,16 @@ export default function FilterModal(props) {
 
     const getPro = async () => {
         try {
-            // dispatch(setLoading(true))
+            dispatch(setLoading(true))
             const params = {
                 ...(selectedCategory !== null && { category: selectedCategory }),
                 ...(minprice > 1 && { min_price: minprice }),
                 ...(maxprice > 1 && { max_price: maxprice }),
             }
+            const page = 1
 
-            await dispatch(getProducts(params))
-            // dispatch(setLoading(false))
+            await dispatch(getFilterProducts(page, params))
+            dispatch(setLoading(false))
 
         } catch (error) {
             dispatch(setLoading(false))

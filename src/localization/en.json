@@ -79,6 +79,7 @@
   "CardNumber": "Card Number",
   "Expiration": "Expiration",
   "MMYY": "MM/YY",
+  "selectState": "Select State",
   "CVV": "CVV",
   "Items": "Items",
   "Quantity": "Quantity",

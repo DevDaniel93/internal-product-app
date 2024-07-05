@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CONSTANTS } from "../../constants";
 
-export const Getproducts = (page, params) => {
+export const GetBanner = () => {
 
     const onSuccess = ({ data }) => {
         return data;
@@ -15,17 +15,11 @@ export const Getproducts = (page, params) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-            category: params?.category,
-            status: 'publish',
-            per_page: 10,
-            page: page,
-            max_price: params?.max_price,
-            min_price: params?.min_price
 
         },
     }
     return axios.get(
-        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.ALL_PRODUCT,
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.GET_BANNER,
         options
     ).then(onSuccess)
         .catch(onFailure);

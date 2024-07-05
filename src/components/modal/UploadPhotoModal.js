@@ -49,6 +49,7 @@ export default function UploadPhotoModal({
             setVisibility(false);
 
             onImageSelected(image);
+
         });
     };
 

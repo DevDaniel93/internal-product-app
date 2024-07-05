@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function PhoneTextInput(props) {
     const { t } = useTranslation();
-    const { phone, setPhone, setCountryCode } = props;
+    const { phone, setPhone, setCountryCode, setFlag } = props;
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const phoneInput = useRef(null);
@@ -21,6 +21,9 @@ export default function PhoneTextInput(props) {
                 ? `+${country.callingCode[0]}`
                 : country.callingCode[0],
         );
+        setFlag(country?.cca2)
+
+
     };
 
     return (

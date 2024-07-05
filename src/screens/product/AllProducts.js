@@ -9,14 +9,15 @@ import HeaderWithArrow from '../../components/HeaderWithArrow'
 import SearchFilter from '../../components/SearchFilter'
 import FilterModal from '../../components/FilterModal'
 import ProductCard from '../../components/ProductCard'
-import { getProducts } from '../../redux/slices/products'
+import { getFilterProducts, getProducts } from '../../redux/slices/products'
 import { setLoading } from '../../redux/slices/utils'
 
 export default function AllProducts(props) {
     const { navigation, route } = props
     const modal = React.useRef(null)
     const dispatch = useDispatch()
-    const products = useSelector(state => state?.Product?.products)
+    const products = useSelector(state => state?.Product?.filterProduct)
+    console.log({ products })
     const { item } = route?.params
 
     const theme = useSelector(state => state.Theme.theme)
@@ -44,7 +45,8 @@ export default function AllProducts(props) {
                 ...(item !== null && { category: item }),
 
             }
-            await dispatch(getProducts(params))
+            const page = 1
+            await dispatch(getFilterProducts(page, params))
             dispatch(setLoading(false))
 
         } catch (error) {

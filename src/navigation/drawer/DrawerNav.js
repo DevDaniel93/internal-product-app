@@ -1,75 +1,16 @@
-// import { createDrawerNavigator } from '@react-navigation/drawer'
-// import React from 'react'
-// import { Platform, StyleSheet } from 'react-native'
-
-// import CustomDrawer from './CustomDrawer';
-// import { ScreensArray } from '../../constants/DrawerMenu';
-// import BottamTab from '../bottamTab/BottamTab';
-
-// const Drawer = createDrawerNavigator();
-
-// const DrawerNav = () => {
-
-
-
-
-
-//     return (
-//         <Drawer.Navigator
-//             initialRouteName='BottomTabs'
-//             screenOptions={{
-
-//                 drawerStyle: styles.drawerStyles,
-//                 drawerType: 'front',
-//                 swipeEdgeWidth: Platform.OS === 'android' && 180,
-//             }}
-//             drawerContent={(props) => <CustomDrawer {...props} />}
-//         >
-//             <Drawer.Screen
-//                 name="BottomTabs"
-//                 component={BottamTab}
-//                 options={{
-//                     headerShown: false,
-//                     item: { route: 'BottomTabs' },
-//                 }}
-//             />
-//             {ScreensArray.map((_, i) => (
-//                 <Drawer.Screen key={i} name={_.route} component={_.component}
-//                     options={{
-//                         headerShown: false,
-//                         item: _,
-//                     }}
-//                 />
-//             ))}
-
-//         </Drawer.Navigator>
-//     )
-// }
-
-// export default DrawerNav
-
-// const styles = StyleSheet.create({
-//     drawerStyles: {
-//         width: 260,
-//         backgroundColor: 'transparent',
-//     },
-//     safeArea: {
-//         flex: 1,
-//         backgroundColor: 'white'
-//     },
-// })
-// // App.js
-import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createDrawerNavigator, DrawerActions } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { View, Text, Platform, StyleSheet } from 'react-native';
+import { Easing } from 'react-native-reanimated';
 
 import CustomDrawer from './CustomDrawer';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { SCREENS } from '../../constants';
 import BottamTab from '../bottamTab/BottamTab';
+import { SCREENS } from '../../constants';
 import { Menu } from '../../constants/DrawerMenu';
-import { Easing } from 'react-native-reanimated';
-import { useSelector } from 'react-redux';
 import { getTheme } from '../../constants/theme';
+
 const config = {
     animation: 'timing',
     config: {
@@ -85,6 +26,7 @@ const closeConfig = {
         easing: Easing.linear,
     },
 };
+
 const fadeInAnimation = ({ current }) => ({
     cardStyle: {
         opacity: current.progress,
@@ -92,15 +34,19 @@ const fadeInAnimation = ({ current }) => ({
 });
 
 const Drawer = createDrawerNavigator();
+
 export default function DrawerNavigator() {
-    const theme = useSelector(state => state.Theme.theme)
-    const currentTheme = getTheme(theme)
+    const theme = useSelector(state => state.Theme.theme);
+    const currentTheme = getTheme(theme);
+
+
     return (
         <Drawer.Navigator
+            initialRouteName={SCREENS.BottamTab}
             screenOptions={{
                 sceneContainerStyle: {
                     backgroundColor: currentTheme.Background,
-                    flex: 1
+                    flex: 1,
                 },
                 transitionSpec: {
                     open: config,
@@ -108,16 +54,13 @@ export default function DrawerNavigator() {
                 },
                 cardStyleInterpolator: fadeInAnimation,
             }}
-            drawerContent={(props) => <CustomDrawer{...props} />}
+            drawerContent={(props) => <CustomDrawer {...props} />}
+
         >
-
             <Drawer.Screen name={SCREENS.BottamTab} component={BottamTab} options={{ headerShown: false, headerTitle: '' }} />
-            {
-                Menu.map((item) => {
-
-                    <Drawer.Screen name={item?.route} component={item?.component} options={{ headerShown: false, headerTitle: '' }} />
-                })
-            }
+            {Menu.map((item, index) => (
+                <Drawer.Screen key={index} name={item.route} component={item.component} options={{ headerShown: false, headerTitle: '' }} />
+            ))}
         </Drawer.Navigator>
-    )
+    );
 }

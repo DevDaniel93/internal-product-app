@@ -15,8 +15,6 @@ import OrderDetails from "../screens/order/OrderDetails";
 import ContactUs from "../screens/contactUs/ContactUs";
 import SingleProduct from "../screens/product/SingleProduct";
 import CheckOut from "../screens/checkOut/CheckOut";
-import DrawerSceneWrapper from "../components/DrawerSceneWrapper";
-
 import TermAndCondition from "../screens/content/TermsAndConditon";
 import PrivacyPolicy from "../screens/content/PrivacyPolicy";
 import AboutUs from "../screens/content/AboutUs";
@@ -24,14 +22,12 @@ import Profile from "../screens/profile/Profile";
 import PasswordSuccessful from "../screens/auth/PasswordSuccessful";
 import { useDispatch, useSelector } from "react-redux";
 import { getTheme } from "../constants/theme";
-
 import ProductDetail from "../screens/product/ProductDetail";
-import { getProducts } from "../redux/slices/products";
-import { getCategories } from "../redux/slices/categories";
 import Loading from "../components/Loading";
 import { setLoading } from "../redux/slices/utils";
 import AllProducts from "../screens/product/AllProducts";
 import { getAbout, getPrivacyPolicy, getTermsAndCondition } from "../redux/slices/content";
+import { getCountries } from "../redux/slices/shipping";
 
 
 const Stack = createNativeStackNavigator();
@@ -68,6 +64,7 @@ export default function MainNavigation() {
             await dispatch(getTermsAndCondition())
             await dispatch(getPrivacyPolicy())
             await dispatch(getAbout())
+            await dispatch(getCountries())
             dispatch(setLoading(false))
 
 
@@ -82,11 +79,7 @@ export default function MainNavigation() {
 
     }, []);
     useEffect(() => {
-        async () => {
-            await dispatch(getTermsAndCondition())
-            await dispatch(getPrivacyPolicy())
-            await dispatch(getAbout())
-        }
+
         StatusBar.setBarStyle(currentTheme.statusBarColor, true);
         StatusBar.setBackgroundColor(currentTheme.statusBarStyle, true);
     }, [theme]);
@@ -96,7 +89,7 @@ export default function MainNavigation() {
         >
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={SCREENS.Drawer}
+                initialRouteName={SCREENS.Login}
             >
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />

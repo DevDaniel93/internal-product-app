@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { SCREENS, SIZES, STYLES } from '../../constants'
 import EditText from '../../components/EditText'
 import CustomButton from '../../components/CustomButton'
@@ -8,32 +8,39 @@ import { COLORS, getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import { login } from '../../redux/slices/auth'
 import { setLoading } from '../../redux/slices/utils'
+import { useNavigation } from '@react-navigation/native'
 
 
 export default function Login(props) {
-    const { navigation } = props
+    // const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
-    const[email,setEmail]=useState(__DEV__?'Taimoor@yopmail.com':"")
-    const[password,setPassword]=useState(__DEV__?'Taimoor123':"")
+    const [email, setEmail] = useState(__DEV__ ? 'Taimoor@yopmail.com' : "")
+    const [password, setPassword] = useState(__DEV__ ? 'Taimoor1234' : "")
     const { t } = useTranslation();
     const dispatch = useDispatch()
+    const navigation = useNavigation()
 
 
 
     const onLogin = async () => {
         try {
             dispatch(setLoading(true))
-          
-            const response = await dispatch(login(email,password))
-            if(response?.status===true){
-                navigation.navigate(SCREENS.drawwer)
+
+            const response = await dispatch(login(email, password))
+            console.log("response", response?.status)
+            if (response?.status === true) {
+
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: SCREENS.Drawer }],
+                });
             }
             dispatch(setLoading(false))
-            
+
         } catch (error) {
-         console.log({error})   
-         dispatch(setLoading(false))
+            console.log({ error })
+            dispatch(setLoading(false))
 
         }
     }
@@ -56,22 +63,22 @@ export default function Login(props) {
                     </Text>
                 </Text>
                 <EditText
-                value={email}
+                    value={email}
                     label={t('Email')}
-onChangeText={(e)=>{
-setEmail(e)
-}}
+                    onChangeText={(e) => {
+                        setEmail(e)
+                    }}
                     required
                 />
                 <EditText
-                value={password}
+                    value={password}
 
                     label={t('Password')}
                     password
-                    onChangeText={(e)=>{
+                    onChangeText={(e) => {
                         setPassword(e)
-                        }}
-                           
+                    }}
+
                     required
                 />
                 <TouchableOpacity

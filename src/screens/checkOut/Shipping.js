@@ -7,16 +7,21 @@ import CustomDropDownPicker from '../../components/CustomDropDownPicker';
 import axios from 'axios';
 import { label } from '../../constants/lables';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 const Shipping = () => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [address, setAddress] = useState('');
     const [postalCode, setPostalCode] = useState('');
+    const country = useSelector(state => state.Shipping.countries)
+
+
     const [phone, setPhone] = useState('');
-    const [countryCode, setCountryCode] = useState('US'); // Default country code to US
+    const [countryCode, setCountryCode] = useState('+1'); // Default country code to US
+    const [flag, setFlag] = useState('US'); // Default country code to US
 
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
@@ -27,28 +32,24 @@ const Shipping = () => {
 
 
     useEffect(() => {
-        fetchCountryData();
-    }, []);
-    const handleStateChange = (stateCode) => {
-        setState(stateCode);
-        const selectedState = states.find(s => s.state_code === stateCode);
-        if (selectedState) {
-            setCities(selectedState.cities);
-        }
-    };
-
-    const fetchCountryData = async () => {
+        handleState()
+    }, [flag]);
+    const handleState = () => {
         try {
-            const response = await axios.get('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries.json');
-            setCountries(response.data.countries);
-            const defaultCountry = response.data.countries.find(country => country.iso2 === countryCode);
-            if (defaultCountry) {
-                setStates(defaultCountry.states);
-            }
+            const filter = country.filter((item) => item.code === flag)
+
+            setStates(filter)
+            states.map(state => (
+                console.log(state.name)
+
+            ))
+
         } catch (error) {
-            console.error('Error fetching country data:', error);
+
         }
-    };
+    }
+
+
 
     return (
         <View>
@@ -63,15 +64,19 @@ const Shipping = () => {
             />
 
 
-            <PhoneTextInput phone={phone} setPhone={setPhone} setCountryCode={setCountryCode} />
+            <PhoneTextInput phone={phone}
+                setFlag={setFlag}
+                setPhone={setPhone}
+                setCountryCode={setCountryCode} />
 
             <CustomDropDownPicker
                 label={t('State')}
-                list={states.map(state => ({ label: state.name, value: state.state_code }))}
+                // list={states.map(state => ({ label: state.name, value: state.code }))}
+                list={states}
                 width={"100%"}
-                placeholder={t('selectedState')}
+                placeholder={t('selectState')}
                 zIndex={1000}
-                onChangeValue={handleStateChange}
+                onChangeValue={setState}
             />
             <CustomDropDownPicker
                 label={t('City')}

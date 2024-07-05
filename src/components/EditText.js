@@ -35,6 +35,7 @@ export default function EditText(props) {
                         />
                     ) : null}
                     <TextInput
+
                         {...props}
                         ref={props.ref}
                         multiline={props?.multiline}

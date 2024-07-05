@@ -27,7 +27,7 @@ export const postReviews = (id, fromData) => async (dispatch) => {
         await PostReview(fromData).then(async (response) => {
             SuccessAlert("Your review post successfully")
             await dispatch(getReviews(id))
-            await dispatch(getProducts())
+            await dispatch(getProducts(1))
         }).catch((error) => {
             console.log("error===========>", error?.config?.data)
         })

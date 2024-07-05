@@ -218,7 +218,7 @@ const App = () => {
           <Provider store={store}>
             <MainNavigation />
             <Toast
-             />
+            />
           </Provider>
         </GestureHandlerRootView>
 

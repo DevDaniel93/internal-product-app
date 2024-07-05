@@ -7,18 +7,19 @@ import CustomButton from '../../components/CustomButton'
 import { Icon, IconType } from '../../components'
 import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
 import CustomModal from '../../components/CustomModal'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { ChangePassword, updateProfile } from '../../redux/slices/auth'
+import { setLoading } from '../../redux/slices/utils'
 
 export default function Profile(props) {
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const user = useSelector(state => state.Auth.user)
-    console.log({user})
-
     const { navigation } = props
+    const dispatch = useDispatch()
     const [isEdit, setIsEdit] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const [changePasswordModal, setChangePasswordModal] = useState(false)
@@ -26,12 +27,15 @@ export default function Profile(props) {
     const [firstName, setFirstName] = useState(user?.first_name)
     const [lastName, setLastName] = useState(user?.last_name)
     const [email, setEmail] = useState(user?.email)
+    const [oldPassword, setOldPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
 
     const ProfilePic = () => {
         return (
             <View style={styles.imgConatiner}>
-                <Image source={image !== "" ? { uri: image?.path } : user!==null?{uri:user?.user_avatar}:IMAGES.user} style={styles.img} resizeMode="contain" />
+                <Image source={image !== "" ? { uri: image?.path } : user !== null ? { uri: user?.user_avatar } : IMAGES.user} style={styles.img} resizeMode="contain" />
                 {isEdit &&
                     <TouchableOpacity
                         onPress={() => {
@@ -50,8 +54,54 @@ export default function Profile(props) {
             </View>
         )
     }
-    const handleChanges = () => {
-        setIsEdit(pre => !pre)
+
+    const handleChanges = async () => {
+        try {
+            if (isEdit === true) {
+
+                const fromData = new FormData()
+                fromData.append("user_id", user?.user_id)
+                fromData.append("first_name", firstName)
+                fromData.append("last_name", lastName)
+                fromData.append("email", email)
+                fromData.append("avatar", {
+                    uri: image.path,
+                    type: image.mime,
+                    name: image.filename || `filename.${image.mime.split('/')[1]}`,
+                })
+
+                dispatch(setLoading(true))
+                await dispatch(updateProfile(fromData))
+                dispatch(setLoading(false))
+                setIsEdit(pre => !pre)
+            }
+            else {
+                setIsEdit(pre => !pre)
+            }
+        } catch (error) {
+
+        }
+
+    }
+    const UpdatePassword = async () => {
+        try {
+
+            const data = {
+                user_id: user?.user_id,
+                old_password: oldPassword,
+                new_password: newPassword,
+                confirm_password: confirmPassword,
+            }
+            dispatch(setLoading(true))
+            await dispatch(ChangePassword(data))
+            dispatch(setLoading(false))
+            setChangePasswordModal(!changePasswordModal)
+
+
+        } catch (error) {
+
+        }
+
     }
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
@@ -60,28 +110,28 @@ export default function Profile(props) {
             <EditText
 
                 value={firstName}
-                onChangeText={(e)=>{
+                onChangeText={(e) => {
                     setFirstName(e)
                 }}
                 editable={isEdit ? true : false}
                 label={t('FirstName')}
             />
             <EditText
-             value={lastName}
-             onChangeText={(e)=>{
-                 setLastName(e)
-             }}
-              
+                value={lastName}
+                onChangeText={(e) => {
+                    setLastName(e)
+                }}
+
                 editable={isEdit ? true : false}
                 label={t('LastName')}
 
             />
             <EditText
-            value={email}
-            onChangeText={(e)=>{
-                setEmail(e)
-            }}
-              
+                value={email}
+                onChangeText={(e) => {
+                    setEmail(e)
+                }}
+
                 editable={isEdit ? true : false}
                 label={t('Email')}
 
@@ -113,23 +163,39 @@ export default function Profile(props) {
                     {t('ChangePassword')}
                 </Text>
                 <EditText
+                    value={oldPassword}
+                    onChangeText={(e) => {
+                        setOldPassword(e)
+                    }}
+                    password
                     required
                     label={t('EnterOldPassword')}
 
                 />
                 <EditText
+                    value={newPassword}
+                    onChangeText={(e) => {
+                        setNewPassword(e)
+                    }}
+                    password
                     required
                     label={t('EnterNewPassword')}
 
                 />
                 <EditText
+                    value={confirmPassword}
+                    onChangeText={(e) => {
+                        setConfirmPassword(e)
+                    }}
+                    password
                     required
                     label={t('ConfirmPassword')}
                 />
                 <CustomButton
                     btnStyle={{ marginVertical: SIZES.fifteen }}
                     onPress={() => {
-                        setChangePasswordModal(!changePasswordModal)
+                        UpdatePassword()
+
 
                     }}
                     label={t('Update')}

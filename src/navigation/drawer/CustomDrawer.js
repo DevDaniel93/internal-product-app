@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { COLORS, FONTFAMILY, SCREENS, SIZES } from '../../constants';
@@ -21,7 +21,7 @@ const CustomDrawer = (props) => {
     const navigation = useNavigation();
     const { t, i18n } = useTranslation();
     const theme = useSelector(state => state.Theme.theme);
-    const user = useSelector(state => state.Auth.user)
+    const user = useSelector(state => state.Auth.user);
     const currentTheme = getTheme(theme);
     const dispatch = useDispatch();
     const [isvisible, setIsvisible] = useState(false);
@@ -29,9 +29,7 @@ const CustomDrawer = (props) => {
     const [isEnabled, setIsEnabled] = useState(false);
 
     const toggleSwitch = () => {
-
         if (theme === 'Light') {
-
             dispatch(toggleTheme("Dark"));
         } else {
             dispatch(toggleTheme("Light"));
@@ -41,17 +39,35 @@ const CustomDrawer = (props) => {
 
     useEffect(() => {
         if (theme === "Dark") {
-            setIsEnabled(true)
+            setIsEnabled(true);
         }
-    }, [])
+    }, [theme]);
 
-    async function handleLogout() {
+
+    const handleLogout = async () => {
         try {
-            setIsvisible(!isvisible);
-            dispatch(removeProfile())
-            navigation.navigate(SCREENS.Login);
+            setIsvisible(false); // Close the modal
+            dispatch(removeProfile());
+            navigation.dispatch(DrawerActions.closeDrawer()); // Close the drawer explicitly
+            navigation.reset({
+                index: 0,
+                routes: [{ name: SCREENS.Login }], // Reset navigation state
+            });
         } catch (e) {
             console.error(e);
+        }
+    };
+
+    const handleNavigation = (route) => {
+        navigation.dispatch(DrawerActions.closeDrawer()); // Close the drawer before navigating
+        if (route === "logout") {
+            setIsvisible(!isvisible);
+        } else if (route === SCREENS.profile) {
+            navigation.navigate(user !== null ? route : SCREENS.Login);
+        } else if (route === "language") {
+            setIsvisibleLanguageModal(!isvisibleLanguageModal);
+        } else {
+            navigation.navigate(route);
         }
     };
 
@@ -75,18 +91,7 @@ const CustomDrawer = (props) => {
                         <TouchableOpacity
                             key={item.route}
                             style={styles.drawerItem}
-                            onPress={() => {
-                                if (item.route === "logout") {
-                                    setIsvisible(!isvisible);
-                                } else if (item.route === SCREENS.profile) {
-                                    navigation.navigate(user !== null ? item.route : SCREENS.Login);
-                                }
-                                else if (item.route === "language") {
-                                    setIsvisibleLanguageModal(!isvisibleLanguageModal);
-                                } else {
-                                    navigation.navigate(item.route);
-                                }
-                            }}
+                            onPress={() => handleNavigation(item.route)}
                         >
                             <Icon name={item.icon} type={item.type} style={styles.Icon} />
                             <Text style={{ color: currentTheme.defaultTextColor, fontSize: SIZES.fifteen + 2, fontWeight: '600', fontFamily: 'Poppins-Regular' }}>
@@ -124,7 +129,6 @@ const CustomDrawer = (props) => {
                 {/* Logout Confirmation Modal */}
                 <CustomModal isvisible={isvisible}>
                     <Text style={[styles.modelText, { color: currentTheme.defaultTextColor }]}>
-
                         {t('Are you sure you want to')} <Text style={{ color: COLORS.primary }}>{t('logout')}?</Text>
                     </Text>
                     <LottieView

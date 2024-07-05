@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SCREENS, getTheme } from '../constants/theme'
 import { label } from '../constants/lables'
 import { useTranslation } from 'react-i18next'
-import { getProducts } from '../redux/slices/products'
+
 import { setLoading } from '../redux/slices/utils'
 import { SuccessAlert } from '../utils/utils'
 import { useNavigation } from '@react-navigation/native'
@@ -14,23 +14,11 @@ export default function Categories(props) {
     const navigation = useNavigation()
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
-    const dispatch = useDispatch()
+
     const currentTheme = getTheme(theme)
     const [selectId, setSelectedId] = useState(null)
 
-    // const getPro = async (id) => {
-    //     try {
-    //         dispatch(setLoading(true))
-    //         const params = {
-    //             category: id
-    //         }
-    //         await dispatch(getProducts(params))
-    //         dispatch(setLoading(false))
 
-    //     } catch (error) {
-    //         console.log("error when try to get product by category")
-    //     }
-    // }
 
     const _renderItem = ({ item }) => {
         return (

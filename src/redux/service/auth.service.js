@@ -3,14 +3,14 @@ import { CONSTANTS } from "../../constants";
 const FormData = require('form-data');
 
 
-const login = (email,password) => {
- 
+const login = (email, password) => {
+
     const requestData = {
         login: email,
         password: password,
     }
 
-    const onSuccess = ({data}) => {
+    const onSuccess = ({ data }) => {
         return data;
     };
 
@@ -21,7 +21,7 @@ const login = (email,password) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-        
+
         },
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -32,13 +32,13 @@ const login = (email,password) => {
         requestData,
         options
     ).then(onSuccess)
-    .catch(onFailure);
+        .catch(onFailure);
 };
 
 
 const Register = (data) => {
-    
-    const onSuccess = ({data}) => {
+
+    const onSuccess = ({ data }) => {
         return data;
     };
 
@@ -49,7 +49,7 @@ const Register = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-        
+
         },
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -63,7 +63,7 @@ const Register = (data) => {
         .catch(onFailure);
 };
 const VerifyEmail = (data) => {
-    const onSuccess = ({data}) => {
+    const onSuccess = ({ data }) => {
         return data;
     };
 
@@ -74,7 +74,7 @@ const VerifyEmail = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-        
+
         },
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -89,7 +89,7 @@ const VerifyEmail = (data) => {
         .catch(onFailure);
 };
 const VerifyOTP = (data) => {
-    const onSuccess = ({data}) => {
+    const onSuccess = ({ data }) => {
         return data;
     };
 
@@ -100,7 +100,7 @@ const VerifyOTP = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-        
+
         },
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -114,8 +114,8 @@ const VerifyOTP = (data) => {
     ).then(onSuccess)
         .catch(onFailure);
 };
-const ResetPassword= (data) => {
-    const onSuccess = ({data}) => {
+const ResetPassword = (data) => {
+    const onSuccess = ({ data }) => {
         return data;
     };
 
@@ -126,7 +126,7 @@ const ResetPassword= (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-        
+
         },
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -141,22 +141,56 @@ const ResetPassword= (data) => {
         .catch(onFailure);
 };
 
-const getProfile = (token) => {
-    console.log("token", token);
-    const onSuccess = (data) => {
+const updateProfile = (data) => {
+
+    const onSuccess = ({ data }) => {
         return data;
     };
 
     const onFailure = error => {
         throw error;
     };
+    const options = {
+        params: {
+            consumer_key: CONSTANTS.API_URLS.Consumer_key,
+            consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    }
 
 
     return axios.post(
-        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.PROFILE,
-        data, {
-        headers: { Authorization: `Bearer ${token}` }
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.UPDATE_PROFILE,
+        data,
+        options
+    ).then(onSuccess)
+        .catch(onFailure);
+};
+const changePassword = (data) => {
+
+    const onSuccess = ({ data }) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        params: {
+            consumer_key: CONSTANTS.API_URLS.Consumer_key,
+            consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
     }
+
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.CHANGE_PASSWORD,
+        data,
+        options
     ).then(onSuccess)
         .catch(onFailure);
 };
@@ -167,7 +201,8 @@ const authService = {
     VerifyEmail,
     VerifyOTP,
     ResetPassword,
-    getProfile
+    updateProfile,
+    changePassword
 };
 
 export default authService;

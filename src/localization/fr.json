@@ -85,6 +85,7 @@
   "OrderDate": "Date de commande",
   "OrderStatus": "Statut de la commande",
   "ShippingDetails": "Les détails d'expédition",
+  "selectState": "Sélectionnez l'état",
   "ShippingAddress": "Adresse de livraison",
   "Sub_Total": "Sous-total",
   "FullName": "Nom et prénom",

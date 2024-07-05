@@ -8880,6 +8880,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-document-picker@npm:^9.3.0":
+  version: 9.3.0
+  resolution: "react-native-document-picker@npm:9.3.0"
+  dependencies:
+    invariant: ^2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 622c9bd3a17b7b92ff6b13571ccf2a916dd2477f2aa8c22b79e4b204156742ba95680dea912ee5ee56718f13c537107f5937e5bcf88d93cdf2142d508dc16351
+  languageName: node
+  linkType: hard
+
 "react-native-dropdown-picker@npm:^5.4.6":
   version: 5.4.6
   resolution: "react-native-dropdown-picker@npm:5.4.6"
@@ -9575,6 +9591,7 @@ __metadata:
     react-i18next: ^14.1.2
     react-native: 0.73.6
     react-native-animatable: ^1.4.0
+    react-native-document-picker: ^9.3.0
     react-native-dropdown-picker: ^5.4.6
     react-native-flip-card: ^3.5.7
     react-native-gesture-handler: ^2.16.2

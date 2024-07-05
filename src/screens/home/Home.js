@@ -1,5 +1,5 @@
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback } from 'react'
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useState } from 'react'
 import { IMAGES, SIZES, STYLES, height } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 import CustomHeader from '../../components/CustomHeader'
@@ -21,9 +21,14 @@ export default function Home(props) {
     const { navigation } = props
     const modal = React.useRef(null)
     const theme = useSelector(state => state.Theme.theme)
+    // const loading = useSelector(state => state.utils.loading)
+
     const products = useSelector(state => state?.Product?.products)
     const categories = useSelector(state => state?.categories?.categories)
     const dispatch = useDispatch()
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
@@ -43,18 +48,48 @@ export default function Home(props) {
     const onApply = () => {
 
     }
+    const getProduct = async () => {
+        try {
+            setLoading(true)
+            // await dispatch(setLoading(true))
+            await dispatch(getProducts(page))
+            setPage(pre => pre + 1)
+            setLoading(false)
+
+            // await dispatch(setLoading(false))
+        } catch (error) {
+
+        }
+    }
     useFocusEffect(
         useCallback(async () => {
-            // await dispatch(setLoading(true))
-            // await dispatch(getProducts())
-            // await dispatch(setLoading(false))
-
-
+            getProduct()
             return () => {
                 // Cleanup function if needed
             };
-        }, [products])
+        }, [])
     );
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         const fetchProducts = async () => {
+    //             try {
+    //                 dispatch(setLoading(true));
+    //                 await dispatch(getProducts());
+    //                 dispatch(setLoading(false));
+    //             } catch (error) {
+    //                 console.error('Error fetching products:', error);
+    //                 dispatch(setLoading(false));
+    //             }
+    //         };
+
+    //         fetchProducts();
+
+    //         return () => {
+    //             // Cleanup function if needed
+    //         };
+    //     }, [dispatch, products]) // Only re-run effect if 'products' changes
+    // );
+
 
     return (
 
@@ -72,7 +107,7 @@ export default function Home(props) {
                         }
                     }}
                 />
-                <BannerSlider images={images} />
+                <BannerSlider />
                 <Categories data={categories} onPress={(item) => {
                     navigation.navigate(SCREENS.AllProduct, { item: item?.id })
                 }} />
@@ -83,16 +118,22 @@ export default function Home(props) {
                     }}
                     showsVerticalScrollIndicator={false}
                     data={products}
-
                     numColumns={"2"}
                     renderItem={({ item }) => {
-
                         return (
-
                             <ProductCard item={item} />
-
                         )
                     }}
+                    onEndReachedThreshold={0.5}
+                    onEndReached={() => {
+                        if (!loading) {
+                            getProduct();
+                        }
+                    }}
+                    ListFooterComponent={() => (
+                        // Loading indicator at the bottom of the list
+                        loading && <ActivityIndicator size="large" color={currentTheme.primary} style={{ marginVertical: 20 }} />
+                    )}
                 />
 
                 <View style={{ height: SIZES.fifty * 1.5 }} />

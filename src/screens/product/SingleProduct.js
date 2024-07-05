@@ -265,7 +265,7 @@ export default function SingleProduct(props) {
                     </ScrollView>
                 }
                 <CustomButton
-                    disabled={productDetails?.manage_stock === true && productDetails?.stock_quantity ? true : false}
+                    disabled={productDetails?.manage_stock === true && productDetails?.stock_quantity < 0 ? true : false}
                     onPress={() => {
                         addToCart()
                     }}

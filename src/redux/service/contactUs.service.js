@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CONSTANTS } from "../../constants";
 
-export const Getproducts = (page, params) => {
+export const contactUs = (data) => {
 
     const onSuccess = ({ data }) => {
         return data;
@@ -10,22 +10,22 @@ export const Getproducts = (page, params) => {
     const onFailure = error => {
         throw error;
     };
-
     const options = {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-            category: params?.category,
-            status: 'publish',
-            per_page: 10,
-            page: page,
-            max_price: params?.max_price,
-            min_price: params?.min_price
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: "application/json"
 
         },
     }
-    return axios.get(
-        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.ALL_PRODUCT,
+
+
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.CONTACT_US,
+        data,
         options
     ).then(onSuccess)
         .catch(onFailure);
