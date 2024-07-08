@@ -155,6 +155,7 @@ export default function FilterModal(props) {
                     onCancel();
                     getPro()
                     onReset();
+                    onApply()
                 }}
                 btnStyle={styles.btnStyle}
                 disabled={checkDisabled()}

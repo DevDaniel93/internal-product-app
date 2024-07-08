@@ -18,13 +18,27 @@ export default function CheckOut() {
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
+    const [flag, setFlag] = useState("")
     const [progress, setProgress] = useState(0)
+    const allGeneralCountries = useSelector(state => state.Settings.settings)
+    const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
 
     const moveToNext = () => {
         setProgress(progress + 1)
     }
     const moveToPrevios = () => {
         setProgress(progress - 1)
+    }
+    const changeFlag = (item) => {
+        setFlag(item)
+    }
+
+    const checkShipment = () => {
+        if (!allowedGeneralCountries || allowedGeneralCountries.value.length === 0) {
+            return false;
+        } else {
+            return allowedGeneralCountries.value.some(item => item !== flag);
+        }
     }
 
     return (
@@ -35,7 +49,7 @@ export default function CheckOut() {
             <ProgressBar mode={progress} />
 
             {progress === 0 ?
-                <Shipping />
+                <Shipping onFlagChange={changeFlag} />
                 : progress === 1 ?
                     <Payment />
                     :
@@ -56,10 +70,15 @@ export default function CheckOut() {
                 <CustomButton
                     btnStyle={styles.btnStyle}
                     label={progress === 0 ? t('Payment') : progress === 1 ? t('Review') : t('PlaceOrder')}
-                    onPress={moveToNext} />
-
+                    onPress={moveToNext}
+                    disabled={checkShipment()}
+                />
 
             </View>
+                {
+                    checkShipment() === true &&
+                    <Text style={{textAlign: "center", paddingTop: SIZES.ten, color:COLORS.primary}}>Shipment is not available in your country</Text>
+                }
 
             <View style={{ height: SIZES.fifty * 2 }} />
 

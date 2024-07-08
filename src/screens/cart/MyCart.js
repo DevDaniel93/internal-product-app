@@ -11,12 +11,15 @@ import CustomModal from '../../components/CustomModal'
 import LottieView from 'lottie-react-native';
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { getVoucher } from '../../redux/slices/vouchers'
+import { setLoading } from '../../redux/slices/utils'
 
 export default function MyCart(props) {
     const { navigation } = props
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const cart = useSelector(state => state.Cart.cart)
+    const voucher = useSelector(state => state.Voucher.vouchers)
     const dispatch = useDispatch()
     const [isvisible, setIsvisible] = useState(false)
     const [selectCartid, setSelectCardId] = useState()
@@ -53,26 +56,12 @@ export default function MyCart(props) {
         dispatch(updateCartItem(updatedItem));
 
     };
-    const VoucherApply = () => {
-        return (
-            <View style={[styles.voucherContainer, { borderColor: currentTheme.defaultTextColor }]}>
-                <TextInput
-                    placeholderTextColor={COLORS.gray}
-                    placeholder={t('EnterVoucherCode')}
 
-                />
-                <CustomButton
-                    btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
+    const ApplyVoucher = async () => {
 
-                    label={t('Apply')}
-                />
-                {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
-                    <Text style={{ color: COLORS.white, }}>
-                        Apply
-                    </Text>
-                </TouchableOpacity> */}
-            </View>
-        )
+        dispatch(setLoading(true))
+        await dispatch(getVoucher(voucherCode))
+        dispatch(setLoading(false))
     }
     const CartItem = ({ item }) => {
 
@@ -186,7 +175,34 @@ export default function MyCart(props) {
                         $ {Number(shippingCost + totalAmount).toFixed(2)}
                     </Text>
                 </View>
-                <VoucherApply />
+                {/* Enter Voucher */}
+                <View style={[styles.voucherContainer, { borderColor: currentTheme.defaultTextColor }]}>
+                    <TextInput
+                        placeholderTextColor={COLORS.gray}
+                        placeholder={t('EnterVoucherCode')}
+                        value={voucherCode}
+                        onChangeText={(txt) => setVoucherCode(txt)}
+                        editable={voucher.length === 0 ? true : false}
+
+                    />
+                    <CustomButton
+                        btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
+                        onPress={() => {
+                            ApplyVoucher()
+
+                            console.log("lwngth", voucher)
+                        }
+                        }
+                        disabled={voucher.length !== 0 ? true : false}
+
+                        label={voucher.length === 0 ? t('Apply') : "$"+Math.round(voucher[0].amount)}
+                    />
+                    {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
+                    <Text style={{ color: COLORS.white, }}>
+                        Apply
+                    </Text>
+                </TouchableOpacity> */}
+                </View>
                 <CustomButton
                     disabled={cart.length === 0 ? true : false}
                     btnStyle={styles.btnCheckOut}

@@ -28,6 +28,8 @@ import { setLoading } from "../redux/slices/utils";
 import AllProducts from "../screens/product/AllProducts";
 import { getAbout, getPrivacyPolicy, getTermsAndCondition } from "../redux/slices/content";
 import { getCountries } from "../redux/slices/shipping";
+import { getSettings } from "../redux/slices/settings";
+import { getPayment } from "../redux/slices/paymentGateway";
 
 
 const Stack = createNativeStackNavigator();
@@ -47,7 +49,7 @@ export default function MainNavigation() {
             // backgroundColor: '#121212',
         },
     };
-
+   
     const getContent = async () => {
         try {
             dispatch(setLoading(true))
@@ -55,6 +57,8 @@ export default function MainNavigation() {
             await dispatch(getPrivacyPolicy())
             await dispatch(getAbout())
             await dispatch(getCountries())
+            await dispatch(getSettings())
+            await dispatch(getPayment())
             dispatch(setLoading(false))
 
 

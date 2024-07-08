@@ -9,7 +9,7 @@ import { label } from '../../constants/lables';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-const Shipping = () => {
+const Shipping = (props) => {
     const { t } = useTranslation();
     const [name, setName] = useState('');
     const [state, setState] = useState('');
@@ -25,25 +25,20 @@ const Shipping = () => {
 
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
+    const [stateList, setStateList] = useState([])
     const [cities, setCities] = useState([]);
     const list = [{ label: 'One', value: 'one' },
     { label: 'Two', value: 'two' },
     { label: 'Three', value: 'three' }]
 
-
     useEffect(() => {
         handleState()
+        props?.onFlagChange(flag)
     }, [flag]);
     const handleState = () => {
         try {
             const filter = country.filter((item) => item.code === flag)
-
-            setStates(filter)
-            states.map(state => (
-                console.log(state.name)
-
-            ))
-
+            setStateList(filter[0]?.states)
         } catch (error) {
 
         }
@@ -71,22 +66,20 @@ const Shipping = () => {
 
             <CustomDropDownPicker
                 label={t('State')}
-                // list={states.map(state => ({ label: state.name, value: state.code }))}
-                list={states}
+                list={stateList.map(state => ({ label: state.name, value: state.code }))}
+                // list={stateList}
                 width={"100%"}
                 placeholder={t('selectState')}
                 zIndex={1000}
                 onChangeValue={setState}
             />
-            <CustomDropDownPicker
+            <EditText
                 label={t('City')}
-                list={cities.map(city => ({ label: city.name, value: city.name }))}
-                width={"100%"}
+                value={city}
+                required
+                onChangeText={(value) => setCity(value)}
                 placeholder={t('SelectCity')}
-                zIndex={1}
-                onChangeValue={(value) => setCity(value)}
             />
-
             <EditText
                 label={t('StreetAddress')}
                 value={address}

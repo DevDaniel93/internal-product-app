@@ -15,6 +15,8 @@ import ContentReducer from './slices/content';
 import ShippingReducer from './slices/shipping';
 import BannerReducer from './slices/banner';
 import ContactReducer from './slices/contactUs';
+import SettingsReducer from './slices/settings';
+import PaymentReducer from './slices/paymentGateway';
 
 
 const persistConfig = {
@@ -37,7 +39,9 @@ const rootReducer = combineReducers({
     Content: ContentReducer,
     Shipping: ShippingReducer,
     Banner: BannerReducer,
-    Contact: ContactReducer
+    Contact: ContactReducer,
+    Settings: SettingsReducer,
+    Payment: PaymentReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

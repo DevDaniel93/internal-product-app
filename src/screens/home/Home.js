@@ -23,7 +23,11 @@ export default function Home(props) {
     const theme = useSelector(state => state.Theme.theme)
     // const loading = useSelector(state => state.utils.loading)
 
-    const products = useSelector(state => state?.Product?.products)
+    const filterProducts = useSelector(state => state?.Product?.filterProduct)
+    const allProducts = useSelector(state => state?.Product?.products)
+    // console.log("checking settings", useSelector(state => state?.Settings?.settings))
+    // console.log("checking Loop" )
+    const [products, setProducts] = useState(useSelector(state => state?.Product?.products))
     const categories = useSelector(state => state?.categories?.categories)
     const dispatch = useDispatch()
     const [page, setPage] = useState(1);
@@ -33,11 +37,6 @@ export default function Home(props) {
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
 
-    const images = [
-        IMAGES.DummyBanner.banner1,
-        IMAGES.DummyBanner.banner2,
-        IMAGES.DummyBanner.banner3,
-    ];
 
 
     const onCancel = () => {
@@ -46,7 +45,8 @@ export default function Home(props) {
         }
     }
     const onApply = () => {
-
+        console.log({filterProducts})
+        setProducts(filterProducts)
     }
     const getProduct = async () => {
         try {
@@ -61,14 +61,14 @@ export default function Home(props) {
 
         }
     }
-    useFocusEffect(
-        useCallback(async () => {
-            getProduct()
-            return () => {
-                // Cleanup function if needed
-            };
-        }, [])
-    );
+    // useFocusEffect(
+    //     useCallback(async () => {
+    //         getProduct()
+    //         return () => {
+    //             // Cleanup function if needed
+    //         };
+    //     }, [])
+    // );
     // useFocusEffect(
     //     useCallback(() => {
     //         const fetchProducts = async () => {
@@ -117,23 +117,23 @@ export default function Home(props) {
 
                     }}
                     showsVerticalScrollIndicator={false}
-                    data={products}
+                    data={allProducts}
                     numColumns={"2"}
                     renderItem={({ item }) => {
                         return (
                             <ProductCard item={item} />
                         )
                     }}
-                    onEndReachedThreshold={0.5}
-                    onEndReached={() => {
-                        if (!loading) {
-                            getProduct();
-                        }
-                    }}
-                    ListFooterComponent={() => (
-                        // Loading indicator at the bottom of the list
-                        loading && <ActivityIndicator size="large" color={currentTheme.primary} style={{ marginVertical: 20 }} />
-                    )}
+                    // onEndReachedThreshold={0.1}
+                    // onEndReached={() => {
+                    //     if (!loading) {
+                    //         getProduct();
+                    //     }
+                    // }}
+                    // ListFooterComponent={() => (
+                    //     // Loading indicator at the bottom of the list
+                    //     loading && <ActivityIndicator size="large" color={currentTheme.primary} style={{ marginVertical: 20 }} />
+                    // )}
                 />
 
                 <View style={{ height: SIZES.fifty * 1.5 }} />

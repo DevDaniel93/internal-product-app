@@ -125,7 +125,7 @@ export default function Login(props) {
                         }}
                         style={{ color: currentTheme.primary }}>
 
-                        {" "}   {t('TermsAndConditions')}{" "}
+                        {" "}{t('TermsAndConditions')}{" "}
                     </Text>
                 </Text>
             </View>

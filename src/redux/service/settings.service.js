@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CONSTANTS } from "../../constants";
 
-export const GetVoucher = (data) => {
+export const GetSettings = () => {
+
     const onSuccess = ({ data }) => {
         return data;
     };
@@ -14,12 +15,11 @@ export const GetVoucher = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-            search:data
-            
+            // group_id : "general"
         },
     }
     return axios.get(
-        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.APPLY_VOUCHER,
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.SETTINGS+"general",
         options
     ).then(onSuccess)
         .catch(onFailure);

@@ -31,7 +31,9 @@ export const getFilterProducts = (page, params) => async (dispatch) => {
 
         await Getproducts(page, params).then(async (response) => {
 
-            dispatch(saveFilterProduct(response))
+            // dispatch(saveFilterProduct(response))
+            dispatch(saveProducts(response))
+    
         }).catch((error) => {
             console.log("error===========>", error)
         })

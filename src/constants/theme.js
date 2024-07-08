@@ -316,7 +316,7 @@ export const STYLES = StyleSheet.create({
 
 export const CONSTANTS = {
 
-
+    SHHIPPING_ZONE_ID: 3,
 
     API_URLS: {
         Consumer_key: "ck_7c8cdbbfb4b76cc2cd28c6c95dde54209a015cc2",
@@ -347,7 +347,10 @@ export const CONSTANTS = {
         ALL_Categories: "/wc/v3/products/categories",
         UPDATE_PRODUCT: "/wc/v3/products/",
         DELETE_PRODUCT: "/wc/v3/products/",
-        APPLY_VOUCHER: "/wc/v3/coupons"
+        APPLY_VOUCHER: "/wc/v3/coupons",
+        SETTINGS: '/wc/v3/settings/',
+        PAYMENT: '/wc/v3/payment_gateways/'
+
 
 
 
