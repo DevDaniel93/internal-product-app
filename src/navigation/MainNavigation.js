@@ -32,20 +32,10 @@ import { getCountries } from "../redux/slices/shipping";
 
 const Stack = createNativeStackNavigator();
 
-const Demo = () => {
-    return (
-        <View style={{ backgroundColor: "red", flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text style={{
-                color: "white",
-                fontSize: 25
-            }}>
-                Han bhai build kal dy don?
-            </Text>
-        </View>
-    )
-}
+
 export default function MainNavigation() {
     const theme = useSelector(state => state.Theme.theme)
+    const user = useSelector(state => state.Auth.user);
     const loading = useSelector(state => state.utils.loading)
     const currentTheme = getTheme(theme)
     const dispatch = useDispatch()
@@ -85,11 +75,10 @@ export default function MainNavigation() {
     }, [theme]);
 
     return (
-        <NavigationContainer
-        >
+        <NavigationContainer>
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={SCREENS.Login}
+                initialRouteName={user === null ? SCREENS.Login : SCREENS.Drawer}
             >
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />

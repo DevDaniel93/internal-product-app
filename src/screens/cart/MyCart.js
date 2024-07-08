@@ -75,7 +75,7 @@ export default function MyCart(props) {
         )
     }
     const CartItem = ({ item }) => {
-        console.log("item?.image ", item)
+
         return (
             <View style={styles.CartItemRow}>
                 <View style={{ flexDirection: "row" }}>
@@ -188,6 +188,7 @@ export default function MyCart(props) {
                 </View>
                 <VoucherApply />
                 <CustomButton
+                    disabled={cart.length === 0 ? true : false}
                     btnStyle={styles.btnCheckOut}
                     onPress={() => {
                         navigation.navigate(SCREENS.checkOut)

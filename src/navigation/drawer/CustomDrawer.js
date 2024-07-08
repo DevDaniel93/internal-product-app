@@ -15,7 +15,7 @@ import CustomButton from '../../components/CustomButton';
 import { getTheme } from '../../constants/theme';
 import { toggleTheme } from '../../redux/slices/theme';
 import { useTranslation } from 'react-i18next';
-import { removeProfile } from '../../redux/slices/auth';
+import { DeleteAccount, removeProfile } from '../../redux/slices/auth';
 
 const CustomDrawer = (props) => {
     const navigation = useNavigation();
@@ -25,6 +25,8 @@ const CustomDrawer = (props) => {
     const currentTheme = getTheme(theme);
     const dispatch = useDispatch();
     const [isvisible, setIsvisible] = useState(false);
+    const [isvisibleDeleteModal, setIsvisibleDeleteModal] = useState(false);
+    const [selectedMenu, setSelectedMenu] = useState([]);
     const [isvisibleLanguageModal, setIsvisibleLanguageModal] = useState(false);
     const [isEnabled, setIsEnabled] = useState(false);
 
@@ -42,8 +44,32 @@ const CustomDrawer = (props) => {
             setIsEnabled(true);
         }
     }, [theme]);
+    useEffect(() => {
+        if (user === null) {
+            const filterMenu = Menu.slice(0, 9)
+            setSelectedMenu(filterMenu);
+        }
+        else {
+            setSelectedMenu(Menu);
+        }
+    }, []);
 
 
+    const handleDeleteAccount = async () => {
+        try {
+            setIsvisibleDeleteModal(false); // Close the modal
+            const formData = new FormData()
+            formData.append("user_id", user?.id)
+            dispatch(DeleteAccount(formData));
+            navigation.dispatch(DrawerActions.closeDrawer()); // Close the drawer explicitly
+            navigation.reset({
+                index: 0,
+                routes: [{ name: SCREENS.Login }], // Reset navigation state
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
     const handleLogout = async () => {
         try {
             setIsvisible(false); // Close the modal
@@ -62,6 +88,8 @@ const CustomDrawer = (props) => {
         navigation.dispatch(DrawerActions.closeDrawer()); // Close the drawer before navigating
         if (route === "logout") {
             setIsvisible(!isvisible);
+        } else if (route === "Delete_Account") {
+            setIsvisibleDeleteModal(!isvisible);
         } else if (route === SCREENS.profile) {
             navigation.navigate(user !== null ? route : SCREENS.Login);
         } else if (route === "language") {
@@ -72,7 +100,7 @@ const CustomDrawer = (props) => {
     };
 
     const getTranslatedMenu = () => {
-        return Menu.map((item) => ({
+        return selectedMenu.map((item) => ({
             ...item,
             label: t(item.labelKey)
         }));
@@ -148,6 +176,31 @@ const CustomDrawer = (props) => {
                             btnStyle={styles.btnStyle1}
                             label={t('No')}
                             onPress={() => setIsvisible(!isvisible)}
+                        />
+                    </View>
+                </CustomModal>
+                {/* Delete Account Confirmation Modal */}
+                <CustomModal isvisible={isvisibleDeleteModal}>
+                    <Text style={[styles.modelText, { color: currentTheme.defaultTextColor }]}>
+                        {t('Are you sure you want to')} <Text style={{ color: COLORS.primary, fontWeight: "600" }}>{t('Delete Account')}?</Text>
+                    </Text>
+                    <LottieView
+                        style={styles.lottie}
+                        autoPlay={true}
+                        loop={true}
+                        source={{ uri: "https://lottie.host/7c1e5e1a-f4a8-4dbf-8ab4-9dc72b5f973c/e5AR6z4eBW.json" }}
+                    />
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <CustomButton
+                            btnStyle={[styles.btnStyle, { backgroundColor: currentTheme.Background }]}
+                            txtstyle={{ color: COLORS.primary }}
+                            onPress={handleDeleteAccount}
+                            label={t('Yes')}
+                        />
+                        <CustomButton
+                            btnStyle={styles.btnStyle1}
+                            label={t('No')}
+                            onPress={() => setIsvisibleDeleteModal(!isvisibleDeleteModal)}
                         />
                     </View>
                 </CustomModal>

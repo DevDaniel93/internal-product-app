@@ -24,5 +24,6 @@ export const Menu = [
     { route: SCREENS.termAndCondition, labelKey: 'Terms and Conditon', type: IconType.Foundation, icon: 'clipboard-notes', component: termAndCondition, notification: 0 },
     { route: SCREENS.privacyPolicy, labelKey: 'Privacy Policy', type: IconType.MaterialCommunityIcons, icon: 'credit-card-scan', component: PrivacyPolicy, notification: 0 },
     { route: "language", labelKey: 'Select Language', type: IconType.FontAwesome, icon: 'language', component: PrivacyPolicy, notification: 0 },
+    { route: "Delete_Account", labelKey: 'Delete Account', type: IconType.Entypo, icon: 'remove-user', component: DrawerScreen, notification: 0 },
     { route: 'logout', labelKey: 'logout', type: IconType.Ionicons, icon: 'log-out-sharp', component: DrawerScreen, notification: 0 },
 ];

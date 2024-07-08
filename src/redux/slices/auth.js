@@ -109,6 +109,26 @@ export const ChangePassword = (data) => async (dispatch) => {
         console.log("error===========>", error)
     };
 };
+export const DeleteAccount = (data) => async (dispatch) => {
+    try {
+        await authService.changePassword(data).then(async (response) => {
+            console.log("response==================>", response)
+            SuccessAlert(response?.msg);
+            dispatch(removeProfile())
+            dispatch(removeAccessToken())
+            // await dispatch(saveProfile(response?.user));
+
+        }).catch((error) => {
+            ErrorAlert(error.response?.data?.msg || "An error occurred");
+            console.log("error", error)
+        });
+
+
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+
 
 export const logout = () => async (dispatch) => {
     try {

@@ -331,6 +331,7 @@ export const CONSTANTS = {
         CONTACT_US: "/api/contact_us",
         UPDATE_PROFILE: "/api/update_profile",
         CHANGE_PASSWORD: "/api/change_password",
+        DELETE_ACCOUNT: "/api/delete_account",
         CREATE_ORDER: "/wc/v3/orders",
         RETRIEVE_ORDER: " /wc/v3/orders/",
         ALL_ORDER: "/wc/v3/orders",

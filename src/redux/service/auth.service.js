@@ -194,6 +194,32 @@ const changePassword = (data) => {
     ).then(onSuccess)
         .catch(onFailure);
 };
+const deleteAccount = (data) => {
+
+    const onSuccess = ({ data }) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+    const options = {
+        params: {
+            consumer_key: CONSTANTS.API_URLS.Consumer_key,
+            consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    }
+
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.DELETE_ACCOUNT,
+        data,
+        options
+    ).then(onSuccess)
+        .catch(onFailure);
+};
 
 const authService = {
     login,
@@ -202,7 +228,8 @@ const authService = {
     VerifyOTP,
     ResetPassword,
     updateProfile,
-    changePassword
+    changePassword,
+    deleteAccount
 };
 
 export default authService;
