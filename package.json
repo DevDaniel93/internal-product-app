@@ -17,6 +17,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@reduxjs/toolkit": "^2.2.5",
+    "@stripe/stripe-react-native": "^0.38.1",
     "axios": "^1.6.8",
     "card-validator": "^9.1.0",
     "i18next": "^23.11.5",
