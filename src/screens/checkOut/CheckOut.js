@@ -19,6 +19,7 @@ export default function CheckOut() {
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const [flag, setFlag] = useState("")
+    const [enablePaymentButton, setEnablePaymentButton] = useState(false)
     const [progress, setProgress] = useState(0)
     const allGeneralCountries = useSelector(state => state.Settings.settings)
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
@@ -32,12 +33,32 @@ export default function CheckOut() {
     const changeFlag = (item) => {
         setFlag(item)
     }
+    const enablePayment = (item) => {
+        if (
+            item.first_name !== '' &&
+            item.last_name !== '' &&
+            item.address_1 !== '' &&
+            item.city !== '' &&
+            item.state !== '' &&
+            item.postcode !== '' &&
+            item.country !== ''
+        ) {
+            setEnablePaymentButton(false)
+        }
+        else {
+            setEnablePaymentButton(true)
+        }
+    }
 
     const checkShipment = () => {
-        if (!allowedGeneralCountries || allowedGeneralCountries.value.length === 0) {
-            return false;
-        } else {
-            return allowedGeneralCountries.value.some(item => item !== flag);
+        if (enablePaymentButton === false)
+            return true
+        else {
+            if (!allowedGeneralCountries || allowedGeneralCountries.value.length === 0) {
+                return false;
+            } else {
+                return allowedGeneralCountries.value.some(item => item !== flag);
+            }
         }
     }
 
@@ -49,9 +70,9 @@ export default function CheckOut() {
             <ProgressBar mode={progress} />
 
             {progress === 0 ?
-                <Shipping onFlagChange={changeFlag} />
+                <Shipping onFlagChange={changeFlag} shipping={enablePayment} />
                 : progress === 1 ?
-                    <Payment />
+                    <Payment shipping={enablePayment} />
                     :
                     <Review />
             }
@@ -71,14 +92,14 @@ export default function CheckOut() {
                     btnStyle={styles.btnStyle}
                     label={progress === 0 ? t('Payment') : progress === 1 ? t('Review') : t('PlaceOrder')}
                     onPress={moveToNext}
-                    disabled={checkShipment()}
+                    disabled={enablePaymentButton}
                 />
 
             </View>
-                {
-                    checkShipment() === true &&
-                    <Text style={{textAlign: "center", paddingTop: SIZES.ten, color:COLORS.primary}}>Shipment is not available in your country</Text>
-                }
+            {
+                checkShipment() === true && enablePaymentButton !== false &&
+                <Text style={{ textAlign: "center", paddingTop: SIZES.ten, color: COLORS.primary }}>Shipment is not available in your country</Text>
+            }
 
             <View style={{ height: SIZES.fifty * 2 }} />
 

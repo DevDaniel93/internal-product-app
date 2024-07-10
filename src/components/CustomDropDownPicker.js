@@ -21,7 +21,7 @@ const CustomDropDownPicker = (props) => {
                 <Text style={[styles.textLabel, { color: focusColor }]}>
                     {props.label}
                     {props?.required &&
-                        <Text style={styles.required}> *</Text>}
+                        <Text style={{color: currentTheme.red}}> *</Text>}
                 </Text>
             }
             <DropDownPicker
@@ -34,7 +34,7 @@ const CustomDropDownPicker = (props) => {
                 containerStyle={styles(props).dropDown}
                 placeholder={props?.placeholder}
                 open={open}
-                value={value}
+                value={props?.value}
                 items={ props?.list}
                 setOpen={setOpen}
                 setValue={props?.onChangeValue}

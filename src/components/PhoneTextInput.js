@@ -28,7 +28,7 @@ export default function PhoneTextInput(props) {
 
     return (
         <View>
-            <Text style={styles.textLabel}> {t('PhoneNumber')} <Text style={styles.required}> *</Text></Text>
+            <Text style={styles.textLabel}> {t('PhoneNumber')} <Text style={{color: currentTheme.red}}> *</Text></Text>
             <PhoneInput
                 layout="first"
                 defaultCode="US"

@@ -159,203 +159,117 @@
 //         flex: 1
 //     }
 // })
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, FlatList, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import EditText from '../../components/EditText';
 import { COLORS, SIZES } from '../../constants';
 import CardSlider from '../../components/CardSlider';
 import cardValidator from 'card-validator';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CardField, CardFieldInput, StripeProvider, useStripe } from '@stripe/stripe-react-native';
 import CustomButton from '../../components/CustomButton';
+import { getTheme } from '../../constants/theme';
+import { setLoading } from '../../redux/slices/utils';
 
-const Payment = () => {
+const Payment = (props) => {
     const [cardDetails, setCardDetails] = useState(null);
-    const [cardHolderName, setCardHolderName] = useState('Taimoor');
-    const [cardNumber, setCardNumber] = useState('4242424242424242');
-    const [expiry, setExpiry] = useState('04/27');
-    const [cvv, setCvv] = useState('123');
-    const [error, setError] = useState('');
+    const dispatch = useDispatch()
     const payment = useSelector(state => state.Payment.payment);
-    const [isStripeEnabled, setIsStripeEnabled] = useState(false);
-    const { createPaymentMethod, confirmPayment } = useStripe();
+    const { confirmPayment } = useStripe();
+    const [selectedItem, setSelectedItem] = useState(null);
     const { t } = useTranslation();
+    const theme = useSelector(state => state.Theme.theme)
+    const currentTheme = getTheme(theme)
+    const [clientSecret, setClientSecret] = useState('');
 
-    useEffect(() => {
-        setIsStripeEnabled(payment.some(item => item.id === "stripe"));
-    }, [payment]);
+    const fetchPaymentIntent = async () => {
+        await dispatch(setLoading(true))
+        const response = await fetch('https://custom3.mystagingserver.site/digi-cart-app/wp-json/stripe-payment/v1/create-payment-intent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                amount: 1000, // Amount in cents
+                currency: 'usd',
+            }),
+        }).then((res) => res.json()).
+            then(async (res) => {
+                console.log("res", res?.client_secret)
+                setClientSecret(res?.client_secret);
+                await handlePayment(res?.client_secret)
 
-    const handleCardNumberChange = (text) => {
-        const formattedText = text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
-        setCardNumber(formattedText);
-        const validation = cardValidator.number(formattedText.replace(/\s/g, ''));
-        if (!validation.isValid) {
-            setError(t('InvalidCardNumber'));
-        } else {
-            setError('');
+            }).catch((err) => {
+                console.log({ err })
+            })
+
+    };
+    const handlePayment = async (clientSecret) => {
+        const { error, paymentIntent } = await confirmPayment(clientSecret, {
+            paymentMethodType: 'Card',
+        });
+
+        if (error) {
+            dispatch(setLoading(false))
+
+            console.log('Payment failed:', error.message);
+        } else if (paymentIntent) {
+            dispatch(setLoading(false))
+
+            console.log('Payment successful:', paymentIntent);
         }
     };
 
-    const handleExpiryChange = (text) => {
-        const formattedText = text.replace(/^(\d{2})(\d{2})$/, '$1/$2');
-        setExpiry(formattedText);
+
+    const handleSelect = (itemId) => {
+        setSelectedItem(itemId);
     };
 
-    const handleCvvChange = (text) => {
-        setCvv(text);
-    };
-
-    const handlePayPress = async () => {
-        // const cardDetails = {
-        //     number: cardNumber.replace(/\s/g, ''),
-        //     exp_month: parseInt(expiry.split('/')[0], 10),
-        //     exp_year: parseInt(`20${expiry.split('/')[1]}`, 10),
-        //     cvc: cvv,
-        // };
-
-        // const isCardValid = cardValidator.number(cardDetails.number).isValid;
-        // const isExpiryValid = cardValidator.expirationDate(`${cardDetails.exp_month}${cardDetails.exp_year}`).isValid;
-        // const isCvcValid = cardValidator.cvv(cardDetails.cvc).isValid;
-
-        // if (!isCardValid || !isExpiryValid || !isCvcValid) {
-        //     Alert.alert('Error', 'Please enter complete and valid card details');
-        //     return;
-        // }
-        try {
-
-            const { paymentMethod, error } = await createPaymentMethod({
-                paymentMethodType: 'Card',
-                paymentMethodData: {
-                    // card: cardDetails,
-                    billing_details: { name: cardHolderName }
-                },
-                // card: cardDetails,
-                billing_details: { name: cardHolderName }
-            });
-
-            if (error) {
-                console.log({ error })
-                Alert.alert(`Error: ${error.message}`);
-            } else {
-                console.log({ paymentMethod })
-                handlePayment(paymentMethod.id);
-            }
-        } catch (error) {
-            console.log('Create Payment Method Error:', error);
-            Alert.alert('Payment Error', 'An error occurred while processing the payment method.');
-        }
-    };
-
-    const handlePayment = async (paymentMethodId) => {
-        const paymentAmount = 1000; // Example amount in cents (i.e., $10.00)
-        try {
-            const response = await fetch('https://custom3.mystagingserver.site/digi-cart-app/?wc-api=wc_stripe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ paymentMethodId, amount: paymentAmount }),
-            });
-
-            const textResponse = await response.text();
-            console.log('Server response:', textResponse);
-
-            if (!textResponse) {
-                console.log('Empty response from server');
-                Alert.alert('Server Error', 'Received empty response from server. Please try again later.');
-                return;
-            }
-
-            let jsonResponse;
-            try {
-                jsonResponse = JSON.parse(textResponse);
-            } catch (error) {
-                console.log('JSON Parse Error:', error);
-                Alert.alert('Server Error', 'Failed to parse server response. Please try again later.');
-                return;
-            }
-
-            if (!jsonResponse.clientSecret) {
-                console.log('Client Secret not found in response:', jsonResponse);
-                Alert.alert('Server Error', 'Client secret not found in response. Please try again later.');
-                return;
-            }
-
-            const { error, paymentIntent } = await confirmPayment(jsonResponse.clientSecret);
-
-            if (error) {
-                Alert.alert(`Payment Confirmation Error: ${error.message}`);
-            } else if (paymentIntent) {
-                Alert.alert('Success', 'Payment confirmed!');
-                console.log('Payment token:', paymentIntent.id);
-            }
-        } catch (error) {
-            console.log('Payment Error:', error);
-            Alert.alert('Payment Error', 'An error occurred while processing the payment.');
-        }
-    };
-
+    const showRadioButtons = ({ item }) => {
+        return (<>
+            <TouchableOpacity
+                style={[styles.radioButton, { borderColor: selectedItem === item.id ? currentTheme.primary : '#CCCCCC' }]}
+                onPress={() => handleSelect(item.id)}
+            >
+                <View style={[styles.radioButtonCircle, { backgroundColor: selectedItem === item.id ? currentTheme.primary + 30 : currentTheme.Background, borderColor: selectedItem === item.id ? currentTheme.primary : currentTheme.defaultTextColor }]}>
+                    {selectedItem === item.id && <View style={[styles.radioButtonCheckedCircle, { backgroundColor: currentTheme.primary }]} />}
+                </View>
+                <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ color: selectedItem === item.id ? currentTheme.primary : currentTheme.defaultTextColor }}>{item.title}</Text>
+                </View>
+            </TouchableOpacity>
+            <Text style={{ textAlign: 'left', color: currentTheme?.defaultTextColor, paddingBottom: SIZES.twenty, fontSize: SIZES.body10, paddingHorizontal: SIZES.ten }}>{item.description !== '' ? item.description : item.method_description}</Text>
+        </>
+        )
+    }
 
     return (
         <View style={styles.container}>
-            {isStripeEnabled &&
+            <FlatList
+                data={payment}
+                renderItem={showRadioButtons}
+                keyExtractor={item => item.id}
+                extraData={selectedItem}
+            />
+            {selectedItem === 'stripe' &&
                 <StripeProvider publishableKey="pk_test_51PYmNTIhyltse8okcxVNLSQhtBRFnqu275GkFnzt2oNga4uZmv3zKI4cp6wYOXuRB1mlUCr4B2V0Yusjo1aRERLp00wGBIv7pH">
-                    <CardSlider data={[1, 2, 3]} />
-                    <EditText
-                        label={t('CardHolderName')}
-                        value={cardHolderName}
-                        required
-                        onChangeText={setCardHolderName}
-                        placeholder={t('EnterCardHolderName')}
-                    />
-                    <EditText
-                        label={t('CardNumber')}
-                        required
-                        placeholder={t('CardNumber')}
-                        keyboardType="numeric"
-                        value={cardNumber}
-                        onChangeText={handleCardNumberChange}
-                        maxLength={19}
-                    />
-                    {error === t('InvalidCardNumber') && <Text style={{ color: COLORS.red, fontSize: SIZES.fifteen }}>{error}</Text>}
-                    <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
-                        <EditText
-                            required
-                            label={t('Expiration')}
-                            placeholder={t('MMYY')}
-                            keyboardType="numeric"
-                            value={expiry}
-                            onChangeText={handleExpiryChange}
-                            maxLength={5}
-                            styleTxtArea={{ width: SIZES.fiftyWidth * 3.3 }}
-                        />
-                        <EditText
-                            required
-                            label={t('CVV')}
-                            placeholder={t('CVV')}
-                            keyboardType="numeric"
-                            value={cvv}
-                            onChangeText={handleCvvChange}
-                            maxLength={3}
-                            styleTxtArea={{ width: SIZES.fiftyWidth * 3.3 }}
-                        />
-                    </View>
+
                     <CardField
+
                         postalCodeEnabled={false}
                         placeholder={{
                             number: '4242 4242 4242 4242',
                         }}
                         cardStyle={{
-                            borderColor: '#000000',
+                            borderColor: currentTheme?.defaultTextColor,
                             borderWidth: 1,
                             borderRadius: 8,
-                            backgroundColor: '#FFFFFF',
+                            backgroundColor: currentTheme?.Background,
                         }}
                         style={{
-                            height: 50,
-
-                            marginVertical: 30,
+                            height: SIZES.fifty,
+                            marginVertical: SIZES.twentyFive,
                         }}
                         onCardChange={(cardDetails) => {
                             setCardDetails(cardDetails);
@@ -364,7 +278,7 @@ const Payment = () => {
                     <CustomButton
                         btnStyle={styles.btnStyle}
                         label={t('Payment')}
-                        onPress={handlePayPress}
+                        onPress={fetchPaymentIntent}
                     />
                 </StripeProvider>
             }
@@ -377,5 +291,29 @@ export default Payment;
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    }
+    },
+    radioButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10
+    },
+    radioButtonCircle: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#000',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+    },
+    radioButtonCheckedCircle: {
+        width: 14,
+        height: 14,
+        borderRadius: 7,
+        backgroundColor: '#000',
+    },
 });

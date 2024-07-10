@@ -11,7 +11,8 @@ import { useSelector } from 'react-redux';
 
 const Shipping = (props) => {
     const { t } = useTranslation();
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [address, setAddress] = useState('');
@@ -34,7 +35,8 @@ const Shipping = (props) => {
     useEffect(() => {
         handleState()
         props?.onFlagChange(flag)
-    }, [flag]);
+        props?.shipping(shipping)
+    }, [flag, firstName, lastName, address, city, state, postalCode]);
     const handleState = () => {
         try {
             const filter = country.filter((item) => item.code === flag)
@@ -44,21 +46,38 @@ const Shipping = (props) => {
         }
     }
 
+    const shipping = {
+        first_name: firstName,
+        last_name: lastName,
+        address_1: address,
+        city: city,
+        state: state,
+        postcode: postalCode,
+        country: flag
+    }
 
 
     return (
         <View>
             <EditText
-                label={t('FullName')}
-                value={name}
+                label={t('FirstName')}
+                value={firstName}
                 required
                 onChangeText={(e) => {
-                    setName(e)
+                    setFirstName(e)
                 }}
-                placeholder={t('EnterFullName')}
+                placeholder={t('EnterYourFirstName')}
             />
 
-
+            <EditText
+                label={t('LastName')}
+                value={lastName}
+                required
+                onChangeText={(e) => {
+                    setLastName(e)
+                }}
+                placeholder={t('EnterYourLastName')}
+            />
             <PhoneTextInput phone={phone}
                 setFlag={setFlag}
                 setPhone={setPhone}
@@ -68,6 +87,8 @@ const Shipping = (props) => {
                 label={t('State')}
                 list={stateList.map(state => ({ label: state.name, value: state.code }))}
                 // list={stateList}
+                required
+                value={state}
                 width={"100%"}
                 placeholder={t('selectState')}
                 zIndex={1000}
