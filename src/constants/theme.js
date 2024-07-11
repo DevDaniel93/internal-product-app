@@ -344,6 +344,7 @@ export const CONSTANTS = {
         ALL_PRODUCT: "/wc/v3/products",
         GET_BANNER: "/api/get_banners",
         GET_COUNTRIES: "/wc/v3/data/countries",
+        GET_SHIPPING_METHODS: "/wc/v3/shipping/zones/",
         ALL_REVIEWS: "/wc/v3/products/reviews/",
         GET_CONTENT: "/api/get_web_content",
         ALL_Categories: "/wc/v3/products/categories",

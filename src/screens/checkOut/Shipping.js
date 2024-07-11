@@ -11,35 +11,27 @@ import { useSelector } from 'react-redux';
 
 const Shipping = (props) => {
     const { t } = useTranslation();
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [firstName, setFirstName] = useState('as');
+    const [lastName, setLastName] = useState('dasd');
     const [state, setState] = useState('');
-    const [city, setCity] = useState('');
-    const [address, setAddress] = useState('');
-    const [postalCode, setPostalCode] = useState('');
+    const [city, setCity] = useState('adsas');
+    const [address, setAddress] = useState('adsd');
+    const [postalCode, setPostalCode] = useState('sad');
     const country = useSelector(state => state.Shipping.countries)
     const user = useSelector(state => state.Auth.user)
 
 
-    console.log({ user })
+
     const [phone, setPhone] = useState('');
     const [countryCode, setCountryCode] = useState('+1'); // Default country code to US
     const [flag, setFlag] = useState('US'); // Default country code to US
-
-    const [countries, setCountries] = useState([]);
-    const [states, setStates] = useState([]);
     const [stateList, setStateList] = useState([])
-    const [cities, setCities] = useState([]);
-    const list = [{ label: 'One', value: 'one' },
-    { label: 'Two', value: 'two' },
-    { label: 'Three', value: 'three' }]
-
     useEffect(() => {
         handleState()
         props?.onFlagChange(flag)
         props?.place_order(place_order)
     }, [flag, firstName, lastName, address, city, state, postalCode]);
-    
+
     const handleState = () => {
         try {
             const filter = country.filter((item) => item.code === flag)

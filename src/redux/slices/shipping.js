@@ -1,21 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { GetCountries } from '../service/shipping.service';
+import { GetCountries, GetShippingMethods } from '../service/shipping.service';
 
 
 
 const initialState = {
     countries: [],
+    shippingType: []
 
 };
 
-export const getCountries = (params) => async (dispatch) => {
+export const getCountries = () => async (dispatch) => {
     try {
 
-        await GetCountries(params).then(async (response) => {
+        await GetCountries().then(async (response) => {
 
             dispatch(saveCountries(response))
         }).catch((error) => {
             console.log("error===========>", error?.response?.data?.message)
+        })
+
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+export const getShippingMethods = () => async (dispatch) => {
+    try {
+
+        await GetShippingMethods().then(async (response) => {
+            console.log({ response })
+            dispatch(saveShippingType(response))
+        }).catch((error) => {
+            console.log("error Getting Shipping===========>", error?.response?.data?.message)
         })
 
     } catch (error) {
@@ -32,12 +47,15 @@ export const ShippingSlice = createSlice({
         saveCountries: (state, action) => {
             state.countries = action.payload
         },
+        saveShippingType: (state, action) => {
+            state.shippingType = action.payload
+        },
 
 
 
     },
 });
 
-export const { saveCountries } = ShippingSlice.actions;
+export const { saveCountries, saveShippingType } = ShippingSlice.actions;
 
 export default ShippingSlice.reducer;

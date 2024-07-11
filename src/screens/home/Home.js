@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import FilterModal from '../../components/FilterModal'
 import { useFocusEffect } from '@react-navigation/native'
 import { getProducts } from '../../redux/slices/products'
-import { setLoading } from '../../redux/slices/utils'
+
 
 
 
@@ -26,7 +26,7 @@ export default function Home(props) {
     const filterProducts = useSelector(state => state?.Product?.filterProduct)
     const allProducts = useSelector(state => state?.Product?.products)
     // console.log("checking settings", useSelector(state => state?.Settings?.settings))
-    // console.log("checking Loop" )
+    console.log("checking Loop")
     const [products, setProducts] = useState(useSelector(state => state?.Product?.products))
     const categories = useSelector(state => state?.categories?.categories)
     const dispatch = useDispatch()
@@ -45,7 +45,7 @@ export default function Home(props) {
         }
     }
     const onApply = () => {
-        console.log({filterProducts})
+        console.log({ filterProducts })
         setProducts(filterProducts)
     }
     const getProduct = async () => {
@@ -124,16 +124,16 @@ export default function Home(props) {
                             <ProductCard item={item} />
                         )
                     }}
-                    // onEndReachedThreshold={0.1}
-                    // onEndReached={() => {
-                    //     if (!loading) {
-                    //         getProduct();
-                    //     }
-                    // }}
-                    // ListFooterComponent={() => (
-                    //     // Loading indicator at the bottom of the list
-                    //     loading && <ActivityIndicator size="large" color={currentTheme.primary} style={{ marginVertical: 20 }} />
-                    // )}
+                // onEndReachedThreshold={0.1}
+                // onEndReached={() => {
+                //     if (!loading) {
+                //         getProduct();
+                //     }
+                // }}
+                // ListFooterComponent={() => (
+                //     // Loading indicator at the bottom of the list
+                //     loading && <ActivityIndicator size="large" color={currentTheme.primary} style={{ marginVertical: 20 }} />
+                // )}
                 />
 
                 <View style={{ height: SIZES.fifty * 1.5 }} />

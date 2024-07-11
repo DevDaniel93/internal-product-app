@@ -4,18 +4,21 @@ import { COLORS, FONTFAMILY, SIZES, STYLES, height, width } from '../../constant
 import { Icon, IconType } from '../../components';
 import { label } from '../../constants/lables';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
-export default function Review() {
-
+export default function Review(props) {
+  const { data } = props
+  console.log("shipping_lines", data?.shipping_lines)
   const { t } = useTranslation();
+  const cart = useSelector(state => state.Cart.cart)
 
-  const data = [
-    { key: t('FullName'), value: "John Doe" },
-    { key: t('MobileNumber'), value: "+123-456-789" },
-    { key: t('State'), value: "Dummy" },
-    { key: t('City'), value: "Dummy" },
-    { key: t('StreetAddress'), value: "XYZ Address" },
-    { key: t('PostalCode'), value: "12345" },
+  const ShippingData = [
+    { key: t('FirstName '), value: data?.shipping?.first_name },
+    { key: t('LastName '), value: data?.shipping?.last_name },
+    { key: t('State'), value: data?.shipping?.state },
+    { key: t('City'), value: data?.shipping?.city },
+    { key: t('StreetAddress'), value: data?.shipping?.address_1 },
+    { key: t('PostalCode'), value: data?.shipping?.postcode },
   ]
 
   const renderItem = ({ item }) => (
@@ -32,7 +35,7 @@ export default function Review() {
         showsVerticalScrollIndicator={false}
       >
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <Text style={styles.heading}>{t('Items')} (2)</Text>
+          <Text style={styles.heading}>{t('Items')} ({cart?.length})</Text>
           <TouchableOpacity>
             <Icon type={IconType.SimpleLineIcons} name={"arrow-right"} color={COLORS.black} />
           </TouchableOpacity>
@@ -45,7 +48,7 @@ export default function Review() {
         <View>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={data}
+            data={ShippingData}
             renderItem={renderItem}
             keyExtractor={(item) => item.key}
             contentContainerStyle={styles.container}
