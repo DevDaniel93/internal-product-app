@@ -169,19 +169,31 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { CardField, CardFieldInput, StripeProvider, useStripe } from '@stripe/stripe-react-native';
 import CustomButton from '../../components/CustomButton';
-import { getTheme } from '../../constants/theme';
+import { CONSTANTS, getTheme, width } from '../../constants/theme';
 import { setLoading } from '../../redux/slices/utils';
+import axios from "axios";
+
 
 const Payment = (props) => {
+    const place_order = props?.place_order
     const [cardDetails, setCardDetails] = useState(null);
+    const [cardNoAuth, setCardNoAuth] = useState('')
+    const [expiryAuth, setExpiryAuth] = useState('')
+    const [cvcAuth, setCvcAuth] = useState('')
     const dispatch = useDispatch()
     const payment = useSelector(state => state.Payment.payment);
     const { confirmPayment } = useStripe();
     const [selectedItem, setSelectedItem] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('')
     const { t } = useTranslation();
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const [clientSecret, setClientSecret] = useState('');
+
+    useEffect(() => {
+        props?.updatedPlace_order(updatedPlace_order)
+    }, [selectedItem]);
+
 
     const fetchPaymentIntent = async () => {
         await dispatch(setLoading(true))
@@ -205,6 +217,90 @@ const Payment = (props) => {
             })
 
     };
+    const updatedPlace_order = {
+        payment_method: selectedItem,
+        payment_method_title: paymentMethod,
+        set_paid: false,
+        ...place_order
+    }
+
+    const handleTransactionAuthorize = async () => {
+        const requestBody = {
+
+            "createTransactionRequest": {
+                "merchantAuthentication": {
+                    "name": CONSTANTS.login_id,
+                    "transactionKey": CONSTANTS.transactionKey
+                },
+                "refId": Date.now(),
+                "transactionRequest": {
+                    "transactionType": "authCaptureTransaction",
+                    "amount": "5",
+                    "payment": {
+                        "creditCard": {
+                            "cardNumber": cardNoAuth, //"5424000000000015"
+                            "expirationDate": expiryAuth, //"2025-12"
+                            "cardCode": cvcAuth, //"999"
+                        }
+                    },
+                    // "lineItems": {
+                    //     "lineItem": {
+                    //         "itemId": "1",
+                    //         "name": "vase",
+                    //         "description": "Cannes logo",
+                    //         "quantity": "18",
+                    //         "unitPrice": "45.00"
+                    //     }
+                    // },
+                    "poNumber": "456654",
+                    "billTo": {
+                        "firstName": shipping.first_Name,
+                        "lastName": shipping.last_name,
+                        "company": "Souveniropolis",
+                        "address": shipping.address_1,
+                        "city": shipping.city,
+                        "state": shipping.state,
+                        "zip": shipping.postcode,
+                        "country": shipping.country
+                    },
+                    "shipTo": {
+                        "firstName": shipping.first_Name,
+                        "lastName": shipping.last_name,
+                        "company": "Thyme for Tea",
+                        "address": shipping.address_1,
+                        "city": shipping.city,
+                        "state": shipping.state,
+                        "zip": shipping.postcode,
+                        "country": shipping.country
+                    }
+
+                }
+
+            }
+        }
+        try {
+            const SandboxOrProduction = payment[payment.findIndex(item => item.id === selectedItem)].settings.environment.value
+            var url = ''
+            if (SandboxOrProduction === 'test') {
+                url = 'https://apitest.authorize.net/xml/v1/request.api'
+            }
+            else {
+                url = 'https://api.authorize.net/xml/v1/request.api'
+            }
+            const response = await axios.post(url, requestBody, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            const transId = response.data.transactionResponse.transId;
+            console.log({ transId })
+            console.log('Transaction request response:', response.data.messages);
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
     const handlePayment = async (clientSecret) => {
         const { error, paymentIntent } = await confirmPayment(clientSecret, {
             paymentMethodType: 'Card',
@@ -222,15 +318,16 @@ const Payment = (props) => {
     };
 
 
-    const handleSelect = (itemId) => {
-        setSelectedItem(itemId);
+    const handleSelect = (item) => {
+        setSelectedItem(item.id);
+        setPaymentMethod(item.title)
     };
 
     const showRadioButtons = ({ item }) => {
         return (<>
             <TouchableOpacity
                 style={[styles.radioButton, { borderColor: selectedItem === item.id ? currentTheme.primary : '#CCCCCC' }]}
-                onPress={() => handleSelect(item.id)}
+                onPress={() => handleSelect(item)}
             >
                 <View style={[styles.radioButtonCircle, { backgroundColor: selectedItem === item.id ? currentTheme.primary + 30 : currentTheme.Background, borderColor: selectedItem === item.id ? currentTheme.primary : currentTheme.defaultTextColor }]}>
                     {selectedItem === item.id && <View style={[styles.radioButtonCheckedCircle, { backgroundColor: currentTheme.primary }]} />}
@@ -252,7 +349,7 @@ const Payment = (props) => {
                 keyExtractor={item => item.id}
                 extraData={selectedItem}
             />
-            {selectedItem === 'stripe' &&
+            {selectedItem === 'stripe' ?
                 <StripeProvider publishableKey="pk_test_51PYmNTIhyltse8okcxVNLSQhtBRFnqu275GkFnzt2oNga4uZmv3zKI4cp6wYOXuRB1mlUCr4B2V0Yusjo1aRERLp00wGBIv7pH">
 
                     <CardField
@@ -281,6 +378,54 @@ const Payment = (props) => {
                         onPress={fetchPaymentIntent}
                     />
                 </StripeProvider>
+                :
+                selectedItem === "authorize_net_cim_credit_card" ?
+                    <View>
+                        {/* <CardField
+
+                            postalCodeEnabled={false}
+                            placeholder={{
+                                number: '4242 4242 4242 4242',
+                            }}
+                            cardStyle={{
+                                borderColor: currentTheme?.defaultTextColor,
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                backgroundColor: currentTheme?.Background,
+                            }}
+                            style={{
+                                height: SIZES.fifty,
+                                marginVertical: SIZES.twentyFive,
+                            }}
+                            onCardChange={(cardDetailsAuthorize) => {
+                                setCardDetailsAuthorize(cardDetailsAuthorize);
+                            }}
+                        /> */}
+                        <EditText
+                            label="Card Number"
+                            value={cardNoAuth}
+                            onChangeText={(txt) => setCardNoAuth(txt)}
+                            placeholder="4242 4242 4242 4242"
+                        />
+                        <EditText
+                            label="Expiry"
+                            value={expiryAuth}
+                            onChangeText={(txt) => setExpiryAuth(txt)}
+                            placeholder="2025-09"
+                        />
+                        <EditText
+                            label="CVC"
+                            value={cvcAuth}
+                            onChangeText={(txt) => setCvcAuth(txt)}
+                            placeholder="256"
+                        />
+                        <CustomButton
+                            btnStyle={styles.btnStyle}
+                            label={t('Payment')}
+                            onPress={handleTransactionAuthorize}
+                        />
+                    </View>
+                    : null
             }
         </View>
     );

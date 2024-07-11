@@ -14,13 +14,16 @@ import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 
 
-export default function CheckOut() {
+export default function CheckOut(props) {
+    console.log(props.route.params)
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const [flag, setFlag] = useState("")
     const [enablePaymentButton, setEnablePaymentButton] = useState(false)
     const [progress, setProgress] = useState(0)
+    const voucher = useSelector(state => state.Voucher.vouchers)[0]?.code
+    const [place_order, setPlace_order] = useState({voucher})
     const allGeneralCountries = useSelector(state => state.Settings.settings)
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
 
@@ -34,6 +37,8 @@ export default function CheckOut() {
         setFlag(item)
     }
     const enablePayment = (item) => {
+        console.log({item})
+        setPlace_order(item)
         if (
             item.first_name !== '' &&
             item.last_name !== '' &&
@@ -50,6 +55,11 @@ export default function CheckOut() {
         }
     }
 
+
+    const updatedPlaceOrder = (item) => {
+        setPlace_order(item)
+    }
+    console.log({ place_order })
     const checkShipment = () => {
         if (enablePaymentButton === false)
             return true
@@ -70,9 +80,9 @@ export default function CheckOut() {
             <ProgressBar mode={progress} />
 
             {progress === 0 ?
-                <Shipping onFlagChange={changeFlag} shipping={enablePayment} />
+                <Shipping onFlagChange={changeFlag} place_order={enablePayment} />
                 : progress === 1 ?
-                    <Payment shipping={enablePayment} />
+                    <Payment place_order={place_order} updatedPlace_order={updatedPlaceOrder} />
                     :
                     <Review />
             }

@@ -18,8 +18,10 @@ const Shipping = (props) => {
     const [address, setAddress] = useState('');
     const [postalCode, setPostalCode] = useState('');
     const country = useSelector(state => state.Shipping.countries)
+    const user = useSelector(state => state.Auth.user)
 
 
+    console.log({ user })
     const [phone, setPhone] = useState('');
     const [countryCode, setCountryCode] = useState('+1'); // Default country code to US
     const [flag, setFlag] = useState('US'); // Default country code to US
@@ -35,8 +37,9 @@ const Shipping = (props) => {
     useEffect(() => {
         handleState()
         props?.onFlagChange(flag)
-        props?.shipping(shipping)
+        props?.place_order(place_order)
     }, [flag, firstName, lastName, address, city, state, postalCode]);
+    
     const handleState = () => {
         try {
             const filter = country.filter((item) => item.code === flag)
@@ -46,14 +49,29 @@ const Shipping = (props) => {
         }
     }
 
-    const shipping = {
-        first_name: firstName,
-        last_name: lastName,
-        address_1: address,
-        city: city,
-        state: state,
-        postcode: postalCode,
-        country: flag
+    const place_order = {
+        billing: {
+            first_name: firstName,
+            last_name: lastName,
+            address_1: address,
+            address_2: "",
+            city: city,
+            state: state,
+            postcode: postalCode,
+            country: flag,
+            email: user.email,
+            phone: phone
+        },
+        shipping: {
+            first_name: firstName,
+            last_name: lastName,
+            address_1: address,
+            address_2: "",
+            city: city,
+            state: state,
+            postcode: postalCode,
+            country: flag
+        }
     }
 
 

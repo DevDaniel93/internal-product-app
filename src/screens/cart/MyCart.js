@@ -195,7 +195,7 @@ export default function MyCart(props) {
                         }
                         disabled={voucher.length !== 0 ? true : false}
 
-                        label={voucher.length === 0 ? t('Apply') : "$"+Math.round(voucher[0].amount)}
+                        label={voucher.length === 0 ? t('Apply') : "$" + Math.round(voucher[0].amount)}
                     />
                     {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
                     <Text style={{ color: COLORS.white, }}>
@@ -207,7 +207,7 @@ export default function MyCart(props) {
                     disabled={cart.length === 0 ? true : false}
                     btnStyle={styles.btnCheckOut}
                     onPress={() => {
-                        navigation.navigate(SCREENS.checkOut)
+                        { navigation.navigate(SCREENS.checkOut, { amount: Number(shippingCost + totalAmount).toFixed(2) }) }
                     }}
                     label={t('Checkout')}
                 />
