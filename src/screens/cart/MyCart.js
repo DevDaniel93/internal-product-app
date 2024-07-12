@@ -187,12 +187,7 @@ export default function MyCart(props) {
                     />
                     <CustomButton
                         btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
-                        onPress={() => {
-                            ApplyVoucher()
-
-                            console.log("lwngth", voucher)
-                        }
-                        }
+                        onPress={() => ApplyVoucher()}
                         disabled={voucher.length !== 0 ? true : false}
 
                         label={voucher.length === 0 ? t('Apply') : "$" + Math.round(voucher[0].amount)}

@@ -46,3 +46,31 @@ export const GetSingleOrderDetail = (id) => {
     ).then(onSuccess)
         .catch(onFailure);
 };
+
+export const PostOrder = (data) => {
+
+    const onSuccess = ({ data }) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const options = {
+        params: {
+            consumer_key: CONSTANTS.API_URLS.Consumer_key,
+            consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
+            
+        },
+        headers: {
+            Accept: "application/json"
+        },
+    }
+    return axios.post(
+        CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.ALL_ORDER,
+        data,
+        options
+    ).then(onSuccess)
+        .catch(onFailure);
+};

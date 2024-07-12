@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { GetOrders, GetSingleOrderDetail } from '../service/orders.service';
+import { GetOrders, GetSingleOrderDetail, PostOrder } from '../service/orders.service';
+import { SuccessAlert } from '../../utils/utils';
 
 
 
 
 const initialState = {
     Orders: [],
-    orderDetail: null
+    orderDetail: null,
+    orderResponse: null,
 
 };
 
@@ -33,7 +35,18 @@ export const getSingleOrder = (id) => async (dispatch) => {
         console.log("error===========>", error)
     };
 };
-
+export const postOrder = (params) => async (dispatch) => {
+    try {
+        await PostOrder(params).then(async (response) => {
+            SuccessAlert("Order Posted Successfully")
+            dispatch(saveOrderResponse(response))
+        }).catch((error) => {
+            console.log("error===========>", error)
+        })
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
 
 
 export const OrderSlice = createSlice({
@@ -46,12 +59,16 @@ export const OrderSlice = createSlice({
         saveOrdersDetail: (state, action) => {
             state.orderDetail = action.payload
         },
+        saveOrderResponse: (state, action) => {
+            state.orderResponse = action.payload
+        }
+
 
 
 
     },
 });
 
-export const { saveOrders } = OrderSlice.actions;
+export const { saveOrders, saveOrdersDetail, saveOrderResponse } = OrderSlice.actions;
 
 export default OrderSlice.reducer;

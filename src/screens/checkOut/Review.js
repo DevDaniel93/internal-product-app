@@ -13,8 +13,8 @@ export default function Review(props) {
   const cart = useSelector(state => state.Cart.cart)
 
   const ShippingData = [
-    { key: t('FirstName '), value: data?.shipping?.first_name },
-    { key: t('LastName '), value: data?.shipping?.last_name },
+    { key: t('First Name '), value: data?.shipping?.first_name },
+    { key: t('Last Name '), value: data?.shipping?.last_name },
     { key: t('State'), value: data?.shipping?.state },
     { key: t('City'), value: data?.shipping?.city },
     { key: t('StreetAddress'), value: data?.shipping?.address_1 },

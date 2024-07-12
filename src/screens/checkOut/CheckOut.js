@@ -15,6 +15,7 @@ import { StripeProvider, useStripe, CardField } from '@stripe/stripe-react-nativ
 import { setLoading } from '../../redux/slices/utils'
 import axios from 'axios'
 import cardValidator from 'card-validator'
+import { postOrder } from '../../redux/slices/orders'
 
 
 
@@ -41,14 +42,15 @@ export default function CheckOut(props) {
     const [Error, setError] = useState('');
     const [expiryAuth, setExpiryAuth] = useState('');
     const [cvcAuth, setCvcAuth] = useState('');
+    const orderResponse = useSelector(state => state.Orders.orderResponse)
 
     const payment = useSelector(state => state.Payment.payment);
 
-
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
 
-    const moveToNext = () => {
+    const moveToNext = async () => {
         if (progress === 2) {
+            await dispatch(postOrder(orderDetails))
             if (paymentMethod.id === "stripe") {
 
                 StripePaymentMethod()
@@ -87,8 +89,8 @@ export default function CheckOut(props) {
     }
     // ================================handle Card number============================
     const handleCardNumberChange = (text) => {
+        setCardNoAuth(text);
         const formattedText = text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
-        setCardNoAuth(formattedText);
         const validation = cardValidator.number(formattedText.replace(/\s/g, ''));
         if (!validation.isValid) {
             setError(t('InvalidCardNumber'));
@@ -166,7 +168,7 @@ export default function CheckOut(props) {
             order.line_items.push({
                 product_id: product.id,
                 quantity: product.quantity,
-                variation_id: null // Add variation_id if available
+                // variation_id: null // Add variation_id if available
             });
         });
 
@@ -241,7 +243,6 @@ export default function CheckOut(props) {
 
     };
     const handlePayment = async (clientSecret) => {
-        console.log({ cardDetails })
         const { error, paymentIntent } = await confirmPayment(clientSecret, {
             paymentMethodType: 'Card',
         });
@@ -270,7 +271,7 @@ export default function CheckOut(props) {
                 "refId": Date.now(),
                 "transactionRequest": {
                     "transactionType": "authCaptureTransaction",
-                    "amount": "5",
+                    "amount": props?.route?.params?.amount,
                     "payment": {
                         "creditCard": {
                             "cardNumber": cardNoAuth, //"5424000000000015"
@@ -279,7 +280,7 @@ export default function CheckOut(props) {
                         }
                     },
 
-                    "poNumber": "456654",
+                    "poNumber": orderResponse.id, //"456654"
                     "billTo": {
                         "firstName": shippingDetails?.shipping?.first_Name,
                         "lastName": shippingDetails?.shipping?.last_name,
@@ -303,7 +304,6 @@ export default function CheckOut(props) {
                 }
             }
         }
-
         try {
             const SandboxOrProduction = payment[payment.findIndex(item => item.id === paymentMethod?.id)].settings.environment.value
             var url = ''
@@ -318,8 +318,7 @@ export default function CheckOut(props) {
                     'Content-Type': 'application/json',
                 },
             })
-            console.log(response?.data?.messages)
-            const transId = response.data.transactionResponse.transId;
+            const transId = response?.data?.transactionResponse?.transId;
             console.log({ transId })
             console.log('Transaction request response:', response.data.messages);
         }
