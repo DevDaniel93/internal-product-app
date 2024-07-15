@@ -12,7 +12,7 @@ export const getPayment = (params) => async (dispatch) => {
     try {
 
         await GetPayment(params).then(async (response) => {
-            const filterPayment = response.filter(items => items.enabled === true)
+            const filterPayment = response.filter(items => items.enabled === true && items.title !== 'Link');
             dispatch(savePayment(filterPayment))
         }).catch((error) => {
             console.log("error===========>", error?.response?.data?.message)

@@ -352,11 +352,9 @@ export const CONSTANTS = {
         DELETE_PRODUCT: "/wc/v3/products/",
         APPLY_VOUCHER: "/wc/v3/coupons",
         SETTINGS: '/wc/v3/settings/',
-        PAYMENT: '/wc/v3/payment_gateways/'
-
-
-
-
+        PAYMENT: '/wc/v3/payment_gateways/',
+        ADD_TO_FAV: '/api/add_wishlist',
+        GET_FAV: '/api/get_wishlist'
 
     },
 

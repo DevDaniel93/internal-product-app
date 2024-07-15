@@ -4,14 +4,32 @@ import React from 'react'
 import Icon, { IconType, Icons } from './Icons'
 import { COLORS, FONTFAMILY, FONTS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../constants'
 import { useNavigation } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../constants/theme'
+import { addToFav } from '../redux/slices/products'
 
 const ProductCard = ({ item }) => {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const navigation = useNavigation()
+    const user = useSelector(state => state.Auth.user)
+    const dispatch = useDispatch()
+    const addtoFav = async (productId) => {
+        try {
 
+            const formData = new FormData()
+            formData.append("product_id", productId)
+            formData.append("user_id", user?.user_id)
+            const data = {
+                product_id: productId,
+                user_id: user?.user_id
+            }
+            await dispatch(addToFav(formData))
+        } catch (error) {
+            console.log({ error })
+        }
+
+    }
     return (
         <TouchableOpacity onPress={() => {
             navigation.navigate(SCREENS.singleProduct, { productDetails: item })
@@ -26,9 +44,12 @@ const ProductCard = ({ item }) => {
             />
             <TouchableOpacity
                 style={[styles.starContainer, { backgroundColor: currentTheme.white, }]}
+                onPress={() => {
+                    addtoFav(item?.id)
+                }}
             >
                 <Icon
-                    name={"heart"}
+                    name={item?.favourite ? "heart" : "heart-outlined"}
                     type={IconType.Entypo}
                     color={COLORS.primary}
                     size={SIZES.twenty}

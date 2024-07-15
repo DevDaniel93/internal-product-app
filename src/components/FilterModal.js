@@ -25,18 +25,17 @@ export default function FilterModal(props) {
     const [minprice, setMinPrice] = useState(1);
     const [maxprice, setMaxPrice] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedBrand, setSelectedBrand] = useState(null);
+
 
     const onReset = () => {
         setMaxPrice(1);
         setMinPrice(1);
-
         setSelectedCategory(null);
-        setSelectedBrand(null);
+
     };
 
     const checkDisabled = () => {
-        if ((minprice < maxprice) || selectedCategory !== null || selectedBrand !== null) {
+        if ((minprice < maxprice) || selectedCategory !== null) {
             return false;
         } else {
             return true;
@@ -79,7 +78,10 @@ export default function FilterModal(props) {
             }
             const page = 1
 
-            await dispatch(getFilterProducts(page, params))
+            const response = await dispatch(getFilterProducts(page, params))
+
+            onApply(response)
+
             dispatch(setLoading(false))
 
         } catch (error) {
@@ -155,7 +157,7 @@ export default function FilterModal(props) {
                     onCancel();
                     getPro()
                     onReset();
-                    onApply()
+
                 }}
                 btnStyle={styles.btnStyle}
                 disabled={checkDisabled()}

@@ -30,6 +30,7 @@ import { getAbout, getPrivacyPolicy, getTermsAndCondition } from "../redux/slice
 import { getCountries, getShippingMethods } from "../redux/slices/shipping";
 import { getSettings } from "../redux/slices/settings";
 import { getPayment } from "../redux/slices/paymentGateway";
+import { getCategories } from "../redux/slices/categories";
 
 
 const Stack = createNativeStackNavigator();
@@ -55,6 +56,7 @@ export default function MainNavigation() {
             dispatch(setLoading(true))
             await dispatch(getTermsAndCondition())
             await dispatch(getPrivacyPolicy())
+            await dispatch(getCategories())
             await dispatch(getAbout())
             await dispatch(getCountries())
             await dispatch(getShippingMethods())

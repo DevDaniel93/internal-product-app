@@ -27,7 +27,6 @@ export default function CheckOut(props) {
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const [flag, setFlag] = useState("")
-    const [selectedItem, setSelectedItem] = useState(null);
 
     const [enablePaymentButton, setEnablePaymentButton] = useState(false)
     const [progress, setProgress] = useState(0)
@@ -191,8 +190,6 @@ export default function CheckOut(props) {
     }, [progress])
 
 
-
-
     const checkShipment = () => {
         if (enablePaymentButton === false)
             return true
@@ -204,7 +201,6 @@ export default function CheckOut(props) {
             }
         }
     }
-
 
     const showRadioButtons = ({ item }) => (
         <>
@@ -328,7 +324,7 @@ export default function CheckOut(props) {
                     'Content-Type': 'application/json',
                 },
             })
-            console.log({ response })
+
             const transId = response?.data?.transactionResponse?.transId;
             console.log({ transId })
             console.log('Transaction request response:', response.data.messages);
@@ -337,7 +333,6 @@ export default function CheckOut(props) {
             console.log(err)
         }
     }
-
 
 
     return (
@@ -378,6 +373,11 @@ export default function CheckOut(props) {
 
                                         }}
                                     />
+                                    <CustomButton
+                                        btnStyle={styles.btnStyle}
+                                        label={t('Payment')}
+                                        onPress={StripePaymentMethod}
+                                    />
 
                                 </>
                                 :
@@ -411,8 +411,6 @@ export default function CheckOut(props) {
                                             value={cvcAuth}
                                             onChangeText={handleCvvChange}
                                             maxLength={3}
-
-
                                         />
 
                                     </View>

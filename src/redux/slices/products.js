@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Getproducts } from '../service/products.service';
+import { AddToFav, GetFavProducts, Getproducts } from '../service/products.service';
 import { getCategories } from './categories';
+import { SuccessAlert } from '../../utils/utils';
 
 
 
@@ -13,13 +14,15 @@ const initialState = {
 export const getProducts = (page, params) => async (dispatch) => {
     try {
 
-        await Getproducts(page, params).then(async (response) => {
-            await dispatch(getCategories())
-            // dispatch(saveProducts(response))
-            dispatch(saveProducts(response))
-        }).catch((error) => {
-            console.log("error===========>", error)
-        })
+        const response = await Getproducts(page, params);
+        return response
+        // await Getproducts(page, params).then(async (response) => {
+        //     await dispatch(getCategories())
+        //     // dispatch(saveProducts(response))
+        //     dispatch(saveProducts(response))
+        // }).catch((error) => {
+        //     console.log("error===========>", error)
+        // })
 
 
     } catch (error) {
@@ -28,14 +31,41 @@ export const getProducts = (page, params) => async (dispatch) => {
 };
 export const getFilterProducts = (page, params) => async (dispatch) => {
     try {
+        const response = await Getproducts(page, params);
+        return response
+        // await Getproducts(page, params).then(async (response) => {
 
-        await Getproducts(page, params).then(async (response) => {
+        //     // dispatch(saveFilterProduct(response))
+        //     dispatch(saveProducts(response))
 
-            // dispatch(saveFilterProduct(response))
-            dispatch(saveProducts(response))
-    
+        // }).catch((error) => {
+        //     console.log("error===========>", error)
+        // })
+
+
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
+export const getFavProduct = (userId) => async (dispatch) => {
+    try {
+        const response = await GetFavProducts(userId);
+
+        return response
+
+    } catch (error) {
+        console.log("error===========>", error?.response)
+    };
+};
+export const addToFav = (FormData) => async (dispatch) => {
+    try {
+
+        await AddToFav(FormData).then(async (response) => {
+            SuccessAlert(response?.msg)
+
         }).catch((error) => {
             console.log("error===========>", error)
+            // console.log("error===========>", error?.response)
         })
 
 

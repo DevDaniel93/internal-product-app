@@ -27,7 +27,7 @@ export const getShippingMethods = () => async (dispatch) => {
     try {
 
         await GetShippingMethods().then(async (response) => {
-            console.log({ response })
+
             dispatch(saveShippingType(response))
         }).catch((error) => {
             console.log("error Getting Shipping===========>", error?.response?.data?.message)

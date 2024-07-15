@@ -16,7 +16,7 @@ export default function AllProducts(props) {
     const { navigation, route } = props
     const modal = React.useRef(null)
     const dispatch = useDispatch()
-    const products = useSelector(state => state?.Product?.filterProduct)
+    // const products = useSelector(state => state?.Product?.filterProduct)
     console.log({ products })
     const { item } = route?.params
 
@@ -25,6 +25,7 @@ export default function AllProducts(props) {
     const { t } = useTranslation();
 
     const [search, setSearch] = useState('')
+    const [products, setProducts] = useState([])
     const [filterProducts, setFilterProducts] = useState(products)
 
 
@@ -46,7 +47,8 @@ export default function AllProducts(props) {
 
             }
             const page = 1
-            await dispatch(getFilterProducts(page, params))
+            const response = await dispatch(getFilterProducts(page, params))
+            setProducts(response)
             dispatch(setLoading(false))
 
         } catch (error) {
