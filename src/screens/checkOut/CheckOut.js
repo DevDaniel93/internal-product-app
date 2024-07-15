@@ -57,15 +57,21 @@ export default function CheckOut(props) {
                 StripePaymentMethod()
             }
             else if (paymentMethod.id === "authorize_net_cim_credit_card") {
-                try {
-                    const response = await dispatch(postOrder(orderDetails))
-                    await handleTransactionAuthorize(response?.id)
-                    SuccessAlert("Order Posted Successfully");
-                } catch (error) {
-                    console.log(error)
+                if (cardNoAuth === '' || expiryAuth === '' || cvcAuth === '') {
+                    console.log("first")
                 }
+                else {
+                    try {
+                        await dispatch(setLoading(true))
+                        const response = await dispatch(postOrder(orderDetails))
+                        await handleTransactionAuthorize(response?.id)
+                        await dispatch(setLoading(false))
+                        SuccessAlert("Order Posted Successfully");
+                    } catch (error) {
+                        console.log(error)
+                    }
 
-
+                }
             }
         }
         else {
