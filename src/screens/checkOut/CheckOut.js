@@ -16,6 +16,7 @@ import { setLoading } from '../../redux/slices/utils'
 import axios from 'axios'
 import cardValidator from 'card-validator'
 import { postOrder } from '../../redux/slices/orders'
+import { SuccessAlert } from '../../utils/utils'
 
 
 
@@ -34,6 +35,7 @@ export default function CheckOut(props) {
     const cart = useSelector(state => state.Cart.cart)
     const shippingMethods = useSelector(state => state.Shipping.shippingType)
     const [shippingDetails, setShippingDetails] = useState(null)
+    const [paidStatus, setPaidStatus] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState(null)
     const [orderDetails, setOrderDetails] = useState(null)
     const [cardDetails, setCardDetails] = useState(null);
@@ -42,7 +44,7 @@ export default function CheckOut(props) {
     const [Error, setError] = useState('');
     const [expiryAuth, setExpiryAuth] = useState('');
     const [cvcAuth, setCvcAuth] = useState('');
-    const orderResponse = useSelector(state => state.Orders.orderResponse)
+
 
     const payment = useSelector(state => state.Payment.payment);
 
@@ -50,13 +52,20 @@ export default function CheckOut(props) {
 
     const moveToNext = async () => {
         if (progress === 2) {
-            await dispatch(postOrder(orderDetails))
-            if (paymentMethod.id === "stripe") {
 
+            if (paymentMethod.id === "stripe") {
                 StripePaymentMethod()
             }
             else if (paymentMethod.id === "authorize_net_cim_credit_card") {
-                handleTransactionAuthorize()
+                try {
+                    const response = await dispatch(postOrder(orderDetails))
+                    await handleTransactionAuthorize(response?.id)
+                    SuccessAlert("Order Posted Successfully");
+                } catch (error) {
+                    console.log(error)
+                }
+
+
             }
         }
         else {
@@ -89,8 +98,8 @@ export default function CheckOut(props) {
     }
     // ================================handle Card number============================
     const handleCardNumberChange = (text) => {
-        setCardNoAuth(text);
         const formattedText = text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
+        setCardNoAuth(text);
         const validation = cardValidator.number(formattedText.replace(/\s/g, ''));
         if (!validation.isValid) {
             setError(t('InvalidCardNumber'));
@@ -150,17 +159,18 @@ export default function CheckOut(props) {
         const order = {
             payment_method: paymentMethod?.id,
             payment_method_title: paymentMethod?.title,
-            set_paid: false,
+            set_paid: paidStatus,
             billing: shippingDetails?.billing,
             shipping: shippingDetails?.shipping,
             line_items: [
 
             ],
-            coupon_lines: [
-                {
-                    code: voucherCode
-                }
-            ],
+            coupon_lines: voucherCode !== undefined ?
+                [
+                    {
+                        code: voucherCode
+                    }
+                ] : [],
             shipping_lines: shippingCost ? [shippingCost] : []
 
         }
@@ -259,7 +269,7 @@ export default function CheckOut(props) {
     };
 
     // ==================================== Authorize.net Payment Method==============================
-    const handleTransactionAuthorize = async () => {
+    const handleTransactionAuthorize = async (id) => {
 
         const requestBody = {
 
@@ -280,7 +290,7 @@ export default function CheckOut(props) {
                         }
                     },
 
-                    "poNumber": orderResponse.id, //"456654"
+                    "poNumber": id, //"456654"
                     "billTo": {
                         "firstName": shippingDetails?.shipping?.first_Name,
                         "lastName": shippingDetails?.shipping?.last_name,
@@ -318,6 +328,7 @@ export default function CheckOut(props) {
                     'Content-Type': 'application/json',
                 },
             })
+            console.log({ response })
             const transId = response?.data?.transactionResponse?.transId;
             console.log({ transId })
             console.log('Transaction request response:', response.data.messages);

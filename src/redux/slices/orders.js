@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { GetOrders, GetSingleOrderDetail, PostOrder } from '../service/orders.service';
-import { SuccessAlert } from '../../utils/utils';
+import { ErrorAlert, SuccessAlert } from '../../utils/utils';
 
 
 
@@ -35,20 +35,35 @@ export const getSingleOrder = (id) => async (dispatch) => {
         console.log("error===========>", error)
     };
 };
+// export const postOrder = (params) => async (dispatch) => {
+//     try {
+//         const response = await PostOrder(params)
+//         return response
+
+//         //   .then(async (response) => {
+//         //         SuccessAlert("Order Posted Successfully")
+//         //         return response
+//         //         dispatch(saveOrderResponse(response))
+//         //     }).catch((error) => {
+//         //         console.log("error===========>", error)
+//         //     })
+//     } catch (error) {
+//         console.log("error===========>", error)
+//     };
+// };
+
 export const postOrder = (params) => async (dispatch) => {
     try {
-        await PostOrder(params).then(async (response) => {
-            SuccessAlert("Order Posted Successfully")
-            dispatch(saveOrderResponse(response))
-        }).catch((error) => {
-            console.log("error===========>", error)
-        })
+        const response = await PostOrder(params);
+        return response;
     } catch (error) {
-        console.log("error===========>", error)
-    };
+        console.log("Order Posted error===========>", error?.response?.data?.message);
+        ErrorAlert(error);
+        throw error;
+        // Optionally, you could dispatch an error action here
+        // dispatch(saveOrderError(error));
+    }
 };
-
-
 export const OrderSlice = createSlice({
     name: 'orders',
     initialState,
