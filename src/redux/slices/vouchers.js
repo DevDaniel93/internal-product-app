@@ -32,12 +32,15 @@ export const VoucherSlice = createSlice({
         saveVoucher: (state, action) => {
             state.vouchers = action.payload
         },
+        removeVoucher: (state, action) => {
+            state.vouchers = []
+        },
 
 
 
     },
 });
 
-export const { saveVoucher } = VoucherSlice.actions;
+export const { saveVoucher, removeVoucher } = VoucherSlice.actions;
 
 export default VoucherSlice.reducer;

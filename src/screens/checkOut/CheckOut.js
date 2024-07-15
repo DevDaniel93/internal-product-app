@@ -9,7 +9,7 @@ import Shipping from './Shipping'
 import Review from './Review'
 import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { CONSTANTS, getTheme } from '../../constants/theme'
+import { CONSTANTS, getTheme, SCREENS } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import { StripeProvider, useStripe, CardField } from '@stripe/stripe-react-native'
 import { setLoading } from '../../redux/slices/utils'
@@ -17,17 +17,20 @@ import axios from 'axios'
 import cardValidator from 'card-validator'
 import { postOrder } from '../../redux/slices/orders'
 import { SuccessAlert } from '../../utils/utils'
+import { emptyCart, selectTotalAmount } from '../../redux/slices/Cart'
+import { removeVoucher } from '../../redux/slices/vouchers'
 
 
 
 export default function CheckOut(props) {
+    const { navigation } = props
     const dispatch = useDispatch()
     const { confirmPayment } = useStripe();
     const theme = useSelector(state => state.Theme.theme)
     const { t } = useTranslation();
     const currentTheme = getTheme(theme)
     const [flag, setFlag] = useState("")
-
+    const totalAmount = useSelector(selectTotalAmount);
     const [enablePaymentButton, setEnablePaymentButton] = useState(false)
     const [progress, setProgress] = useState(0)
     const voucherCode = useSelector(state => state.Voucher.vouchers)[0]?.code
@@ -37,6 +40,7 @@ export default function CheckOut(props) {
     const [paidStatus, setPaidStatus] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState(null)
     const [orderDetails, setOrderDetails] = useState(null)
+    const [shippingCharges, setShippingCharges] = useState(null)
     const [cardDetails, setCardDetails] = useState(null);
     const allGeneralCountries = useSelector(state => state.Settings.settings)
     const [cardNoAuth, setCardNoAuth] = useState('');
@@ -49,35 +53,7 @@ export default function CheckOut(props) {
 
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
 
-    const moveToNext = async () => {
-        if (progress === 2) {
 
-            if (paymentMethod.id === "stripe") {
-                StripePaymentMethod()
-            }
-            else if (paymentMethod.id === "authorize_net_cim_credit_card") {
-                if (cardNoAuth === '' || expiryAuth === '' || cvcAuth === '') {
-                    console.log("first")
-                }
-                else {
-                    try {
-                        await dispatch(setLoading(true))
-                        const response = await dispatch(postOrder(orderDetails))
-                        await handleTransactionAuthorize(response?.id)
-                        await dispatch(setLoading(false))
-                        SuccessAlert("Order Posted Successfully");
-                    } catch (error) {
-                        console.log(error)
-                    }
-
-                }
-            }
-        }
-        else {
-            setProgress(progress + 1)
-        }
-
-    }
     const moveToPrevios = () => {
         setProgress(progress - 1)
     }
@@ -121,7 +97,6 @@ export default function CheckOut(props) {
         setCvcAuth(text);
     };
     const calculateShippingCost = (products, shippingAddress) => {
-
         let totalProductCost = products.reduce((acc, product) => acc + (parseFloat(product.price) * product.quantity), 0);
         let totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0);
         let selectedShippingMethod = null;
@@ -159,12 +134,12 @@ export default function CheckOut(props) {
         return selectedShippingMethod;
     };
 
-    const Place_order = () => {
-        const shippingCost = calculateShippingCost(cart, shippingDetails);
+    const Place_order = (set_paid) => {
+
         const order = {
             payment_method: paymentMethod?.id,
             payment_method_title: paymentMethod?.title,
-            set_paid: paidStatus,
+            set_paid: set_paid || paidStatus,
             billing: shippingDetails?.billing,
             shipping: shippingDetails?.shipping,
             line_items: [
@@ -176,7 +151,7 @@ export default function CheckOut(props) {
                         code: voucherCode
                     }
                 ] : [],
-            shipping_lines: shippingCost ? [shippingCost] : []
+            shipping_lines: shippingCharges ? [shippingCharges] : []
 
         }
         cart.forEach(product => {
@@ -188,12 +163,18 @@ export default function CheckOut(props) {
         });
 
         setOrderDetails(order)
+        return order
 
     }
 
     useEffect(() => {
         Place_order()
     }, [progress])
+
+    useEffect(() => {
+        const shippingCost = calculateShippingCost(cart, shippingDetails);
+        setShippingCharges(shippingCost)
+    }, [])
 
 
     const checkShipment = () => {
@@ -227,21 +208,23 @@ export default function CheckOut(props) {
     // ==================================== Stripe Payment Method==============================
     const StripePaymentMethod = async () => {
         try {
+
             await dispatch(setLoading(true))
-            await fetch('https://custom3.mystagingserver.site/digi-cart-app/wp-json/stripe-payment/v1/create-payment-intent', {
+            await fetch(CONSTANTS.stripe_Payment_url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    amount: 1000, // Amount in cents
+                    amount: (totalAmount + (shippingCharges ? shippingCharges?.total : 0)) * 100, // Amount in cents
                     currency: 'usd',
                 }),
             }).then((res) => res.json()).
                 then(async (res) => {
-                    console.log("res", res?.client_secret)
+
                     // setClientSecret(res?.client_secret);
                     await handlePayment(res?.client_secret)
+                    dispatch(setLoading(false))
 
                 }).catch((err) => {
                     console.log({ err })
@@ -255,18 +238,27 @@ export default function CheckOut(props) {
 
     };
     const handlePayment = async (clientSecret) => {
+
         const { error, paymentIntent } = await confirmPayment(clientSecret, {
             paymentMethodType: 'Card',
         });
 
         if (error) {
             dispatch(setLoading(false))
-
             console.log('Payment failed:', error.message);
         } else if (paymentIntent) {
+            // setPaidStatus(true)
+            const orderDetials = Place_order(true)
+            const response = await dispatch(postOrder(orderDetials))
+
+
+            navigation.navigate(SCREENS.Drawer)
+            dispatch(removeVoucher())
+            dispatch(emptyCart())
+            SuccessAlert("Order Placed Successfully")
+            console.log('Payment successful:', paymentIntent);
             dispatch(setLoading(false))
 
-            console.log('Payment successful:', paymentIntent);
         }
     };
 
@@ -339,7 +331,34 @@ export default function CheckOut(props) {
             console.log(err)
         }
     }
+    const moveToNext = async () => {
+        if (progress === 2) {
+            if (paymentMethod.id === "stripe") {
+                await StripePaymentMethod()
 
+            }
+            else if (paymentMethod.id === "authorize_net_cim_credit_card") {
+                if (cardNoAuth === '' || expiryAuth === '' || cvcAuth === '') {
+                    console.log("first")
+                }
+                else {
+                    try {
+                        await dispatch(setLoading(true))
+                        const response = await dispatch(postOrder(orderDetails))
+                        await handleTransactionAuthorize(response?.id)
+                        await dispatch(setLoading(false))
+                        SuccessAlert("Order Posted Successfully");
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+            }
+        }
+        else {
+            setProgress(progress + 1)
+        }
+
+    }
 
     return (
         <ScrollView style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
@@ -352,6 +371,9 @@ export default function CheckOut(props) {
                 {progress === 0 ?
                     <Shipping onFlagChange={changeFlag} place_order={enablePayment} />
                     : progress === 1 ?
+
+                        <Review data={orderDetails} />
+                        :
                         <View style={styles.container}>
                             <FlatList
                                 data={payment}
@@ -423,8 +445,6 @@ export default function CheckOut(props) {
                                     : null
                             }
                         </View>
-                        :
-                        <Review data={orderDetails} />
                 }
 
                 <View style={styles.btnRow}>

@@ -21,12 +21,12 @@ const ProgressBar = (props) => {
             <View style={styles.line} />
             <View style={styles.icon}>
                 <Icon type={IconType.MaterialCommunityIcons} name={'credit-card-check-outline'} color={mode === 0 ? null : mode === 1 ? currentTheme.defaultTextColor : COLORS.cyan} />
-                <Text style={{ color: mode === 0 ? null : mode === 1 ? currentTheme.defaultTextColor : COLORS.cyan }}>{t('Payment')}</Text>
+                <Text style={{ color: mode === 0 ? null : mode === 1 ? currentTheme.defaultTextColor : COLORS.cyan }}>{t('Review')}</Text>
             </View>
             <View style={styles.line} />
             <View style={styles.icon}>
                 <Icon type={IconType.Ionicons} name={'bag-check-outline'} color={mode === 0 || mode === 1 ? null : COLORS.black} />
-                <Text style={{ color: mode === 0 || mode === 1 ? null : currentTheme.defaultTextColor }}>{t('Review')}</Text>
+                <Text style={{ color: mode === 0 || mode === 1 ? null : currentTheme.defaultTextColor }}>{t('Payment')}</Text>
             </View>
         </View>
     )

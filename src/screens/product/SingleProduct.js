@@ -236,15 +236,18 @@ export default function SingleProduct(props) {
                 />
                 {/* <Text style={[styles.ProductDetails, { color: currentTheme.defaultTextColor, }]}>
                     {productDetails?.description.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()}
-
                 </Text> */}
 
                 {productDetails?.attributes?.length &&
-                    <ScrollView style={{ marginVertical: SIZES.ten }}>
+                    <ScrollView
+
+                        style={{ marginVertical: SIZES.ten }}>
                         {productDetails?.attributes.map((val) => (
                             <View>
                                 <Text style={[styles.attributesTitle, { color: currentTheme.defaultTextColor, }]}>{t('Choose')} {val?.name}</Text>
-                                <ScrollView horizontal>
+                                <ScrollView
+                                    showsHorizontalScrollIndicator={false}
+                                    horizontal>
                                     {(val?.options || []).map((item) => (
                                         <TouchableOpacity
                                             onPress={() => {

@@ -85,7 +85,7 @@ export default function MainNavigation() {
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={screenOptions}
-                initialRouteName={user === null ? SCREENS.Login : SCREENS.Drawer}
+                initialRouteName={SCREENS.Drawer}
             >
                 <Stack.Screen name={SCREENS.Login} component={Login} />
                 <Stack.Screen name={SCREENS.SignUp} component={Signup} />

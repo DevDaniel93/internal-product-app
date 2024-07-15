@@ -319,6 +319,7 @@ export const CONSTANTS = {
     SHHIPPING_ZONE_ID: 3,
     login_id: "9C42HVfgYJk",
     transactionKey: "5Hh59u46KF8cztCD",
+    stripe_Payment_url: "https://custom3.mystagingserver.site/digi-cart-app/wp-json/stripe-payment/v1/create-payment-intent",
 
     API_URLS: {
         Consumer_key: "ck_7c8cdbbfb4b76cc2cd28c6c95dde54209a015cc2",

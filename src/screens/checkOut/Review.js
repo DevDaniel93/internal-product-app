@@ -5,12 +5,14 @@ import { Icon, IconType } from '../../components';
 import { label } from '../../constants/lables';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { selectTotalAmount } from '../../redux/slices/Cart';
 
 export default function Review(props) {
   const { data } = props
-  console.log("shipping_lines", data?.shipping_lines)
+  // console.log("shipping_lines", data?.shipping_lines[0]?.total)
   const { t } = useTranslation();
   const cart = useSelector(state => state.Cart.cart)
+  const totalAmount = useSelector(selectTotalAmount);
 
   const ShippingData = [
     { key: t('First Name '), value: data?.shipping?.first_name },
@@ -54,7 +56,6 @@ export default function Review(props) {
             contentContainerStyle={styles.container}
           />
         </View>
-
         <View style={styles.line} />
         <Text style={styles.heading}>
           {t('OrderInfo')}
@@ -64,7 +65,7 @@ export default function Review(props) {
             {t('Sub_Total')}
           </Text>
           <Text style={styles.infoTxt}>
-            $25.27
+            ${totalAmount}
           </Text>
         </View>
         <View style={styles.totalRow}>
@@ -72,7 +73,7 @@ export default function Review(props) {
             {t('ShippingCost')}
           </Text>
           <Text style={styles.infoTxt}>
-            $0.00
+            ${data?.shipping_lines[0]?.total}
           </Text>
         </View>
         <View style={[styles.totalRow, { marginBottom: SIZES.twenty }]}>
@@ -80,7 +81,7 @@ export default function Review(props) {
             {t('Total')}
           </Text>
           <Text style={[styles.infoTxt, { color: COLORS.defaultTextColor, fontSize: SIZES.twenty }]}>
-            $25.27
+            ${totalAmount}
           </Text>
         </View>
       </ScrollView>

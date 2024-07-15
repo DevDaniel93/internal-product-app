@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 import Stars from 'react-native-stars';
@@ -18,6 +18,7 @@ export default function Reviews({ id }) {
 
     const [star, setStar] = useState(0)
     const [review, setReview] = useState('')
+    const [loading, setLoading] = useState('')
     const theme = useSelector(state => state.Theme.theme)
     const reviews = useSelector(state => state.Review.reviews)
     const user = useSelector(state => state.Auth.user)
@@ -25,9 +26,12 @@ export default function Reviews({ id }) {
     const { t } = useTranslation();
     const getReview = async () => {
         try {
-            await dispatch(setLoading(true))
+            setLoading(true)
+            // await dispatch(setLoading(true))
             await dispatch(getReviews(id))
-            await dispatch(setLoading(false))
+            // await dispatch(setLoading(false))
+            setLoading(false)
+
         } catch (error) {
             console.log("getting error when call get Reviews")
         }
@@ -46,10 +50,14 @@ export default function Reviews({ id }) {
                 formdata.append("review", review)
                 formdata.append("rating", star)
 
-                await dispatch(setLoading(true))
+                // await dispatch(setLoading(true))
+                setLoading(true)
+
                 await dispatch(postReviews(id, formdata))
                 reset()
-                await dispatch(setLoading(false))
+                setLoading(false)
+
+                // await dispatch(setLoading(false))
             }
         } catch (error) {
             console.log("getting error when call post Reviews")
@@ -98,46 +106,50 @@ export default function Reviews({ id }) {
         )
     }
     return (
-        <View>
-            <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
-                {t('Reviews')}
-            </Text>
-            <View style={{ alignItems: "flex-start", marginVertical: SIZES.five }}>
-                <Stars
-                    display={star}
-                    spacing={8}
-                    count={5}
-                    starSize={SIZES.twentyFive}
-                    update={(val) => { setStar(val) }}
-                    disabled={false}
-                    fullStar={<Icon name={'star'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
-                    emptyStar={<Icon name={'star-outline'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
-                    halfStar={<Icon name={'star-half'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
+        loading ?
+            <View style={{ marginTop: SIZES.twenty }}>
+                <ActivityIndicator size={"large"} color={COLORS.primary} />
+            </View> :
+            <View>
+                <Text style={[styles.heading, { color: currentTheme.defaultTextColor, }]}>
+                    {t('Reviews')}
+                </Text>
+                <View style={{ alignItems: "flex-start", marginVertical: SIZES.five }}>
+                    <Stars
+                        display={star}
+                        spacing={8}
+                        count={5}
+                        starSize={SIZES.twentyFive}
+                        update={(val) => { setStar(val) }}
+                        disabled={false}
+                        fullStar={<Icon name={'star'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
+                        emptyStar={<Icon name={'star-outline'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
+                        halfStar={<Icon name={'star-half'} type={IconType.MaterialCommunityIcons} color={COLORS.golden} />}
+                    />
+                </View>
+                <EditText
+                    value={review}
+                    onChangeText={(e) => {
+                        setReview(e)
+                    }}
+                    placeholder={t('WriteYourReviews')}
+                    inputArea={{ borderRadius: SIZES.fifty }}
                 />
-            </View>
-            <EditText
-                value={review}
-                onChangeText={(e) => {
-                    setReview(e)
-                }}
-                placeholder={t('WriteYourReviews')}
-                inputArea={{ borderRadius: SIZES.fifty }}
-            />
-            <CustomButton
-                onPress={() => {
-                    postReview()
-                }}
-                label={t('AddReview')}
-            />
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={reviews}
-                keyExtractor={item => { item?.id }}
-                renderItem={CustomerReviews}
-                contentContainerStyle={{ marginBottom: SIZES.twentyFive }}
-            />
+                <CustomButton
+                    onPress={() => {
+                        postReview()
+                    }}
+                    label={t('AddReview')}
+                />
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={reviews}
+                    keyExtractor={item => { item?.id }}
+                    renderItem={CustomerReviews}
+                    contentContainerStyle={{ marginBottom: SIZES.twentyFive }}
+                />
 
-        </View>
+            </View>
     )
 }
 
