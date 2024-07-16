@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 import Icon, { IconType, Icons } from './Icons'
 import { COLORS, FONTFAMILY, FONTS, IMAGES, SCREENS, SIZES, STYLES, height, width } from '../constants'
@@ -13,10 +13,11 @@ const ProductCard = ({ item }) => {
     const currentTheme = getTheme(theme)
     const navigation = useNavigation()
     const user = useSelector(state => state.Auth.user)
+    const [fav, setFav] = useState(item?.favourite)
     const dispatch = useDispatch()
+
     const addtoFav = async (productId) => {
         try {
-
             const formData = new FormData()
             formData.append("product_id", productId)
             formData.append("user_id", user?.user_id)
@@ -46,10 +47,11 @@ const ProductCard = ({ item }) => {
                 style={[styles.starContainer, { backgroundColor: currentTheme.white, }]}
                 onPress={() => {
                     addtoFav(item?.id)
+                    setFav(pre => !pre)
                 }}
             >
                 <Icon
-                    name={item?.favourite ? "heart" : "heart-outlined"}
+                    name={fav ? "heart" : "heart-outlined"}
                     type={IconType.Entypo}
                     color={COLORS.primary}
                     size={SIZES.twenty}

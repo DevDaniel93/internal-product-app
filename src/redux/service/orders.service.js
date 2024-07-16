@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CONSTANTS } from "../../constants";
 
-export const GetOrders = (data) => {
+export const GetOrders = (userId) => {
+
     const onSuccess = ({ data }) => {
         return data;
     };
@@ -14,6 +15,7 @@ export const GetOrders = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
+            customer: userId
 
         },
     }
@@ -61,7 +63,7 @@ export const PostOrder = (data) => {
         params: {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
-            
+
         },
         headers: {
             Accept: "application/json"
@@ -69,6 +71,35 @@ export const PostOrder = (data) => {
     }
     return axios.post(
         CONSTANTS.API_URLS.BASE + CONSTANTS.API_URLS.ALL_ORDER,
+        data,
+        options
+    ).then(onSuccess)
+        .catch(onFailure);
+};
+
+export const UpdateOrder = (orderID, setPaid) => {
+
+    const onSuccess = ({ data }) => {
+        return data;
+    };
+
+    const onFailure = error => {
+        throw error;
+    };
+
+    const data = {
+        set_paid: setPaid
+    };
+
+    const options = {
+        params: {
+            consumer_key: CONSTANTS.API_URLS.Consumer_key,
+            consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
+        }
+    };
+
+    return axios.put(
+        `${CONSTANTS.API_URLS.BASE}${CONSTANTS.API_URLS.ALL_ORDER}/${orderID}`,
         data,
         options
     ).then(onSuccess)

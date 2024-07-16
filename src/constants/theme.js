@@ -74,7 +74,6 @@ export const DarkTheme = {
     Background: "#24262b",
     onBackground: '#363841',
     primary: "#FF856A",
-
     purple: "#4e1789",
     lightPurple: "#871af6",
     darkPurple: "#382649",
@@ -343,6 +342,7 @@ export const CONSTANTS = {
         CREATE_PRODUCT: "/wc/v3/products",
         RETRIEVE_PRODUCT: "/wc/v3/products/",
         ALL_PRODUCT: "/wc/v3/products",
+        GET_VARIATION: "/wc/v3/products/",
         GET_BANNER: "/api/get_banners",
         GET_COUNTRIES: "/wc/v3/data/countries",
         GET_SHIPPING_METHODS: "/wc/v3/shipping/zones/",

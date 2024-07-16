@@ -22,7 +22,7 @@ export default function OrderCard({ data }) {
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
                     {t('OrderNumber')}{" "}
                     <Text style={{ fontWeight: "600" }}>
-                        #{data?.item?.orderNumber}
+                        #{data?.item?.id}
                     </Text>
                 </Text>
                 <View style={{ width: width * .3, justifyContent: "center", alignItems: "center" }}>
@@ -39,15 +39,15 @@ export default function OrderCard({ data }) {
                 <Text style={[styles.txt, { color: currentTheme.defaultTextColor }]}>
                     {t('TotalPrice')}{"  "}
                     <Text style={{ fontWeight: "600" }}>
-                        ${data?.item?.amount}
+                        ${data?.item?.total}
                     </Text>
                     {" "}
-                    ({data?.item?.quantity} {t('Items')})
+                    ({data?.item?.line_items?.length} {t('Items')})
                 </Text>
                 <CustomButton
                     btnStyle={styles.btn}
                     onPress={() => {
-                        navigation.navigate(SCREENS.OrderDetails)
+                        navigation.navigate(SCREENS.OrderDetails, { data: data?.item })
                     }}
                     label={t('View')}
                 />

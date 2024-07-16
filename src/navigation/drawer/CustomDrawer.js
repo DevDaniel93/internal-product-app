@@ -52,7 +52,7 @@ const CustomDrawer = (props) => {
         else {
             setSelectedMenu(Menu);
         }
-    }, []);
+    }, [user]);
 
 
     const handleDeleteAccount = async () => {

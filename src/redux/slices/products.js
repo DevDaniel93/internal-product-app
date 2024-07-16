@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AddToFav, GetFavProducts, Getproducts } from '../service/products.service';
+import { AddToFav, GetFavProducts, Getproducts, GetVariation } from '../service/products.service';
 import { getCategories } from './categories';
 import { SuccessAlert } from '../../utils/utils';
 
@@ -29,6 +29,16 @@ export const getProducts = (page, params) => async (dispatch) => {
         console.log("error===========>", error)
     };
 };
+export const getVariation = (productId) => async (dispatch) => {
+    try {
+
+        const response = await GetVariation(productId);
+        return response
+
+    } catch (error) {
+        console.log("error===========>", error)
+    };
+};
 export const getFilterProducts = (page, params) => async (dispatch) => {
     try {
         const response = await Getproducts(page, params);
@@ -50,7 +60,6 @@ export const getFilterProducts = (page, params) => async (dispatch) => {
 export const getFavProduct = (userId) => async (dispatch) => {
     try {
         const response = await GetFavProducts(userId);
-
         return response
 
     } catch (error) {

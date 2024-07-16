@@ -21,6 +21,7 @@ export default function FilterModal(props) {
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
     const categories = useSelector(state => state?.categories?.categories)
+    const user = useSelector(state => state.Auth.user)
 
     const [minprice, setMinPrice] = useState(1);
     const [maxprice, setMaxPrice] = useState(1);
@@ -73,6 +74,7 @@ export default function FilterModal(props) {
             dispatch(setLoading(true))
             const params = {
                 ...(selectedCategory !== null && { category: selectedCategory }),
+                ...(user !== null && { user_id: user?.user_id }),
                 ...(minprice > 1 && { min_price: minprice }),
                 ...(maxprice > 1 && { max_price: maxprice }),
             }

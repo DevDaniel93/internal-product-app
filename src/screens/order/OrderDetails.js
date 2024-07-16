@@ -6,18 +6,23 @@ import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import moment from 'moment'
 
-export default function OrderDetails() {
+export default function OrderDetails(props) {
+    const { navigation, route } = props
+    const { data } = route?.params
+
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-    const data = [
-        { key: t('FullName'), value: "John Doe" },
-        { key: t('MobileNumber'), value: "+123-456-789" },
-        { key: t('State'), value: "Dummy" },
-        { key: t('City'), value: "Dummy" },
-        { key: t('StreetAddress'), value: "XYZ Address" },
-        { key: t('PostalCode'), value: "12345" },
+    const ShippingDetails = [
+        { key: t('FirstName'), value: data?.billing?.first_name },
+        { key: t('LastName'), value: data?.billing?.last_name },
+        { key: t('MobileNumber'), value: data?.billing?.phone },
+        { key: t('State'), value: data?.billing?.state },
+        { key: t('City'), value: data?.billing?.city },
+        { key: t('StreetAddress'), value: data?.billing?.address_1 },
+        { key: t('PostalCode'), value: data?.billing?.postcode },
     ]
 
     const renderItem = ({ item }) => (
@@ -27,19 +32,20 @@ export default function OrderDetails() {
         </View>
     );
 
-    const ProductList = () => {
+    const ProductList = ({ item }) => {
+
         return (
             <View style={styles.ProductListRow}>
-                <Image source={IMAGES.ProductImage} style={[styles.img, STYLES.shadow]} />
+                <Image source={{ uri: item?.image?.src }} style={[styles.img, STYLES.shadow]} />
                 <View style={{ justifyContent: "space-around", margin: SIZES.twentyFive, }}>
-                    <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
-                        {t('IAmHim')}
+                    <Text numberOfLines={1} style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
+                        {/* {t('IAmHim')} */}{item?.name}
                     </Text>
                     <Text style={[styles.productText, { color: currentTheme.defaultTextColor, }]}>
-                        {t('Quantity')}: 1
+                        {t('Quantity')}:{item?.quantity}
                     </Text>
                     <Text style={[styles.productText, { fontWeight: "bold", color: currentTheme.primary }]}>
-                        {t('UnitPrice')}: $20.00
+                        {t('UnitPrice')}: ${item?.subtotal}
                     </Text>
 
                 </View>
@@ -60,7 +66,7 @@ export default function OrderDetails() {
                             {t('OrderNumber')}
                         </Text>
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                            #45322
+                            #{data?.id}
                         </Text>
                     </ShadedBox>
                     <ShadedBox style={styles.box}>
@@ -68,7 +74,9 @@ export default function OrderDetails() {
                             {t('OrderDate')}
                         </Text>
                         <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                            Jun 6, 2024
+
+                            {moment(data?.date_created).format('MMM DD, YYYY')}
+
                         </Text>
                     </ShadedBox>
                 </View>
@@ -77,7 +85,7 @@ export default function OrderDetails() {
                         {t('OrderStatus')}
                     </Text>
                     <Text style={[styles.txt, { color: currentTheme.defaultTextColor, }]}>
-                        {t('Pending')}
+                        {data?.status}
                     </Text>
                 </ShadedBox>
                 <View style={styles.dotLine} />
@@ -87,7 +95,7 @@ export default function OrderDetails() {
                 <View>
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={data}
+                        data={ShippingDetails}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.key}
                         contentContainerStyle={styles.container}
@@ -98,7 +106,7 @@ export default function OrderDetails() {
                 <View>
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        data={[1, 2]}
+                        data={data?.line_items || []}
                         renderItem={ProductList}
                         keyExtractor={(item) => item.key}
                         contentContainerStyle={styles.container}
@@ -107,27 +115,27 @@ export default function OrderDetails() {
                 <View style={styles.totalRow}>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
 
-                        {t('Sub_Total')}
+                        {t('ShippingCost')}
 
                     </Text>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
-                        $25.27
+                        ${data?.shipping_total}
                     </Text>
                 </View>
-                <View style={styles.totalRow}>
+                {/* <View style={styles.totalRow}>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
                         {t('Sub_Total')}
                     </Text>
                     <Text style={[styles.infoTxt, { color: currentTheme.gray }]}>
-                        $25.27
+                        ${data?.shipping_total}
                     </Text>
-                </View>
+                </View> */}
                 <View style={[styles.totalRow, { marginBottom: SIZES.twenty }]}>
                     <Text style={[styles.infoTxt, { color: currentTheme.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
                         {t('Total')}
                     </Text>
                     <Text style={[styles.infoTxt, { color: currentTheme.defaultTextColor, fontSize: SIZES.twenty, fontWeight: "bold" }]}>
-                        $6236
+                        ${data?.total}
                     </Text>
                 </View>
             </ScrollView>

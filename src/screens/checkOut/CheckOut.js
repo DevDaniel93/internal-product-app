@@ -15,8 +15,8 @@ import { StripeProvider, useStripe, CardField } from '@stripe/stripe-react-nativ
 import { setLoading } from '../../redux/slices/utils'
 import axios from 'axios'
 import cardValidator from 'card-validator'
-import { postOrder } from '../../redux/slices/orders'
-import { SuccessAlert } from '../../utils/utils'
+import { postOrder, updateOrder } from '../../redux/slices/orders'
+import { ErrorAlert, SuccessAlert } from '../../utils/utils'
 import { emptyCart, selectTotalAmount } from '../../redux/slices/Cart'
 import { removeVoucher } from '../../redux/slices/vouchers'
 
@@ -53,7 +53,6 @@ export default function CheckOut(props) {
 
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
 
-
     const moveToPrevios = () => {
         setProgress(progress - 1)
     }
@@ -80,7 +79,7 @@ export default function CheckOut(props) {
     // ================================handle Card number============================
     const handleCardNumberChange = (text) => {
         const formattedText = text.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
-        setCardNoAuth(text);
+        setCardNoAuth(formattedText);
         const validation = cardValidator.number(formattedText.replace(/\s/g, ''));
         if (!validation.isValid) {
             setError(t('InvalidCardNumber'));
@@ -135,7 +134,6 @@ export default function CheckOut(props) {
     };
 
     const Place_order = (set_paid) => {
-
         const order = {
             payment_method: paymentMethod?.id,
             payment_method_title: paymentMethod?.title,
@@ -152,16 +150,16 @@ export default function CheckOut(props) {
                     }
                 ] : [],
             shipping_lines: shippingCharges ? [shippingCharges] : []
-
         }
         cart.forEach(product => {
             order.line_items.push({
                 product_id: product.id,
                 quantity: product.quantity,
-                // variation_id: null // Add variation_id if available
+
+                ...(product?.variation_id !== null && { variation_id: product?.variation_id }),
+                // variation_id: product?.variation_id 
             });
         });
-
         setOrderDetails(order)
         return order
 
@@ -275,10 +273,10 @@ export default function CheckOut(props) {
                 "refId": Date.now(),
                 "transactionRequest": {
                     "transactionType": "authCaptureTransaction",
-                    "amount": props?.route?.params?.amount,
+                    "amount": (totalAmount + (shippingCharges ? shippingCharges?.total : 0)),
                     "payment": {
                         "creditCard": {
-                            "cardNumber": cardNoAuth, //"5424000000000015"
+                            "cardNumber": cardNoAuth.replace(/\s/g, ''), //"5424000000000015"
                             "expirationDate": expiryAuth, //"2025-12"
                             "cardCode": cvcAuth, //"999"
                         }
@@ -324,32 +322,57 @@ export default function CheckOut(props) {
             })
 
             const transId = response?.data?.transactionResponse?.transId;
-            console.log({ transId })
-            console.log('Transaction request response:', response.data.messages);
+            // console.log('Transaction request response:', response.data.messages);
+            if (response?.data?.messages?.resultCode === "Error") {
+                console.log('Transaction request response:', response.data.messages);
+                ErrorAlert(response?.data?.messages?.message[0]?.text)
+                await dispatch(setLoading(false))
+            } else if (response?.data?.messages?.resultCode === "Ok") {
+                console.log('Transaction request response:', response.data.messages);
+                console.log({ id })
+                await dispatch(updateOrder(id, true))
+                SuccessAlert("Order Posted Successfully");
+                await dispatch(setLoading(false))
+
+            }
         }
         catch (err) {
             console.log(err)
+            await dispatch(setLoading(false))
         }
     }
+
     const moveToNext = async () => {
         if (progress === 2) {
-            if (paymentMethod.id === "stripe") {
+            if (paymentMethod.id === "cod") {
+                try {
+                    await dispatch(setLoading(true))
+                    const response = await dispatch(postOrder(orderDetails))
+                    await dispatch(setLoading(false))
+                    SuccessAlert("Order Posted Successfully");
+
+                } catch (error) {
+                    await dispatch(setLoading(false))
+
+                }
+
+            }
+            else if (paymentMethod.id === "stripe") {
                 await StripePaymentMethod()
 
             }
             else if (paymentMethod.id === "authorize_net_cim_credit_card") {
-                if (cardNoAuth === '' || expiryAuth === '' || cvcAuth === '') {
-                    console.log("first")
+                if (cardNoAuth.length < 19 || expiryAuth.length < 5 || cvcAuth.length < 3) {
+                    ErrorAlert("Enter valid Card Details")
                 }
                 else {
                     try {
                         await dispatch(setLoading(true))
                         const response = await dispatch(postOrder(orderDetails))
                         await handleTransactionAuthorize(response?.id)
-                        await dispatch(setLoading(false))
-                        SuccessAlert("Order Posted Successfully");
                     } catch (error) {
                         console.log(error)
+                        await dispatch(setLoading(false))
                     }
                 }
             }
@@ -401,11 +424,7 @@ export default function CheckOut(props) {
 
                                         }}
                                     />
-                                    <CustomButton
-                                        btnStyle={styles.btnStyle}
-                                        label={t('Payment')}
-                                        onPress={StripePaymentMethod}
-                                    />
+
 
                                 </>
                                 :

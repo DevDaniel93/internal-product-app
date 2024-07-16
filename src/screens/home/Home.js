@@ -21,6 +21,7 @@ export default function Home(props) {
     const theme = useSelector(state => state.Theme.theme);
     const [search, setSearch] = useState('')
     const [products, setProducts] = useState([]);
+    const user = useSelector(state => state.Auth.user)
     const [filterProducts, setFilterProducts] = useState(products)
     const categories = useSelector(state => state?.categories?.categories);
     const dispatch = useDispatch();
@@ -41,12 +42,16 @@ export default function Home(props) {
         setProducts(products);
     };
 
+
     const getProduct = useCallback(async () => {
         if (loading || !hasMore) return; // Prevent multiple calls if already loading or no more data
         try {
             console.log("Fetching products");
             setLoading(true);
-            const response = await dispatch(getProducts(page));
+            const params = {
+                ...(user !== null && { user_id: user?.user_id }),
+            }
+            const response = await dispatch(getProducts(page, params));
             if (response.length === 0) {
                 setHasMore(false); // No more data to load
             } else {
