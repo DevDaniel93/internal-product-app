@@ -51,7 +51,7 @@ const Shipping = (props) => {
             state: state,
             postcode: postalCode,
             country: flag,
-            email: user.email,
+            email: user?.email,
             phone: phone
         },
         shipping: {

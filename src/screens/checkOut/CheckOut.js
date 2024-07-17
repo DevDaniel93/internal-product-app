@@ -19,7 +19,7 @@ import { postOrder, updateOrder } from '../../redux/slices/orders'
 import { ErrorAlert, SuccessAlert } from '../../utils/utils'
 import { emptyCart, selectTotalAmount } from '../../redux/slices/Cart'
 import { removeVoucher } from '../../redux/slices/vouchers'
-
+// import { PayPal } from 'react-native-paypal-lib';
 
 
 export default function CheckOut(props) {
@@ -36,6 +36,8 @@ export default function CheckOut(props) {
     const voucherCode = useSelector(state => state.Voucher.vouchers)[0]?.code
     const cart = useSelector(state => state.Cart.cart)
     const shippingMethods = useSelector(state => state.Shipping.shippingType)
+    const paypal = useSelector(state => state.Payment.paypal)
+
     const [shippingDetails, setShippingDetails] = useState(null)
     const [paidStatus, setPaidStatus] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState(null)
@@ -47,6 +49,8 @@ export default function CheckOut(props) {
     const [Error, setError] = useState('');
     const [expiryAuth, setExpiryAuth] = useState('');
     const [cvcAuth, setCvcAuth] = useState('');
+    const user = useSelector(state => state.Auth.user)
+
 
 
     const payment = useSelector(state => state.Payment.payment);
@@ -87,14 +91,18 @@ export default function CheckOut(props) {
             setError('');
         }
     };
+    // ================================handle Card Exipre date============================
     const handleExpiryChange = (text) => {
         const formattedText = text.replace(/^(\d{2})(\d{2})$/, '$1/$2');
         setExpiryAuth(formattedText);
     };
+    // ================================handle Card CVV ============================
 
     const handleCvvChange = (text) => {
         setCvcAuth(text);
     };
+
+    // ==================================== Calculate Shipping Methods==============================
     const calculateShippingCost = (products, shippingAddress) => {
         let totalProductCost = products.reduce((acc, product) => acc + (parseFloat(product.price) * product.quantity), 0);
         let totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0);
@@ -133,11 +141,13 @@ export default function CheckOut(props) {
         return selectedShippingMethod;
     };
 
+    // ==================================== Order Details==============================
     const Place_order = (set_paid) => {
         const order = {
             payment_method: paymentMethod?.id,
             payment_method_title: paymentMethod?.title,
             set_paid: set_paid || paidStatus,
+            customer_id: user !== null ? user?.user_id : 0,
             billing: shippingDetails?.billing,
             shipping: shippingDetails?.shipping,
             line_items: [
@@ -186,7 +196,7 @@ export default function CheckOut(props) {
             }
         }
     }
-
+    // ==================================== Payment Options ==============================
     const showRadioButtons = ({ item }) => (
         <>
             <TouchableOpacity
@@ -341,6 +351,23 @@ export default function CheckOut(props) {
             await dispatch(setLoading(false))
         }
     }
+    // ==================================== Paypal Payment Method==============================
+    const PaypalPayment = async () => {
+
+
+        try {
+            const payment = await PayPal.initialize(PayPal.SANDBOX, 'YOUR_CLIENT_ID');
+            const result = await PayPal.pay({
+                price: '10.00',
+                currency: 'USD',
+                description: 'Your description goes here',
+            });
+            Alert.alert('Payment Success', JSON.stringify(result));
+        } catch (error) {
+            Alert.alert('Payment Error', error.message);
+        }
+    };
+
 
     const moveToNext = async () => {
         if (progress === 2) {
@@ -359,6 +386,10 @@ export default function CheckOut(props) {
             }
             else if (paymentMethod.id === "stripe") {
                 await StripePaymentMethod()
+
+            }
+            else if (paymentMethod.id === "ppcp-gateway") {
+                await PaypalPayment()
 
             }
             else if (paymentMethod.id === "authorize_net_cim_credit_card") {

@@ -16,7 +16,6 @@ export const GetOrders = (userId) => {
             consumer_key: CONSTANTS.API_URLS.Consumer_key,
             consumer_secret: CONSTANTS.API_URLS.Consumer_secret,
             customer: userId
-
         },
     }
     return axios.get(

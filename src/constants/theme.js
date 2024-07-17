@@ -354,6 +354,7 @@ export const CONSTANTS = {
         APPLY_VOUCHER: "/wc/v3/coupons",
         SETTINGS: '/wc/v3/settings/',
         PAYMENT: '/wc/v3/payment_gateways/',
+        PAYPAL: '/api/get_paypal_key',
         ADD_TO_FAV: '/api/add_wishlist',
         GET_FAV: '/api/get_wishlist'
 

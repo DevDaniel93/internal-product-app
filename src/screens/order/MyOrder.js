@@ -20,11 +20,11 @@ export default function MyOrder() {
     const [loading, setLoading] = useState(false)
     const user = useSelector(state => state.Auth.user)
 
-    const getOrderDetails = () => {
+    const getOrderDetails = async () => {
         try {
             if (user !== null) {
                 setLoading(true)
-                dispatch(getOrder(user?.user_id))
+                await dispatch(getOrder(user?.user_id))
                 setLoading(false)
 
             }
