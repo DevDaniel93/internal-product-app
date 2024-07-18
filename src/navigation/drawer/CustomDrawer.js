@@ -53,13 +53,14 @@ const CustomDrawer = (props) => {
             setSelectedMenu(Menu);
         }
     }, [user]);
-
+console.log(user?.user_id)
 
     const handleDeleteAccount = async () => {
         try {
             setIsvisibleDeleteModal(false); // Close the modal
             const formData = new FormData()
-            formData.append("user_id", user?.id)
+            formData.append("user_id", user?.user_id)
+          
             dispatch(DeleteAccount(formData));
             navigation.dispatch(DrawerActions.closeDrawer()); // Close the drawer explicitly
             navigation.reset({

@@ -1,15 +1,15 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { COLORS, IMAGES, SIZES, STYLES, height } from '../../constants'
-import HeaderWithArrow from '../../components/HeaderWithArrow'
-import EditText from '../../components/EditText'
-import CustomButton from '../../components/CustomButton'
-import { Icon, IconType } from '../../components'
-import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
-import CustomModal from '../../components/CustomModal'
-import { useDispatch, useSelector } from 'react-redux'
-import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import { Icon, IconType } from '../../components'
+import CustomButton from '../../components/CustomButton'
+import CustomModal from '../../components/CustomModal'
+import EditText from '../../components/EditText'
+import HeaderWithArrow from '../../components/HeaderWithArrow'
+import UploadPhotoModal from '../../components/modal/UploadPhotoModal'
+import { COLORS, IMAGES, SIZES, STYLES, height } from '../../constants'
+import { getTheme } from '../../constants/theme'
 import { ChangePassword, updateProfile } from '../../redux/slices/auth'
 import { setLoading } from '../../redux/slices/utils'
 
@@ -64,11 +64,13 @@ export default function Profile(props) {
                 fromData.append("first_name", firstName)
                 fromData.append("last_name", lastName)
                 fromData.append("email", email)
-                fromData.append("avatar", {
-                    uri: image.path,
-                    type: image.mime,
-                    name: image.filename || `filename.${image.mime.split('/')[1]}`,
-                })
+                if (image !== '') {
+                    fromData.append("avatar", {
+                        uri: image.path,
+                        type: image.mime,
+                        name: image.filename || `filename.${image.mime.split('/')[1]}`,
+                    })
+                }
 
                 dispatch(setLoading(true))
                 await dispatch(updateProfile(fromData))
@@ -79,7 +81,7 @@ export default function Profile(props) {
                 setIsEdit(pre => !pre)
             }
         } catch (error) {
-
+            console.log(error)
         }
 
     }
@@ -162,6 +164,14 @@ export default function Profile(props) {
                 <Text style={styles.heading}>
                     {t('ChangePassword')}
                 </Text>
+                <Icon
+                    name={"cross"}
+                    type={IconType.Entypo}
+                    color={COLORS.primary}
+                    size={SIZES.twentyFive}
+                    style={{ position: "absolute", right: SIZES.fifteen, top: SIZES.fifteen }}
+                    onPress={() => setChangePasswordModal(false)}
+                />
                 <EditText
                     value={oldPassword}
                     onChangeText={(e) => {

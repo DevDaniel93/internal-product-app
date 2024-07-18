@@ -15,7 +15,7 @@ import { setLoading } from '../redux/slices/utils';
 
 
 export default function FilterModal(props) {
-    const { modalizeRef, onApply, onCancel } = props;
+    const { modalizeRef, onApply, onCancel, onResetAll } = props;
     const dispatch = useDispatch()
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
@@ -32,6 +32,8 @@ export default function FilterModal(props) {
         setMaxPrice(1);
         setMinPrice(1);
         setSelectedCategory(null);
+        onResetAll()
+        onCancel()
 
     };
 
@@ -158,8 +160,7 @@ export default function FilterModal(props) {
                 onPress={() => {
                     onCancel();
                     getPro()
-                    onReset();
-
+                    // onReset();
                 }}
                 btnStyle={styles.btnStyle}
                 disabled={checkDisabled()}

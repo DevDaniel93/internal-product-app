@@ -110,8 +110,9 @@ export const ChangePassword = (data) => async (dispatch) => {
     };
 };
 export const DeleteAccount = (data) => async (dispatch) => {
+    console.log({data})
     try {
-        await authService.changePassword(data).then(async (response) => {
+        await authService.deleteAccount(data).then(async (response) => {
             console.log("response==================>", response)
             SuccessAlert(response?.msg);
             dispatch(removeProfile())

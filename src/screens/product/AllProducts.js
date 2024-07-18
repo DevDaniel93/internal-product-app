@@ -1,6 +1,6 @@
 
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { STYLES } from '../../constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { SIZES, getTheme } from '../../constants/theme'
@@ -11,23 +11,29 @@ import FilterModal from '../../components/FilterModal'
 import ProductCard from '../../components/ProductCard'
 import { getFilterProducts, getProducts } from '../../redux/slices/products'
 import { setLoading } from '../../redux/slices/utils'
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function AllProducts(props) {
     const { navigation, route } = props
     const modal = React.useRef(null)
     const dispatch = useDispatch()
     // const products = useSelector(state => state?.Product?.filterProduct)
-    console.log({ products })
     const { item } = route?.params
-
+    
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
-
+    
     const [search, setSearch] = useState('')
     const [products, setProducts] = useState([])
     const [filterProducts, setFilterProducts] = useState(products)
-
+    
+    const onReset = () => {
+        setHasMore(true)
+        setProducts([])
+        setPage(1)
+        getProduct()
+    }
 
     const onCancel = () => {
         if (modal.current) {
@@ -35,8 +41,8 @@ export default function AllProducts(props) {
         }
     }
 
-    const onApply = () => {
-
+    const onApply = (products) => {
+        setProducts(products);
     }
 
     const getPro = async () => {
@@ -119,7 +125,7 @@ export default function AllProducts(props) {
                 />
             </ScrollView>
 
-            <FilterModal modalizeRef={modal} onApply={onApply} onCancel={onCancel} />
+            <FilterModal modalizeRef={modal} onApply={onApply} onResetAll={onReset} onCancel={onCancel} />
         </View>
     )
 }

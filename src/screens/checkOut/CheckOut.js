@@ -510,7 +510,7 @@ export default function CheckOut(props) {
                     }
                     <CustomButton
                         btnStyle={styles.btnStyle}
-                        label={progress === 0 ? t('Payment') : progress === 1 ? t('Review') : t('PlaceOrder')}
+                        label={progress === 0 ? t('Review') : progress === 1 ? t('Payment') : t('PlaceOrder')}
                         onPress={moveToNext}
 
                         disabled={enablePaymentButton}

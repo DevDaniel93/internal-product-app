@@ -44,6 +44,7 @@ export default function Home(props) {
 
 
     const getProduct = useCallback(async () => {
+      
         if (loading || !hasMore) return; // Prevent multiple calls if already loading or no more data
         try {
             console.log("Fetching products");
@@ -51,7 +52,9 @@ export default function Home(props) {
             const params = {
                 ...(user !== null && { user_id: user?.user_id }),
             }
+    
             const response = await dispatch(getProducts(page, params));
+        
             if (response.length === 0) {
                 setHasMore(false); // No more data to load
             } else {
@@ -74,7 +77,12 @@ export default function Home(props) {
         }, [getProduct])
     );
 
-
+    const onReset = () => {
+        setHasMore(true)
+        setProducts([])
+        setPage(1)
+        getProduct()
+    }
     const filterProductsBySearch = (searchText) => {
         if (searchText !== "") {
             const filtered = products.filter(product =>
@@ -133,7 +141,7 @@ export default function Home(props) {
 
                 <View style={{ height: SIZES.fifty * 1.5 }} />
             </ScrollView>
-            <FilterModal modalizeRef={modal} onApply={onApply} onCancel={onCancel} />
+            <FilterModal modalizeRef={modal} onApply={onApply} onResetAll={onReset} onCancel={onCancel} />
         </View>
     );
 }
