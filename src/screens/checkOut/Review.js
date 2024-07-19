@@ -81,7 +81,7 @@ export default function Review(props) {
             {t('Total')}
           </Text>
           <Text style={[styles.infoTxt, { color: COLORS.defaultTextColor, fontSize: SIZES.twenty }]}>
-            ${totalAmount}
+            ${(totalAmount + Number(data?.shipping_lines[0] !== null ? data?.shipping_lines[0]?.total : 0))}
           </Text>
         </View>
       </ScrollView>

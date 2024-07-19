@@ -33,7 +33,8 @@ export default function CheckOut(props) {
     const totalAmount = useSelector(selectTotalAmount);
     const [enablePaymentButton, setEnablePaymentButton] = useState(false)
     const [progress, setProgress] = useState(0)
-    const voucherCode = useSelector(state => state.Voucher.vouchers)[0]?.code
+    const voucherCode = useSelector(state => state.Voucher.vouchers)[0]
+
     const cart = useSelector(state => state.Cart.cart)
     const shippingMethods = useSelector(state => state.Shipping.shippingType)
     const paypal = useSelector(state => state.Payment.paypal)
@@ -50,11 +51,7 @@ export default function CheckOut(props) {
     const [expiryAuth, setExpiryAuth] = useState('');
     const [cvcAuth, setCvcAuth] = useState('');
     const user = useSelector(state => state.Auth.user)
-
-
-
     const payment = useSelector(state => state.Payment.payment);
-
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
 
     const moveToPrevios = () => {
@@ -106,7 +103,9 @@ export default function CheckOut(props) {
     const calculateShippingCost = (products, shippingAddress) => {
         let totalProductCost = products.reduce((acc, product) => acc + (parseFloat(product.price) * product.quantity), 0);
         let totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0);
+
         let selectedShippingMethod = null;
+
         shippingMethods.forEach(method => {
             if (method.enabled) {
                 if (method.method_id === 'free_shipping') {
@@ -129,17 +128,20 @@ export default function CheckOut(props) {
                         };
                     }
                 } else if (method.method_id === 'local_pickup') {
-                    selectedShippingMethod = {
-                        method_id: method.method_id,
-                        method_title: method.method_title,
-                        total: method.settings.cost.value
-                    };
+                    if (!selectedShippingMethod) {
+                        selectedShippingMethod = {
+                            method_id: method.method_id,
+                            method_title: method.method_title,
+                            total: method.settings.cost.value
+                        };
+                    }
                 }
             }
         });
 
         return selectedShippingMethod;
     };
+
 
     // ==================================== Order Details==============================
     const Place_order = (set_paid) => {
@@ -156,7 +158,7 @@ export default function CheckOut(props) {
             coupon_lines: voucherCode !== undefined ?
                 [
                     {
-                        code: voucherCode
+                        code: voucherCode?.code
                     }
                 ] : [],
             shipping_lines: shippingCharges ? [shippingCharges] : []
@@ -224,7 +226,7 @@ export default function CheckOut(props) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    amount: (totalAmount + (shippingCharges ? shippingCharges?.total : 0)) * 100, // Amount in cents
+                    amount: calculateTotal(totalAmount, shippingCharges, voucherCode) * 100, // Amount in cents
                     currency: 'usd',
                 }),
             }).then((res) => res.json()).
@@ -283,7 +285,7 @@ export default function CheckOut(props) {
                 "refId": Date.now(),
                 "transactionRequest": {
                     "transactionType": "authCaptureTransaction",
-                    "amount": (totalAmount + (shippingCharges ? shippingCharges?.total : 0)),
+                    "amount": calculateTotal(totalAmount, shippingCharges, voucherCode),
                     "payment": {
                         "creditCard": {
                             "cardNumber": cardNoAuth.replace(/\s/g, ''), //"5424000000000015"
@@ -339,7 +341,10 @@ export default function CheckOut(props) {
                 await dispatch(setLoading(false))
             } else if (response?.data?.messages?.resultCode === "Ok") {
                 console.log('Transaction request response:', response.data.messages);
-                console.log({ id })
+
+                navigation.navigate(SCREENS.Drawer)
+                dispatch(removeVoucher())
+                dispatch(emptyCart())
                 await dispatch(updateOrder(id, true))
                 SuccessAlert("Order Posted Successfully");
                 await dispatch(setLoading(false))
@@ -372,10 +377,14 @@ export default function CheckOut(props) {
     const moveToNext = async () => {
         if (progress === 2) {
             if (paymentMethod.id === "cod") {
+
                 try {
                     await dispatch(setLoading(true))
                     const response = await dispatch(postOrder(orderDetails))
                     await dispatch(setLoading(false))
+                    navigation.navigate(SCREENS.Drawer)
+                    dispatch(removeVoucher())
+                    dispatch(emptyCart())
                     SuccessAlert("Order Posted Successfully");
 
                 } catch (error) {
@@ -414,10 +423,29 @@ export default function CheckOut(props) {
 
     }
 
+    function calculateTotal(totalAmount, shippingCharges, voucherCode) {
+        // Convert shipping charges to a number
+        const shippingTotal = Number(shippingCharges ? shippingCharges.total : 0);
+        // Calculate the initial total with shipping charges
+        let initialTotal = totalAmount + shippingTotal;
+        // Calculate the discount based on the coupon type
+        let discount = 0;
+        if (voucherCode?.discount_type === "fixed_cart") {
+            discount = Number(voucherCode?.amount);
+        } else if (voucherCode?.discount_type === "percent") {
+            discount = (initialTotal * Number(voucherCode?.amount)) / 100;
+        }
+        // Calculate the final total after applying the discount
+        let finalTotal = initialTotal - discount;
+        // Ensure the final total is not negative
+        finalTotal = finalTotal < 0 ? 0 : finalTotal;
+
+        return finalTotal;
+    }
+
     return (
         <ScrollView style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <StripeProvider publishableKey="pk_test_51PYmNTIhyltse8okcxVNLSQhtBRFnqu275GkFnzt2oNga4uZmv3zKI4cp6wYOXuRB1mlUCr4B2V0Yusjo1aRERLp00wGBIv7pH">
-
                 <HeaderWithArrow
                     label={t('Checkout')} />
                 <ProgressBar mode={progress} />

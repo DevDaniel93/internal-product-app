@@ -44,7 +44,7 @@ export default function Home(props) {
 
 
     const getProduct = useCallback(async () => {
-      
+
         if (loading || !hasMore) return; // Prevent multiple calls if already loading or no more data
         try {
             console.log("Fetching products");
@@ -52,9 +52,9 @@ export default function Home(props) {
             const params = {
                 ...(user !== null && { user_id: user?.user_id }),
             }
-    
+
             const response = await dispatch(getProducts(page, params));
-        
+
             if (response.length === 0) {
                 setHasMore(false); // No more data to load
             } else {
@@ -97,6 +97,7 @@ export default function Home(props) {
         filterProductsBySearch(search);
     }, [search, products]);
 
+
     return (
         <View style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <CustomHeader />
@@ -127,7 +128,11 @@ export default function Home(props) {
                     showsVerticalScrollIndicator={false}
                     data={filterProducts}
                     numColumns={2}
-                    renderItem={({ item }) => <ProductCard item={item} />}
+                    renderItem={({ item }) => <ProductCard
+                        onFav={() => {
+
+                        }}
+                        item={item} />}
                     onEndReachedThreshold={0.1}
                     onEndReached={() => {
                         if (!loading && hasMore) {

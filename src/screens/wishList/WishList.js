@@ -1,4 +1,4 @@
-import { Alert, FlatList, ScrollView, StyleSheet, Text, View, RefreshControl } from 'react-native'
+import { Alert, FlatList, ScrollView, StyleSheet, Text, View, RefreshControl, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { IMAGES, SIZES, STYLES } from '../../constants'
 import ProductCard from '../../components/ProductCard'
@@ -7,7 +7,7 @@ import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
-import { getFavProduct } from '../../redux/slices/products'
+import { getFavProduct, getProducts } from '../../redux/slices/products'
 import { useFocusEffect } from '@react-navigation/native'
 import { setLoading } from '../../redux/slices/utils'
 
@@ -19,55 +19,76 @@ export default function WishList() {
     const [products, setProducts] = useState([])
     const currentTheme = getTheme(theme)
     const { t } = useTranslation();
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    const [refreshing, setRefreshing] = useState(false);
-    const getProducts = async () => {
+
+    const getProduct = useCallback(async () => {
+
+        if (loading || !hasMore) return; // Prevent multiple calls if already loading or no more data
         try {
-            if (user !== null) {
-
-                dispatch(setLoading(true))
-                const response = await dispatch(getFavProduct(user?.user_id))
-                console.log(response?.products?.length)
-                setProducts(response?.products)
-                dispatch(setLoading(false))
+            console.log("Fetching products");
+            setLoading(true);
+            const params = {
+                ...(user !== null && { user_id: user?.user_id }),
             }
 
-        } catch (error) {
-            dispatch(setLoading(false))
+            const response = await dispatch(getProducts(page, params));
 
+            if (response.length === 0) {
+                setHasMore(false); // No more data to load
+            } else {
+                const filterFav = response.filter((item) => item?.favourite === true);
+                // setProducts((prevProducts) => [...prevProducts, ...filterFav]);
+                setProducts((prevProducts) => {
+                    const newProducts = filterFav.filter(
+                        (newItem) => !prevProducts.some((existingItem) => existingItem.id === newItem.id)
+                    );
+                    return [...prevProducts, ...newProducts];
+                });
+                setPage(prevPage => prevPage + 1);
+            }
+            setLoading(false);
+        } catch (error) {
+            console.log("Failed to fetch products:", error);
+            setLoading(false);
         }
-    }
+    }, [dispatch, loading, page, hasMore]);
+
 
     useFocusEffect(
         useCallback(() => {
-            getProducts();
+            getProduct();
+            return () => {
+                // Cleanup function if needed
+            };
+        }, [getProduct])
+    );
+    useFocusEffect(
+        useCallback(() => {
+
+            setProducts([])
+            setHasMore(true)
+            setPage(1)
+            getProduct();
             return () => {
                 // Cleanup function if needed
             };
         }, [])
     );
 
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-
-        setTimeout(() => {
-
-            getProducts();
-
-            setRefreshing(false);
-        }, 2000);
-    }, []);
-
+    const removeById = (id) => {
+        setProducts((prevProducts) => prevProducts.filter(item => item.id !== id));
+    };
     const renderEmptyComponent = () => {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                {user === null ?
-                    <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
-                        {t("Please Login to see your WishList")}
-                    </Text> : <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
-                        {t('No Order found')}
-                    </Text>
-                }
+
+                <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
+                    {t('No Order found')}
+                </Text>
+
 
             </View>
         )
@@ -77,8 +98,36 @@ export default function WishList() {
             <HeaderWithArrow
                 label={t('Wishlist')}
             />
+            {user !== null ?
+                <FlatList
+                    columnWrapperStyle={{
+                        justifyContent: "space-between",
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    data={products}
+                    numColumns={2}
+                    renderItem={({ item }) => <ProductCard
+                        onFav={removeById}
+                        item={item} />}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => {
+                        if (!loading && hasMore) {
+                            getProduct();
+                        }
+                    }}
+                    ListFooterComponent={() =>
+                        loading && <ActivityIndicator size="large" color={currentTheme.primary} style={{ marginVertical: 20 }} />
+                    }
+                />
+                : <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
+                        {t("Please Login to see your WishList")}
+                    </Text>
+                </View>
+            }
 
-            <FlatList
+            <View style={{ height: SIZES.fifty * 1.5 }} />
+            {/* <FlatList
                 columnWrapperStyle={{
                     marginTop: SIZES.ten,
                     justifyContent: "space-between",
@@ -104,7 +153,7 @@ export default function WishList() {
 
                     )
                 }}
-            />
+            /> */}
 
         </View>
     )

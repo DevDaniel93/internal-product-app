@@ -60,7 +60,7 @@ export default function MyCart(props) {
     const ApplyVoucher = async () => {
 
         dispatch(setLoading(true))
-        await dispatch(getVoucher(voucherCode))
+        await dispatch(getVoucher(voucherCode, cart, totalAmount))
         dispatch(setLoading(false))
     }
     const CartItem = ({ item }) => {
@@ -192,11 +192,7 @@ export default function MyCart(props) {
 
                         label={voucher.length === 0 ? t('Apply') : "$" + Math.round(voucher[0].amount)}
                     />
-                    {/* <TouchableOpacity style={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive }} >
-                    <Text style={{ color: COLORS.white, }}>
-                        Apply
-                    </Text>
-                </TouchableOpacity> */}
+
                 </View>
                 <CustomButton
                     disabled={cart.length === 0 ? true : false}

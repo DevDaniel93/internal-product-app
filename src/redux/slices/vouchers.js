@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { GetVoucher } from '../service/vouchers.service';
+import { ErrorAlert } from '../../utils/utils';
 
 
 
@@ -8,11 +9,29 @@ const initialState = {
 
 };
 
-export const getVoucher = (params) => async (dispatch) => {
+export const getVoucher = (params, cart, totalAmount) => async (dispatch) => {
     try {
 
         await GetVoucher(params).then(async (response) => {
-            dispatch(saveVoucher(response))
+
+            if (response[0]?.product_ids?.length > 0) {
+
+                const check = cart.some(product => response[0]?.product_ids.includes(product.id.toString()));
+                if (check) {
+                    dispatch(saveVoucher(response))
+                }
+                else {
+                    ErrorAlert("Coupon is not valid for this product")
+                }
+            }
+            else if (totalAmount >= response[0]?.minimum_amount) {
+                dispatch(saveVoucher(response))
+            }
+            else {
+                ErrorAlert("Coupon is not valid for this product")
+            }
+
+
         }).catch((error) => {
             console.log("error===========>", error?.response?.data?.message)
         })

@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { GetCountries, GetShippingMethods } from '../service/shipping.service';
 
-
-
 const initialState = {
     countries: [],
     shippingType: []

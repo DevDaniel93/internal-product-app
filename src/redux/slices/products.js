@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export const getProducts = (page, params) => async (dispatch) => {
-    console.log({params})
+
     try {
 
         const response = await Getproducts(page, params);

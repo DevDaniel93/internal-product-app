@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getTheme } from '../constants/theme'
 import { addToFav } from '../redux/slices/products'
 
-const ProductCard = ({ item }) => {
+const ProductCard = ({ item, onFav }) => {
     const theme = useSelector(state => state.Theme.theme)
     const currentTheme = getTheme(theme)
     const navigation = useNavigation()
@@ -48,6 +48,7 @@ const ProductCard = ({ item }) => {
                 onPress={() => {
                     addtoFav(item?.id)
                     setFav(pre => !pre)
+                    onFav(item?.id)
                 }}
             >
                 <Icon

@@ -43,20 +43,13 @@ export default function MyOrder() {
         }, [])
     );
 
-
-
-
-
     const renderEmptyComponent = () => {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                {user === null ?
-                    <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
-                        {t("Please Login to see your order Details")}
-                    </Text> : <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
-                        {t('No Order found')}
-                    </Text>
-                }
+                <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
+                    {t('No Order found')}
+                </Text>
+
 
             </View>
         )
@@ -66,22 +59,29 @@ export default function MyOrder() {
             <HeaderWithArrow
                 label={t('MyOrders')}
             />
-            {loading ?
-                <View style={{ justifyContent: "center", flex: 1 }}>
-                    <ActivityIndicator size={"large"} color={currentTheme.primary} />
-                </View> :
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    data={Orders}
-                    keyExtractor={item => item?.id}
-                    renderItem={(data) => {
-                        return (
-                            <OrderCard data={data} />
-                        )
-                    }}
-                    ListEmptyComponent={renderEmptyComponent}
-                />
+            {user !== null ?
+                loading ?
+                    <View style={{ justifyContent: "center", flex: 1 }}>
+                        <ActivityIndicator size={"large"} color={currentTheme.primary} />
+                    </View> :
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        data={Orders}
+                        keyExtractor={item => item?.id}
+                        renderItem={(data) => {
+                            return (
+                                <OrderCard data={data} />
+                            )
+                        }}
+                        ListEmptyComponent={renderEmptyComponent}
+                    /> :
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text style={{ color: currentTheme?.defaultTextColor, fontSize: SIZES.twenty, marginTop: SIZES.twenty }}>
+                        {t("Please Login to see your order Details")}
+                    </Text>
+                </View>
+
 
             }
 
