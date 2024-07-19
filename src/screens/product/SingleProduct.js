@@ -13,6 +13,7 @@ import { getTheme, width } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import RenderHtml from 'react-native-render-html';
 import { getVariation } from '../../redux/slices/products'
+import { setLoading } from '../../redux/slices/utils'
 
 export default function SingleProduct(props) {
     const theme = useSelector(state => state.Theme.theme)
@@ -32,12 +33,17 @@ export default function SingleProduct(props) {
 
     const getVariationByProductID = async () => {
         try {
+            dispatch(setLoading(true))
             const response = await dispatch(getVariation(productDetails?.id))
             setVariations(response)
             if (response?.length > 0) {
                 setSelectedVariation(response[0])
             }
+            dispatch(setLoading(false))
+
         } catch (error) {
+            dispatch(setLoading(false))
+
             console.log({ error })
         }
     }

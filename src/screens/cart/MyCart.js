@@ -13,6 +13,7 @@ import { getTheme } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import { getVoucher } from '../../redux/slices/vouchers'
 import { setLoading } from '../../redux/slices/utils'
+import { ErrorAlert } from '../../utils/utils'
 
 export default function MyCart(props) {
     const { navigation } = props
@@ -24,7 +25,7 @@ export default function MyCart(props) {
     const [isvisible, setIsvisible] = useState(false)
     const [selectCartid, setSelectCardId] = useState()
     const [quantity, setQuantity] = useState(1)
-    const [voucherCode, setVoucherCode] = useState("")
+    const [voucherCode, setVoucherCode] = useState(voucher[0]?.code ? voucher[0]?.code : "")
     const [shippingCost, setShippingCost] = useState(0)
     const totalAmount = useSelector(selectTotalAmount);
     const { t } = useTranslation();
@@ -35,15 +36,7 @@ export default function MyCart(props) {
         dispatch(removeCartItem(productId));
     };
 
-    useFocusEffect(
-        useCallback(() => {
 
-
-            return () => {
-                // Cleanup function if needed
-            };
-        }, [])
-    );
     // ================================Update Cart===============================
     const handleUpdateCartItem = (productId, newQuantity) => {
         const updatedItem = {
@@ -59,9 +52,14 @@ export default function MyCart(props) {
 
     const ApplyVoucher = async () => {
 
-        dispatch(setLoading(true))
-        await dispatch(getVoucher(voucherCode, cart, totalAmount))
-        dispatch(setLoading(false))
+        if (voucherCode !== "") {
+            dispatch(setLoading(true))
+            await dispatch(getVoucher(voucherCode, cart, totalAmount))
+            dispatch(setLoading(false))
+        } else {
+            ErrorAlert("Enter Voucher code please")
+        }
+
     }
     const CartItem = ({ item }) => {
 
@@ -130,8 +128,6 @@ export default function MyCart(props) {
                 label={t('MyCart')}
             />
             <ScrollView showsVerticalScrollIndicator={false} style={{ flexGrow: 1 }}>
-
-
                 <View>
                     <FlatList
                         data={cart}
@@ -178,7 +174,7 @@ export default function MyCart(props) {
                 {/* Enter Voucher */}
                 <View style={[styles.voucherContainer, { borderColor: currentTheme.defaultTextColor }]}>
                     <TextInput
-                        placeholderTextColor={COLORS.gray}
+                        placeholderTextColor={currentTheme.defaultTextColor}
                         placeholder={t('EnterVoucherCode')}
                         value={voucherCode}
                         onChangeText={(txt) => setVoucherCode(txt)}
@@ -189,7 +185,6 @@ export default function MyCart(props) {
                         btnStyle={{ backgroundColor: COLORS.primary, width: width * .3, justifyContent: "center", alignItems: "center", paddingVertical: SIZES.five + 2, borderRadius: SIZES.twentyFive, marginBottom: 10 }}
                         onPress={() => ApplyVoucher()}
                         disabled={voucher.length !== 0 ? true : false}
-
                         label={voucher.length === 0 ? t('Apply') : "$" + Math.round(voucher[0].amount)}
                     />
 

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, FlatList, TouchableOpacity, WebView } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { COLORS, SIZES, STYLES } from '../../constants'
@@ -9,7 +9,7 @@ import Shipping from './Shipping'
 import Review from './Review'
 import CustomButton from '../../components/CustomButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { CONSTANTS, getTheme, SCREENS } from '../../constants/theme'
+import { CONSTANTS, getTheme, height, SCREENS, width } from '../../constants/theme'
 import { useTranslation } from 'react-i18next'
 import { StripeProvider, useStripe, CardField } from '@stripe/stripe-react-native'
 import { setLoading } from '../../redux/slices/utils'
@@ -20,6 +20,7 @@ import { ErrorAlert, SuccessAlert } from '../../utils/utils'
 import { emptyCart, selectTotalAmount } from '../../redux/slices/Cart'
 import { removeVoucher } from '../../redux/slices/vouchers'
 import base64 from 'react-native-base64'
+import WebView from 'react-native-webview'
 
 // import { PayPal } from 'react-native-paypal-lib';
 
@@ -40,9 +41,7 @@ export default function CheckOut(props) {
 
     const cart = useSelector(state => state.Cart.cart)
     const shippingMethods = useSelector(state => state.Shipping.shippingType)
-    const paypal = useSelector(state => state.Payment.paypal)
-    console.log({ paypal })
-
+    const paypal = useSelector(state => state.Payment.paypal)[0]
     const [shippingDetails, setShippingDetails] = useState(null)
     const [paidStatus, setPaidStatus] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState(null)
@@ -54,10 +53,12 @@ export default function CheckOut(props) {
     const [Error, setError] = useState('');
     const [expiryAuth, setExpiryAuth] = useState('');
     const [cvcAuth, setCvcAuth] = useState('');
+    const [paypalPaymentID, setPaypalPaymentID] = useState(null);
+    const [paypalAccessToken, setPaypalAccessToken] = useState(null);
+    const [approvalUrl, setApprovalUrl] = useState(null);
     const user = useSelector(state => state.Auth.user)
     const payment = useSelector(state => state.Payment.payment);
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
-
 
 
     const moveToPrevios = () => {
@@ -362,31 +363,21 @@ export default function CheckOut(props) {
             await dispatch(setLoading(false))
         }
     }
-    // useEffect(() => {
 
-        var currency = '100 USD'
-        currency = currency.replace(" USD", "")
+    // ==================================== Paypal Payment Method==============================
+    const PaypalPayment = async () => {
 
-        console.log({currency})
-
-
-        const dataDetail = {
+        dispatch(setLoading(true))
+        const dataDetail = JSON.stringify({
             "intent": "sale",
             "payer": {
                 "payment_method": "paypal"
             },
             "transactions": [{
                 "amount": {
-                    "total": "100",
+                    "total": calculateTotal(totalAmount, shippingCharges, voucherCode),
                     "currency": "USD",
-                    "details": {
-                        "subtotal": "100",
-                        "tax": "0",
-                        "shipping": "0",
-                        "handling_fee": "0",
-                        "shipping_discount": "0",
-                        "insurance": "0"
-                    }
+
                 }
 
             }],
@@ -394,19 +385,12 @@ export default function CheckOut(props) {
                 "return_url": "https://example.com",
                 "cancel_url": "https://example.com"
             }
-        }
-    // }, [])
-console.log("trans",dataDetail.transactions)
-
-    // ==================================== Paypal Payment Method==============================
-    const PaypalPayment = async () => {
-        const client_id = 'AURC9mIpNbhjCgItCuQoqpcDtM-lpgX7YrVp_uMBaofk0K3CWpRXj6CXJzNXwdX8KU4r_7oYXyVWtmp-';
-        const secret = 'EAuNZoLBDsnRv0LF_MU4F4TbnEVea1Mnf6nvj1K-aMcoaHNzXYCze2ol7Lsy6XsbrNj2IQEPO9GDie7c';
+        })
+        const client_id = paypal?.client_key;
+        const secret = paypal?.secret_key;
         const credentials = `${client_id}:${secret}`;
         const encodedCredentials = base64.encode(credentials);
-        console.log({ encodedCredentials })
-
-       await axios.post('https://api.sandbox.paypal.com/v1/oauth2/token', { grant_type: 'client_credentials' },
+        await axios.post('https://api.sandbox.paypal.com/v1/oauth2/token', { grant_type: 'client_credentials' },
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -415,32 +399,35 @@ console.log("trans",dataDetail.transactions)
             }
         )
             .then(async response => {
-                console.log(response.data.access_token)
-              await  axios.post('https://api.sandbox.paypal.com/v1/payments/payment', dataDetail,
+                setPaypalAccessToken(response.data.access_token)
+                await axios.post('https://api.sandbox.paypal.com/v1/payments/payment', dataDetail,
                     {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${response.data.access_token}`,
                         }
+                    }).then(response => {
+
+                        const { id, links } = response?.data
+                        const approvalUrl = links.find(data => data.rel == "approval_url")
+                        setPaypalPaymentID(id)
+                        setApprovalUrl(approvalUrl.href)
+                        dispatch(setLoading(false))
+
+
+                    }).catch((e) => {
+                        dispatch(setLoading(false))
+
+                        console.log(e)
                     })
 
-            }).then(response => {
-                console.log("dd",dataDetail )
-                console.log("data detail", response )
-            }).catch((e)=>console.log(e))
+            }).catch((e) => {
+                console.log({ e })
+                dispatch(setLoading(false))
+            }
 
+            )
 
-        // try {
-        //     const payment = await PayPal.initialize(PayPal.SANDBOX, 'YOUR_CLIENT_ID');
-        //     const result = await PayPal.pay({
-        //         price: '10.00',
-        //         currency: 'USD',
-        //         description: 'Your description goes here',
-        //     });
-        //     Alert.alert('Payment Success', JSON.stringify(result));
-        // } catch (error) {
-        //     Alert.alert('Payment Error', error.message);
-        // }
     };
 
 
@@ -512,117 +499,191 @@ console.log("trans",dataDetail.transactions)
 
         return finalTotal;
     }
+    const _onNavigationStateChange = async (webViewState) => {
+
+
+        if (webViewState.url.includes('https://example.com/')) {
+            dispatch(setLoading(true))
+
+            setApprovalUrl(null)
+            // const { PayerID, paymentId } = webViewState.url
+
+
+            // Remove any trailing slashes from the URL
+            const cleanedUrl = webViewState.url.replace(/\/$/, '');
+
+
+            // Regular expression to extract PayerID and paymentId
+            const payerIdMatch = cleanedUrl.match(/PayerID=([^&]+)/);
+            const paymentIdMatch = cleanedUrl.match(/paymentId=([^&]+)/);
+
+            // Extract the parameters
+            const PayerID = payerIdMatch ? payerIdMatch[1] : null;
+            const paymentId = paymentIdMatch ? paymentIdMatch[1] : null;
+
+
+            await axios.post(`https://api.sandbox.paypal.com/v1/payments/payment/${paymentId}/execute`, { payer_id: PayerID },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${paypalAccessToken}`
+                    }
+                }
+            )
+                .then(async response => {
+                    const { state } = response?.data
+
+
+                    if (state === "approved") {
+                        // setPaidStatus(true)
+                        dispatch(setLoading(false))
+                        const orderDetials = Place_order(true)
+                        const response = await dispatch(postOrder(orderDetials))
+
+                        navigation.navigate(SCREENS.Drawer)
+                        dispatch(removeVoucher())
+                        dispatch(emptyCart())
+                        SuccessAlert("Order Placed Successfully")
+                        console.log('Payment successful:', paymentIntent);
+
+                    }
+
+                }).catch(err => {
+
+                    dispatch(setLoading(false))
+
+                    console.log({ ...err })
+                })
+
+        }
+    }
     return (
         <ScrollView style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
-            <StripeProvider publishableKey="pk_test_51PYmNTIhyltse8okcxVNLSQhtBRFnqu275GkFnzt2oNga4uZmv3zKI4cp6wYOXuRB1mlUCr4B2V0Yusjo1aRERLp00wGBIv7pH">
-                <HeaderWithArrow
-                    label={t('Checkout')} />
-                <ProgressBar mode={progress} />
+            {
+                approvalUrl ? <WebView
+                    style={{ width: width * .9, height: height }}
+                    source={{ uri: approvalUrl }}
+                    onNavigationStateChange={_onNavigationStateChange}
+                    javaScriptEnabled={true}
+                    domStorageEnabled={true}
+                    startInLoadingState={false}
 
-                {progress === 0 ?
-                    <Shipping onFlagChange={changeFlag} place_order={enablePayment} />
-                    : progress === 1 ?
+                /> :
+                    <>
+                        <StripeProvider publishableKey={paymentMethod?.settings?.test_publishable_key?.value}>
+                            <HeaderWithArrow
+                                label={t('Checkout')} />
+                            <ProgressBar mode={progress} />
 
-                        <Review data={orderDetails} />
-                        :
-                        <View style={styles.container}>
-                            <FlatList
-                                data={payment}
-                                renderItem={showRadioButtons}
-                                keyExtractor={item => item.id}
-                                extraData={paymentMethod}
-                            />
-                            {paymentMethod?.id === 'stripe' ?
-                                <>
-                                    <CardField
-                                        postalCodeEnabled={false}
-                                        placeholder={{ number: '4242 4242 4242 4242' }}
-                                        cardStyle={{
-                                            borderColor: currentTheme?.defaultTextColor,
-                                            borderWidth: 1,
-                                            borderRadius: 8,
-                                            backgroundColor: currentTheme?.Background,
-                                        }}
-                                        style={{
-                                            height: SIZES.fifty,
-                                            marginVertical: SIZES.twentyFive,
-                                        }}
-                                        onCardChange={(cardDetails) => {
-                                            setCardDetails(cardDetails);
+                            {progress === 0 ?
+                                <Shipping onFlagChange={changeFlag} place_order={enablePayment} />
+                                : progress === 1 ?
 
-                                        }}
-                                    />
-
-
-                                </>
-                                :
-                                paymentMethod?.id === "authorize_net_cim_credit_card" ?
-                                    <View>
-                                        <EditText
-                                            label={t('CardNumber')}
-                                            required
-                                            placeholder={t('CardNumber')}
-                                            value={cardNoAuth}
-                                            onChangeText={handleCardNumberChange}
-
-                                            keyboardType="numeric"
-                                            maxLength={19}
+                                    <Review data={orderDetails} />
+                                    :
+                                    <View style={styles.container}>
+                                        <FlatList
+                                            data={payment}
+                                            renderItem={showRadioButtons}
+                                            keyExtractor={item => item.id}
+                                            extraData={paymentMethod}
                                         />
-                                        <EditText
+                                        {paymentMethod?.id === 'stripe' ?
+                                            <>
 
-                                            label={t('Expiration')}
-                                            placeholder={t('MMYY')}
-                                            keyboardType="numeric"
-                                            value={expiryAuth}
-                                            onChangeText={handleExpiryChange}
-                                            maxLength={5}
+                                                <CardField
+                                                    postalCodeEnabled={false}
+                                                    placeholder={{ number: '4242 4242 4242 4242' }}
+                                                    cardStyle={{
+                                                        borderColor: currentTheme?.defaultTextColor,
+                                                        borderWidth: 1,
+                                                        borderRadius: 8,
+                                                        backgroundColor: currentTheme?.Background,
+                                                    }}
+                                                    style={{
+                                                        height: SIZES.fifty,
+                                                        marginVertical: SIZES.twentyFive,
+                                                    }}
+                                                    onCardChange={(cardDetails) => {
+                                                        setCardDetails(cardDetails);
 
-                                        />
-                                        <EditText
-                                            required
-                                            label={t('CVV')}
-                                            placeholder={t('CVV')}
-                                            keyboardType="numeric"
-                                            value={cvcAuth}
-                                            onChangeText={handleCvvChange}
-                                            maxLength={3}
-                                        />
+                                                    }}
+                                                />
 
+
+                                            </>
+                                            :
+                                            paymentMethod?.id === "authorize_net_cim_credit_card" ?
+                                                <View>
+                                                    <EditText
+                                                        label={t('CardNumber')}
+                                                        required
+                                                        placeholder={t('CardNumber')}
+                                                        value={cardNoAuth}
+                                                        onChangeText={handleCardNumberChange}
+
+                                                        keyboardType="numeric"
+                                                        maxLength={19}
+                                                    />
+                                                    <EditText
+
+                                                        label={t('Expiration')}
+                                                        placeholder={t('MMYY')}
+                                                        keyboardType="numeric"
+                                                        value={expiryAuth}
+                                                        onChangeText={handleExpiryChange}
+                                                        maxLength={5}
+
+                                                    />
+                                                    <EditText
+                                                        required
+                                                        label={t('CVV')}
+                                                        placeholder={t('CVV')}
+                                                        keyboardType="numeric"
+                                                        value={cvcAuth}
+                                                        onChangeText={handleCvvChange}
+                                                        maxLength={3}
+                                                    />
+
+                                                </View>
+                                                : paymentMethod?.id === 'ppcp-gateway' ?
+                                                    <></>
+                                                    : null
+                                        }
                                     </View>
-                                    : paymentMethod?.id === 'ppcp-gateway' ?
-                                        <></>
-                                        : null
                             }
-                        </View>
-                }
 
-                <View style={styles.btnRow}>
-                    {progress > 0 &&
-                        <CustomButton
-                            txtstyle={styles.txtstyle}
-                            btnStyle={[styles.btnStyle1, { backgroundColor: currentTheme.Background }]}
-                            label={t('Back')}
-                            onPress={moveToPrevios} />
-                    }
-                    {progress > 0 &&
-                        <View style={{ width: SIZES.fifteen }} />
-                    }
-                    <CustomButton
-                        btnStyle={styles.btnStyle}
-                        label={progress === 0 ? t('Review') : progress === 1 ? t('Payment') : t('PlaceOrder')}
-                        onPress={moveToNext}
+                            <View style={styles.btnRow}>
+                                {progress > 0 &&
+                                    <CustomButton
+                                        txtstyle={styles.txtstyle}
+                                        btnStyle={[styles.btnStyle1, { backgroundColor: currentTheme.Background }]}
+                                        label={t('Back')}
+                                        onPress={moveToPrevios} />
+                                }
+                                {progress > 0 &&
+                                    <View style={{ width: SIZES.fifteen }} />
+                                }
+                                <CustomButton
+                                    btnStyle={styles.btnStyle}
+                                    label={progress === 0 ? t('Review') : progress === 1 ? t('Payment') : t('PlaceOrder')}
+                                    onPress={moveToNext}
 
-                        disabled={enablePaymentButton}
-                    />
+                                    disabled={enablePaymentButton}
+                                />
 
-                </View>
-                {
-                    checkShipment() === true && enablePaymentButton !== false &&
-                    <Text style={{ textAlign: "center", paddingTop: SIZES.ten, color: COLORS.primary }}>Shipment is not available in your country</Text>
-                }
+                            </View>
+                            {
+                                checkShipment() === true && enablePaymentButton !== false &&
+                                <Text style={{ textAlign: "center", paddingTop: SIZES.ten, color: COLORS.primary }}>Shipment is not available in your country</Text>
+                            }
 
-                <View style={{ height: SIZES.fifty * 2 }} />
-            </StripeProvider>
+                            <View style={{ height: SIZES.fifty * 2 }} />
+                        </StripeProvider>
+                    </>
+            }
+
+
         </ScrollView>
     )
 }

@@ -11,12 +11,12 @@ import { useSelector } from 'react-redux';
 
 const Shipping = (props) => {
     const { t } = useTranslation();
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [firstName, setFirstName] = useState(__DEV__ ? "Taimoor" : '');
+    const [lastName, setLastName] = useState(__DEV__ ? "Khan" : '');
     const [state, setState] = useState('');
-    const [city, setCity] = useState('');
-    const [address, setAddress] = useState('');
-    const [postalCode, setPostalCode] = useState('');
+    const [city, setCity] = useState(__DEV__ ? "ABC CITY" : '');
+    const [address, setAddress] = useState(__DEV__ ? "ABC ADDRESS" : '');
+    const [postalCode, setPostalCode] = useState(__DEV__ ? "ABC123" : '');
     const country = useSelector(state => state.Shipping.countries)
     const user = useSelector(state => state.Auth.user)
 

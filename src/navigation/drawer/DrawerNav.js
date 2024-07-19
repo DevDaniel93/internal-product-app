@@ -39,7 +39,6 @@ export default function DrawerNavigator() {
     const theme = useSelector(state => state.Theme.theme);
     const currentTheme = getTheme(theme);
 
-
     return (
         <Drawer.Navigator
             initialRouteName={SCREENS.BottamTab}
