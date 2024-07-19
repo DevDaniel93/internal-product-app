@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, FlatList, TouchableOpacity, WebView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import HeaderWithArrow from '../../components/HeaderWithArrow'
 import { COLORS, SIZES, STYLES } from '../../constants'
@@ -19,8 +19,11 @@ import { postOrder, updateOrder } from '../../redux/slices/orders'
 import { ErrorAlert, SuccessAlert } from '../../utils/utils'
 import { emptyCart, selectTotalAmount } from '../../redux/slices/Cart'
 import { removeVoucher } from '../../redux/slices/vouchers'
+import base64 from 'react-native-base64'
+
 // import { PayPal } from 'react-native-paypal-lib';
 
+// const Base64 = require('Base64'); // Example, use appropriate library for React Native
 
 export default function CheckOut(props) {
     const { navigation } = props
@@ -38,6 +41,7 @@ export default function CheckOut(props) {
     const cart = useSelector(state => state.Cart.cart)
     const shippingMethods = useSelector(state => state.Shipping.shippingType)
     const paypal = useSelector(state => state.Payment.paypal)
+    console.log({ paypal })
 
     const [shippingDetails, setShippingDetails] = useState(null)
     const [paidStatus, setPaidStatus] = useState(false)
@@ -53,6 +57,8 @@ export default function CheckOut(props) {
     const user = useSelector(state => state.Auth.user)
     const payment = useSelector(state => state.Payment.payment);
     const allowedGeneralCountries = allGeneralCountries.find(obj => obj.id === 'woocommerce_specific_allowed_countries')
+
+
 
     const moveToPrevios = () => {
         setProgress(progress - 1)
@@ -356,21 +362,85 @@ export default function CheckOut(props) {
             await dispatch(setLoading(false))
         }
     }
+    // useEffect(() => {
+
+        var currency = '100 USD'
+        currency = currency.replace(" USD", "")
+
+        console.log({currency})
+
+
+        const dataDetail = {
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "transactions": [{
+                "amount": {
+                    "total": "100",
+                    "currency": "USD",
+                    "details": {
+                        "subtotal": "100",
+                        "tax": "0",
+                        "shipping": "0",
+                        "handling_fee": "0",
+                        "shipping_discount": "0",
+                        "insurance": "0"
+                    }
+                }
+
+            }],
+            "redirect_urls": {
+                "return_url": "https://example.com",
+                "cancel_url": "https://example.com"
+            }
+        }
+    // }, [])
+console.log("trans",dataDetail.transactions)
+
     // ==================================== Paypal Payment Method==============================
     const PaypalPayment = async () => {
+        const client_id = 'AURC9mIpNbhjCgItCuQoqpcDtM-lpgX7YrVp_uMBaofk0K3CWpRXj6CXJzNXwdX8KU4r_7oYXyVWtmp-';
+        const secret = 'EAuNZoLBDsnRv0LF_MU4F4TbnEVea1Mnf6nvj1K-aMcoaHNzXYCze2ol7Lsy6XsbrNj2IQEPO9GDie7c';
+        const credentials = `${client_id}:${secret}`;
+        const encodedCredentials = base64.encode(credentials);
+        console.log({ encodedCredentials })
+
+       await axios.post('https://api.sandbox.paypal.com/v1/oauth2/token', { grant_type: 'client_credentials' },
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': `Basic ${encodedCredentials}`// Your authorization value
+                }
+            }
+        )
+            .then(async response => {
+                console.log(response.data.access_token)
+              await  axios.post('https://api.sandbox.paypal.com/v1/payments/payment', dataDetail,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${response.data.access_token}`,
+                        }
+                    })
+
+            }).then(response => {
+                console.log("dd",dataDetail )
+                console.log("data detail", response )
+            }).catch((e)=>console.log(e))
 
 
-        try {
-            const payment = await PayPal.initialize(PayPal.SANDBOX, 'YOUR_CLIENT_ID');
-            const result = await PayPal.pay({
-                price: '10.00',
-                currency: 'USD',
-                description: 'Your description goes here',
-            });
-            Alert.alert('Payment Success', JSON.stringify(result));
-        } catch (error) {
-            Alert.alert('Payment Error', error.message);
-        }
+        // try {
+        //     const payment = await PayPal.initialize(PayPal.SANDBOX, 'YOUR_CLIENT_ID');
+        //     const result = await PayPal.pay({
+        //         price: '10.00',
+        //         currency: 'USD',
+        //         description: 'Your description goes here',
+        //     });
+        //     Alert.alert('Payment Success', JSON.stringify(result));
+        // } catch (error) {
+        //     Alert.alert('Payment Error', error.message);
+        // }
     };
 
 
@@ -442,7 +512,6 @@ export default function CheckOut(props) {
 
         return finalTotal;
     }
-
     return (
         <ScrollView style={[STYLES.container, { backgroundColor: currentTheme.Background }]}>
             <StripeProvider publishableKey="pk_test_51PYmNTIhyltse8okcxVNLSQhtBRFnqu275GkFnzt2oNga4uZmv3zKI4cp6wYOXuRB1mlUCr4B2V0Yusjo1aRERLp00wGBIv7pH">
@@ -520,7 +589,9 @@ export default function CheckOut(props) {
                                         />
 
                                     </View>
-                                    : null
+                                    : paymentMethod?.id === 'ppcp-gateway' ?
+                                        <></>
+                                        : null
                             }
                         </View>
                 }
